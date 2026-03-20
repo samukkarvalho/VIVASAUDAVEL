@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprenda a Treinar - VidaSaudável AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .header { text-align: center; margin-bottom: 60px; }
+        .header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #10b981, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .header p { font-size: 1.2rem; color: rgba(255, 255, 255, 0.7); }
+        
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+        .search-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .category-btn {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .video-modal.show { display: flex; align-items: center; justify-content: center; }
+        .video-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .close-btn:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .exercise-info h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .exercise-details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .detail-item:last-child { border-bottom: none; }
+        .detail-label {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        /* Exercise Grid */
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .exercise-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .exercise-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+        .exercise-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .exercise-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+        .exercise-muscle {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 3rem; }
+            .exercises-grid { grid-template-columns: 1fr; }
+            .categories { gap: 10px; }
+            .category-btn { padding: 10px 20px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>APRENDA A TREINAR</h1>
+            <p>Biblioteca completa com todos os exercícios de academia</p>
+        </div>
+
+        <!-- Search -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar exercício...">
+        </div>
+
+        <!-- Categories -->
+        <div class="categories">
+            <button class="category-btn active" data-category="todos">Todos</button>
+            <button class="category-btn" data-category="peito">Peito</button>
+            <button class="category-btn" data-category="costas">Costas</button>
+            <button class="category-btn" data-category="ombros">Ombros</button>
+            <button class="category-btn" data-category="bracos">Braços</button>
+            <button class="category-btn" data-category="pernas">Pernas</button>
+            <button class="category-btn" data-category="abdomen">Abdômen</button>
+        </div>
+
+        <!-- Exercises Grid -->
+        <div class="exercises-grid" id="exercisesGrid"></div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-content">
+            <button class="close-btn" onclick="closeVideo()">×</button>
+            <div class="video-player" id="videoPlayer">
+                📹 Vídeo do exercício
+            </div>
+            <div class="exercise-info">
+                <h2 id="modalTitle">Nome do Exercício</h2>
+                <p id="modalDescription"></p>
+                <div class="exercise-details">
+                    <div class="detail-item">
+                        <div class="detail-label">🎯 Músculo Principal</div>
+                        <div id="modalMuscle"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">💡 Dica de Execução</div>
+                        <div id="modalTip"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">⚠️ Cuidados</div>
+                        <div id="modalWarning"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATABASE COMPLETO DE EXERCÍCIOS
+        const exercises = [
+            // PEITO
+            { name: 'Supino Reto', muscle: 'Peito', category: 'peito', icon: '💪', video: '', description: 'Exercício fundamental para desenvolvimento do peitoral maior', tip: 'Mantenha os pés firmes no chão e a lombar apoiada', warning: 'Não arqueie excessivamente a coluna' },
+            { name: 'Supino Inclinado', muscle: 'Peito Superior', category: 'peito', icon: '💪', video: '', description: 'Foca na porção superior do peitoral', tip: 'Inclinação de 30-45 graus é ideal', warning: 'Evite inclinar demais, vira ombro' },
+            { name: 'Supino Declinado', muscle: 'Peito Inferior', category: 'peito', icon: '💪', video: '', description: 'Trabalha a porção inferior do peitoral', tip: 'Controle a descida da barra', warning: 'Prenda bem os pés' },
+            { name: 'Crucifixo Reto', muscle: 'Peito', category: 'peito', icon: '💪', video: '', description: 'Alongamento e trabalho de fibras profundas', tip: 'Cotovelos levemente flexionados', warning: 'Não desça demais para evitar lesão' },
+            { name: 'Crucifixo Inclinado', muscle: 'Peito Superior', category: 'peito', icon: '💪', video: '', description: 'Crucifixo para parte superior', tip: 'Movimento controlado', warning: 'Não use peso excessivo' },
+            { name: 'Flexão de Braço', muscle: 'Peito', category: 'peito', icon: '💪', video: '', description: 'Exercício com peso corporal', tip: 'Corpo reto, desça até 90 graus', warning: 'Não deixe quadril cair' },
+            { name: 'Paralelas', muscle: 'Peito Inferior', category: 'peito', icon: '💪', video: '', description: 'Exercício composto para peito e tríceps', tip: 'Incline o tronco para frente', warning: 'Desça controladamente' },
+            { name: 'Peck Deck', muscle: 'Peito', category: 'peito', icon: '💪', video: '', description: 'Isolamento do peitoral', tip: 'Contraia no final do movimento', warning: 'Não use impulso' },
+            { name: 'Cross Over', muscle: 'Peito', category: 'peito', icon: '💪', video: '', description: 'Trabalha com cabos para isolamento', tip: 'Cruze as mãos no final', warning: 'Mantenha postura ereta' },
+            { name: 'Pullover', muscle: 'Peito/Dorsal', category: 'peito', icon: '💪', video: '', description: 'Expande caixa torácica', tip: 'Cotovelos levemente flexionados', warning: 'Não force ombros' },
+
+            // COSTAS
+            { name: 'Barra Fixa', muscle: 'Dorsal', category: 'costas', icon: '🦍', video: '', description: 'Rei dos exercícios para costas', tip: 'Pegada pronada, largura dos ombros', warning: 'Não balance o corpo' },
+            { name: 'Puxada Frontal', muscle: 'Dorsal', category: 'costas', icon: '🦍', video: '', description: 'Alternativa à barra fixa', tip: 'Puxe até o queixo', warning: 'Não use impulso' },
+            { name: 'Puxada Triangulo', muscle: 'Dorsal/Trapézio', category: 'costas', icon: '🦍', video: '', description: 'Pegada neutra para variação', tip: 'Contraia no final', warning: 'Postura ereta' },
+            { name: 'Remada Curvada', muscle: 'Dorsal/Trapézio', category: 'costas', icon: '🦍', video: '', description: 'Exercício composto fundamental', tip: 'Joelhos levemente flexionados', warning: 'Proteja a lombar' },
+            { name: 'Remada Cavalinho', muscle: 'Dorsal', category: 'costas', icon: '🦍', video: '', description: 'Remada com apoio no peito', tip: 'Puxe até as costelas', warning: 'Não arqueie a coluna' },
+            { name: 'Remada Unilateral', muscle: 'Dorsal', category: 'costas', icon: '🦍', video: '', description: 'Foco em cada lado', tip: 'Apoie joelho e mão no banco', warning: 'Não gire o tronco' },
+            { name: 'Remada Baixa', muscle: 'Dorsal', category: 'costas', icon: '🦍', video: '', description: 'Cabo sentado', tip: 'Costas retas, puxe até o abdômen', warning: 'Não balance o corpo' },
+            { name: 'Levantamento Terra', muscle: 'Costas/Posterior', category: 'costas', icon: '🦍', video: '', description: 'Exercício completo de força', tip: 'Costas retas SEMPRE', warning: 'TÉCNICA é FUNDAMENTAL' },
+            { name: 'Encolhimento', muscle: 'Trapézio', category: 'costas', icon: '🦍', video: '', description: 'Isolamento do trapézio', tip: 'Eleve os ombros verticalmente', warning: 'Não gire os ombros' },
+            { name: 'Pulldown', muscle: 'Dorsal', category: 'costas', icon: '🦍', video: '', description: 'Variação com braço reto', tip: 'Braços esticados', warning: 'Controle o peso' },
+
+            // OMBROS
+            { name: 'Desenvolvimento Barra', muscle: 'Ombro', category: 'ombros', icon: '🏋️', video: '', description: 'Exercício base para ombros', tip: 'Barra na frente ou atrás', warning: 'Não arqueie a lombar' },
+            { name: 'Desenvolvimento Halteres', muscle: 'Ombro', category: 'ombros', icon: '🏋️', video: '', description: 'Maior amplitude de movimento', tip: 'Cotovelos a 90 graus na base', warning: 'Controle a descida' },
+            { name: 'Elevação Lateral', muscle: 'Ombro Lateral', category: 'ombros', icon: '🏋️', video: '', description: 'Isolamento do deltoide lateral', tip: 'Cotovelos levemente flexionados', warning: 'Não use impulso' },
+            { name: 'Elevação Frontal', muscle: 'Ombro Frontal', category: 'ombros', icon: '🏋️', video: '', description: 'Trabalha a porção anterior', tip: 'Eleve até altura dos olhos', warning: 'Alterne os braços' },
+            { name: 'Elevação Posterior', muscle: 'Ombro Posterior', category: 'ombros', icon: '🏋️', video: '', description: 'Foca na parte traseira', tip: 'Incline o tronco ou use banco', warning: 'Movimento controlado' },
+            { name: 'Remada Alta', muscle: 'Ombro/Trapézio', category: 'ombros', icon: '🏋️', video: '', description: 'Trabalha lateral e trapézio', tip: 'Cotovelos sempre acima das mãos', warning: 'Não force demais' },
+            { name: 'Arnold Press', muscle: 'Ombro Completo', category: 'ombros', icon: '🏋️', video: '', description: 'Variação do desenvolvimento', tip: 'Gire as palmas durante o movimento', warning: 'Peso moderado' },
+            { name: 'Crucifixo Inverso', muscle: 'Ombro Posterior', category: 'ombros', icon: '🏋️', video: '', description: 'Isolamento posterior', tip: 'Peck deck inverso ou halteres', warning: 'Foco na contração' },
+
+            // BRAÇOS
+            { name: 'Rosca Direta Barra', muscle: 'Bíceps', category: 'bracos', icon: '💪', video: '', description: 'Clássico para bíceps', tip: 'Cotovelos fixos', warning: 'Não balance o corpo' },
+            { name: 'Rosca Alternada', muscle: 'Bíceps', category: 'bracos', icon: '💪', video: '', description: 'Halteres alternados', tip: 'Supine o pulso no topo', warning: 'Controle total' },
+            { name: 'Rosca Martelo', muscle: 'Bíceps/Antebraço', category: 'bracos', icon: '💪', video: '', description: 'Pegada neutra', tip: 'Trabalha braquial e antebraço', warning: 'Pegada firme' },
+            { name: 'Rosca Scott', muscle: 'Bíceps', category: 'bracos', icon: '💪', video: '', description: 'Isolamento no banco', tip: 'Cotovelos no apoio', warning: 'Não estenda totalmente' },
+            { name: 'Rosca Concentrada', muscle: 'Bíceps', category: 'bracos', icon: '💪', video: '', description: 'Foco e concentração', tip: 'Cotovelo apoiado na coxa', warning: 'Movimento lento' },
+            { name: 'Tríceps Testa', muscle: 'Tríceps', category: 'bracos', icon: '💪', video: '', description: 'Deitado, barra na testa', tip: 'Cotovelos fixos', warning: 'Cuidado com o nariz!' },
+            { name: 'Tríceps Corda', muscle: 'Tríceps', category: 'bracos', icon: '💪', video: '', description: 'Cabo com corda', tip: 'Abra a corda no final', warning: 'Cotovelos colados' },
+            { name: 'Tríceps Francês', muscle: 'Tríceps', category: 'bracos', icon: '💪', video: '', description: 'Halter acima da cabeça', tip: 'Cotovelos apontando para cima', warning: 'Não force demais' },
+            { name: 'Mergulho Banco', muscle: 'Tríceps', category: 'bracos', icon: '💪', video: '', description: 'Peso corporal entre bancos', tip: 'Desça até 90 graus', warning: 'Não afunde ombros' },
+            { name: 'Tríceps Coice', muscle: 'Tríceps', category: 'bracos', icon: '💪', video: '', description: 'Halter, braço para trás', tip: 'Estenda completamente', warning: 'Cotovelo fixo' },
+
+            // PERNAS
+            { name: 'Agachamento Livre', muscle: 'Pernas Completo', category: 'pernas', icon: '🦵', video: '', description: 'Rei dos exercícios', tip: 'Joelhos alinhados com os pés', warning: 'NUNCA arredonde a coluna' },
+            { name: 'Agachamento Hack', muscle: 'Quadríceps', category: 'pernas', icon: '🦵', video: '', description: 'Máquina de agachamento', tip: 'Costas apoiadas', warning: 'Desça controladamente' },
+            { name: 'Leg Press 45°', muscle: 'Pernas', category: 'pernas', icon: '🦵', video: '', description: 'Press inclinado', tip: 'Pés na largura dos ombros', warning: 'Não trave os joelhos' },
+            { name: 'Cadeira Extensora', muscle: 'Quadríceps', category: 'pernas', icon: '🦵', video: '', description: 'Isolamento do quadríceps', tip: 'Estenda completamente', warning: 'Não use muito peso' },
+            { name: 'Mesa Flexora', muscle: 'Posterior', category: 'pernas', icon: '🦵', video: '', description: 'Isolamento posterior', tip: 'Contraia no topo', warning: 'Quadril no banco' },
+            { name: 'Stiff', muscle: 'Posterior/Glúteo', category: 'pernas', icon: '🦵', video: '', description: 'Pernas semi-estendidas', tip: 'Sinta o alongamento', warning: 'Costas retas' },
+            { name: 'Afundo', muscle: 'Pernas Completo', category: 'pernas', icon: '🦵', video: '', description: 'Passadas alternadas', tip: 'Joelho a 90 graus', warning: 'Não deixe joelho ultrapassar pé' },
+            { name: 'Búlgaro', muscle: 'Pernas/Glúteo', category: 'pernas', icon: '🦵', video: '', description: 'Perna traseira elevada', tip: 'Foco na perna da frente', warning: 'Equilíbrio!' },
+            { name: 'Panturrilha em Pé', muscle: 'Panturrilha', category: 'pernas', icon: '🦵', video: '', description: 'Gastrocnêmio', tip: 'Amplitude completa', warning: 'Não balance' },
+            { name: 'Panturrilha Sentado', muscle: 'Panturrilha', category: 'pernas', icon: '🦵', video: '', description: 'Sóleo', tip: 'Joelhos a 90 graus', warning: 'Movimento controlado' },
+            { name: 'Cadeira Adutora', muscle: 'Adutores', category: 'pernas', icon: '🦵', video: '', description: 'Parte interna', tip: 'Contraia no final', warning: 'Não force demais' },
+            { name: 'Cadeira Abdutora', muscle: 'Abdutores/Glúteo', category: 'pernas', icon: '🦵', video: '', description: 'Parte externa', tip: 'Abra ao máximo', warning: 'Movimento controlado' },
+
+            // ABDÔMEN
+            { name: 'Abdominal Supra', muscle: 'Abdômen Superior', category: 'abdomen', icon: '🔥', video: '', description: 'Básico e eficiente', tip: 'Suba só até as escápulas', warning: 'Não puxe o pescoço' },
+            { name: 'Abdominal Infra', muscle: 'Abdômen Inferior', category: 'abdomen', icon: '🔥', video: '', description: 'Elevação de pernas', tip: 'Eleve o quadril', warning: 'Lombar no chão' },
+            { name: 'Prancha', muscle: 'Core Completo', category: 'abdomen', icon: '🔥', video: '', description: 'Isométrico', tip: 'Corpo reto como prancha', warning: 'Não deixe quadril cair' },
+            { name: 'Prancha Lateral', muscle: 'Oblíquos', category: 'abdomen', icon: '🔥', video: '', description: 'Lateral isométrico', tip: 'Corpo alinhado', warning: 'Mantenha o equilíbrio' },
+            { name: 'Abdominal Bicicleta', muscle: 'Oblíquos', category: 'abdomen', icon: '🔥', video: '', description: 'Rotação do tronco', tip: 'Cotovelo no joelho oposto', warning: 'Movimento controlado' },
+            { name: 'Elevação de Pernas Barra', muscle: 'Abdômen Inferior', category: 'abdomen', icon: '🔥', video: '', description: 'Pendurado na barra', tip: 'Eleve até 90 graus', warning: 'Não balance' },
+            { name: 'Abdominal Canivete', muscle: 'Abdômen Completo', category: 'abdomen', icon: '🔥', video: '', description: 'Simultâneo superior e inferior', tip: 'Toque as mãos nos pés', warning: 'Movimento explosivo' },
+            { name: 'Roda Abdominal', muscle: 'Core Completo', category: 'abdomen', icon: '🔥', video: '', description: 'Com roda', tip: 'Estenda ao máximo', warning: 'Muito difícil!' }
+        ];
+
+        let currentCategory = 'todos';
+        let currentSearch = '';
+
+        // Render exercises
+        function renderExercises() {
+            const grid = document.getElementById('exercisesGrid');
+            const filtered = exercises.filter(ex => {
+                const matchCategory = currentCategory === 'todos' || ex.category === currentCategory;
+                const matchSearch = ex.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                  ex.muscle.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+
+            grid.innerHTML = filtered.map(ex => `
+                <div class="exercise-card" onclick='openVideo(${JSON.stringify(ex)})'>
+                    <div class="exercise-icon">${ex.icon}</div>
+                    <div class="exercise-name">${ex.name}</div>
+                    <div class="exercise-muscle">${ex.muscle}</div>
+                </div>
+            `).join('');
+        }
+
+        // Category buttons
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                renderExercises();
+            });
+        });
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            currentSearch = e.target.value;
+            renderExercises();
+        });
+
+        // Open video modal
+        function openVideo(exercise) {
+            document.getElementById('modalTitle').textContent = exercise.name;
+            document.getElementById('modalDescription').textContent = exercise.description;
+            document.getElementById('modalMuscle').textContent = exercise.muscle;
+            document.getElementById('modalTip').textContent = exercise.tip;
+            document.getElementById('modalWarning').textContent = exercise.warning;
+            
+            // Aqui você vai colocar o link do vídeo quando criar
+            document.getElementById('videoPlayer').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🎬</div>
+                    <div style="font-size: 1.2rem;">Vídeo em breve!</div>
+                    <div style="margin-top: 10px; color: rgba(255,255,255,0.6);">
+                        Você poderá adicionar seus vídeos aqui
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('videoModal').classList.add('show');
+        }
+
+        // Close video
+        function closeVideo() {
+            document.getElementById('videoModal').classList.remove('show');
+        }
+
+        // Close on background click
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) closeVideo();
+        });
+
+        // Initial render
+        renderExercises();
+    </script>
+</body>
+</html>
