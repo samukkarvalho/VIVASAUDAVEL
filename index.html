@@ -213,6 +213,7 @@
             gap: 2rem;
         }
         
+        /* Cards clicáveis */
         .feature-card {
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             padding: 2.5rem;
@@ -220,12 +221,21 @@
             text-align: center;
             transition: all 0.3s;
             border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
         }
         
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
             border-color: var(--primary);
-            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.3);
+        }
+        
+        .feature-card:active {
+            transform: translateY(-5px) scale(0.98);
         }
         
         .feature-icon {
@@ -552,40 +562,53 @@
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Features Section - CARDS CLICÁVEIS -->
     <section class="features" id="recursos">
         <h2 class="section-title">O Que Posso Fazer Por Você</h2>
         <div class="features-grid">
-            <div class="feature-card">
+            
+            <!-- Card 1: Dietas - Link para gerador -->
+            <a href="treino.html" class="feature-card">
                 <div class="feature-icon">🍎</div>
                 <h3>Dietas Personalizadas</h3>
                 <p>Planos alimentares adaptados ao seu orçamento, objetivos e preferências. Receitas saudáveis e práticas.</p>
-            </div>
-            <div class="feature-card">
+            </a>
+            
+            <!-- Card 2: Treino - Link para gerador -->
+            <a href="treino.html" class="feature-card">
                 <div class="feature-icon">🏋️</div>
                 <h3>Fichas de Treino</h3>
                 <p>Treinos customizados para casa ou academia. Progressão segura e exercícios bem explicados.</p>
-            </div>
-            <div class="feature-card">
+            </a>
+            
+            <!-- Card 3: Apoio - Link para chat -->
+            <a href="#chat" class="feature-card">
                 <div class="feature-icon">💚</div>
                 <h3>Apoio Emocional</h3>
                 <p>Suporte motivacional quando precisar. Conselhos positivos para manter-se focado nos objetivos.</p>
-            </div>
-            <div class="feature-card">
+            </a>
+            
+            <!-- Card 4: Acompanhamento - Link para chat -->
+            <a href="#chat" class="feature-card">
                 <div class="feature-icon">📊</div>
                 <h3>Acompanhamento</h3>
                 <p>Monitore seu progresso e ajuste o plano conforme evoluir na sua jornada.</p>
-            </div>
-            <div class="feature-card">
+            </a>
+            
+            <!-- Card 5: IA - Link para chat -->
+            <a href="#chat" class="feature-card">
                 <div class="feature-icon">🧠</div>
                 <h3>IA Inteligente</h3>
                 <p>Powered by Claude AI. Respostas personalizadas e naturais que entendem suas necessidades.</p>
-            </div>
-            <div class="feature-card">
+            </a>
+            
+            <!-- Card 6: Gratuito - Link para gerador -->
+            <a href="treino.html" class="feature-card">
                 <div class="feature-icon">🎯</div>
                 <h3>100% Gratuito</h3>
                 <p>Sem custos escondidos, sem assinaturas. Saúde e bem-estar acessíveis para todos.</p>
-            </div>
+            </a>
+            
         </div>
     </section>
 
@@ -679,7 +702,6 @@
             const message = userInput.value.trim();
             if (!message || sendButton.disabled) return;
             
-            // Adicionar mensagem do usuário
             addMessage(message, true);
             conversationHistory.push({ role: 'user', content: message });
             
