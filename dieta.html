@@ -6,29 +6,19 @@
     <title>Gerador de Dieta Personalizada - VidaSaudável AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #10b981;
             --primary-dark: #059669;
             --accent: #f59e0b;
             --dark: #0f172a;
-            --gray: #64748b;
-            --light: #f8fafc;
         }
-
         body {
             font-family: 'Outfit', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
             min-height: 100vh;
-            overflow-x: hidden;
         }
-
         body::before {
             content: '';
             position: fixed;
@@ -40,26 +30,12 @@
             animation: pulse 8s ease-in-out infinite;
             pointer-events: none;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 0.6; transform: scale(1.1); }
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 1; }
+        .header { text-align: center; margin-bottom: 60px; animation: fadeInDown 0.8s ease-out; }
         .header h1 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 5rem;
@@ -67,15 +43,9 @@
             background: linear-gradient(135deg, #10b981, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             margin-bottom: 10px;
         }
-
-        .header p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
+        .header p { font-size: 1.2rem; color: rgba(255, 255, 255, 0.7); }
         .form-wrapper {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -84,7 +54,6 @@
             padding: 50px;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
         }
-
         .section-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2.5rem;
@@ -95,7 +64,6 @@
             align-items: center;
             gap: 15px;
         }
-
         .section-title::before {
             content: '';
             width: 50px;
@@ -103,19 +71,8 @@
             background: linear-gradient(90deg, var(--primary), var(--accent));
             border-radius: 2px;
         }
-
-        .form-grid {
-            display: grid;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        .form-grid { display: grid; gap: 30px; margin-bottom: 40px; }
+        .form-group { display: flex; flex-direction: column; gap: 12px; }
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -123,7 +80,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         input, select {
             padding: 16px 20px;
             background: rgba(255, 255, 255, 0.1);
@@ -135,26 +91,14 @@
             transition: all 0.3s;
             outline: none;
         }
-
         input:focus, select:focus {
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
         }
-
-        select option {
-            background: var(--dark);
-            color: white;
-        }
-
-        .biotipo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .biotipo-card {
+        select option { background: var(--dark); color: white; }
+        .biotipo-grid, .objetivo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .biotipo-card, .objetivo-card {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -163,74 +107,66 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .biotipo-card:hover {
+        .biotipo-card:hover, .objetivo-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
         }
-
         .biotipo-card.selected {
             border-color: var(--primary);
             background: rgba(16, 185, 129, 0.1);
             box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
         }
-
-        .biotipo-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .biotipo-name {
-            font-weight: 800;
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-
-        .biotipo-desc {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.5;
-        }
-
-        .objetivo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .objetivo-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .objetivo-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
         .objetivo-card.selected {
             border-color: var(--accent);
             background: rgba(245, 158, 11, 0.1);
             box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
         }
-
-        .objetivo-icon {
-            font-size: 2.5rem;
+        .biotipo-icon, .objetivo-icon { font-size: 3rem; margin-bottom: 15px; }
+        .biotipo-name, .objetivo-name { font-weight: 800; font-size: 1.3rem; margin-bottom: 8px; }
+        .biotipo-desc { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+        
+        /* ORÇAMENTO CARDS */
+        .orcamento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .orcamento-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .orcamento-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+        .orcamento-card.selected {
+            border-color: var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+        .orcamento-icon { font-size: 3rem; margin-bottom: 15px; }
+        .orcamento-name {
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        .orcamento-valor {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
             margin-bottom: 10px;
         }
-
-        .objetivo-name {
-            font-weight: 700;
-            font-size: 1.1rem;
+        .orcamento-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
         }
-
+        
         .submit-btn {
             width: 100%;
             padding: 20px;
@@ -247,22 +183,12 @@
             font-family: 'Bebas Neue', sans-serif;
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
         }
-
         .submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
         }
-
-        .results {
-            display: none;
-            margin-top: 40px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .results.show {
-            display: block;
-        }
-
+        .results { display: none; margin-top: 40px; animation: fadeInUp 0.8s ease-out; }
+        .results.show { display: block; }
         .result-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -271,7 +197,6 @@
             padding: 40px;
             margin-bottom: 30px;
         }
-
         .macros-card {
             background: rgba(245, 158, 11, 0.1);
             border: 2px solid var(--accent);
@@ -279,30 +204,10 @@
             border-radius: 15px;
             margin-bottom: 20px;
         }
-
-        .macros-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .macro-item {
-            text-align: center;
-        }
-
-        .macro-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-        }
-
-        .macro-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 5px;
-        }
-
+        .macros-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 15px; }
+        .macro-item { text-align: center; }
+        .macro-value { font-size: 2rem; font-weight: 800; color: var(--accent); }
+        .macro-label { font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 5px; }
         .result-header {
             display: flex;
             align-items: center;
@@ -311,24 +216,14 @@
             padding-bottom: 20px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
-
-        .result-header-icon {
-            font-size: 3rem;
-        }
-
+        .result-header-icon { font-size: 3rem; }
         .result-header-text h3 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2rem;
             letter-spacing: 2px;
             color: var(--primary);
         }
-
-        .result-header-text p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-        }
-
-        /* NOVA ESTRUTURA DE REFEIÇÕES */
+        .result-header-text p { color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; }
         .meal-container {
             background: rgba(255, 255, 255, 0.03);
             border-left: 4px solid var(--accent);
@@ -337,12 +232,10 @@
             margin-bottom: 20px;
             transition: all 0.3s;
         }
-
         .meal-container:hover {
             background: rgba(255, 255, 255, 0.08);
             transform: translateX(5px);
         }
-
         .meal-header {
             display: flex;
             justify-content: space-between;
@@ -351,7 +244,6 @@
             padding-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .meal-time {
             font-weight: 700;
             color: var(--accent);
@@ -360,13 +252,7 @@
             align-items: center;
             gap: 10px;
         }
-
-        .meal-macros-summary {
-            display: flex;
-            gap: 15px;
-            font-size: 0.85rem;
-        }
-
+        .meal-macros-summary { display: flex; gap: 15px; font-size: 0.85rem; }
         .meal-macros-summary span {
             background: rgba(16, 185, 129, 0.2);
             padding: 5px 12px;
@@ -374,12 +260,7 @@
             color: var(--primary);
             font-weight: 600;
         }
-
-        .food-items {
-            display: grid;
-            gap: 12px;
-        }
-
+        .food-items { display: grid; gap: 12px; }
         .food-item {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -389,43 +270,24 @@
             border-radius: 10px;
             align-items: center;
         }
-
-        .food-name {
-            font-weight: 600;
-            color: white;
-        }
-
-        .food-amount {
-            color: var(--primary);
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .food-macros {
-            text-align: right;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Animações */
+        .food-name { font-weight: 600; color: white; }
+        .food-amount { color: var(--primary); font-weight: 700; text-align: center; }
+        .food-macros { text-align: right; font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
+        
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .header h1 { font-size: 3rem; }
             .form-wrapper { padding: 30px; }
-            .biotipo-grid, .objetivo-grid { grid-template-columns: 1fr; }
+            .biotipo-grid, .objetivo-grid, .orcamento-grid { grid-template-columns: 1fr; }
             .macros-grid { grid-template-columns: repeat(2, 1fr); }
             .food-item { grid-template-columns: 1fr; text-align: center; }
-            .food-macros { text-align: center; }
         }
     </style>
 </head>
@@ -478,7 +340,7 @@
                     <div class="biotipo-card" data-biotipo="mesomorfo">
                         <div class="biotipo-icon">💪</div>
                         <div class="biotipo-name">Mesomorfo</div>
-                        <div class="biotipo-desc">Corpo atlético, facilidade para ganhar músculo</div>
+                        <div class="biotipo-desc">Corpo atlético, facilita ganhar músculo</div>
                     </div>
                     <div class="biotipo-card" data-biotipo="endomorfo">
                         <div class="biotipo-icon">🏋️</div>
@@ -504,6 +366,30 @@
                     </div>
                 </div>
                 <input type="hidden" id="objetivo" required>
+
+                <!-- ORÇAMENTO -->
+                <div class="section-title" style="margin-top: 40px;">💰 Seu Orçamento Mensal</div>
+                <div class="orcamento-grid">
+                    <div class="orcamento-card" data-orcamento="baixo">
+                        <div class="orcamento-icon">🪙</div>
+                        <div class="orcamento-name">Econômico</div>
+                        <div class="orcamento-valor">R$ 300-500</div>
+                        <div class="orcamento-desc">Alimentos básicos e acessíveis</div>
+                    </div>
+                    <div class="orcamento-card" data-orcamento="medio">
+                        <div class="orcamento-icon">💵</div>
+                        <div class="orcamento-name">Médio</div>
+                        <div class="orcamento-valor">R$ 500-800</div>
+                        <div class="orcamento-desc">Variedade e qualidade equilibradas</div>
+                    </div>
+                    <div class="orcamento-card" data-orcamento="alto">
+                        <div class="orcamento-icon">💎</div>
+                        <div class="orcamento-name">Premium</div>
+                        <div class="orcamento-valor">R$ 800+</div>
+                        <div class="orcamento-desc">Alimentos premium e suplementos</div>
+                    </div>
+                </div>
+                <input type="hidden" id="orcamento" required>
 
                 <button type="submit" class="submit-btn">Gerar Minha Dieta</button>
             </form>
@@ -548,606 +434,13 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/gh/samukkarvalho/vidasaudavel-dietas@main/dietas-database.js"></script>
     <script>
-        // Database com porções pesadas e macros
-        const dietDatabase = {
-            emagrecimento: {
-                ectomorfo: {
-                    calorias: 2100,
-                    proteinas: 150,
-                    carboidratos: 200,
-                    gorduras: 67,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Ovos mexidos', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
-                                { nome: 'Pão integral', quantidade: '50g (2 fatias)', proteina: 4, carbo: 24, gordura: 2 },
-                                { nome: 'Banana', quantidade: '100g (1 unidade média)', proteina: 1, carbo: 23, gordura: 0 },
-                                { nome: 'Café sem açúcar', quantidade: '200ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Iogurte grego natural', quantidade: '150g', proteina: 15, carbo: 6, gordura: 10 },
-                                { nome: 'Granola', quantidade: '30g', proteina: 3, carbo: 20, gordura: 4 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Peito de frango grelhado', quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
-                                { nome: 'Arroz integral cozido', quantidade: '100g (3 colheres)', proteina: 3, carbo: 28, gordura: 1 },
-                                { nome: 'Feijão cozido', quantidade: '80g (2 colheres)', proteina: 6, carbo: 16, gordura: 0 },
-                                { nome: 'Salada verde', quantidade: '100g à vontade', proteina: 1, carbo: 3, gordura: 0 },
-                                { nome: 'Azeite extra virgem', quantidade: '5ml (1 colher chá)', proteina: 0, carbo: 0, gordura: 5 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da tarde (16h)',
-                            alimentos: [
-                                { nome: 'Whey protein isolado', quantidade: '30g (1 scoop)', proteina: 25, carbo: 2, gordura: 1 },
-                                { nome: 'Maçã', quantidade: '130g (1 unidade média)', proteina: 0, carbo: 19, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (19h)',
-                            alimentos: [
-                                { nome: 'Salmão assado', quantidade: '150g', proteina: 31, carbo: 0, gordura: 13 },
-                                { nome: 'Brócolis no vapor', quantidade: '150g', proteina: 4, carbo: 10, gordura: 0 },
-                                { nome: 'Batata doce cozida', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
-                                { nome: 'Salada de folhas', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (21h)',
-                            alimentos: [
-                                { nome: 'Omelete de claras', quantidade: '120g (4 claras)', proteina: 14, carbo: 1, gordura: 0 },
-                                { nome: 'Chá verde', quantidade: '200ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        }
-                    ]
-                },
-                mesomorfo: {
-                    calorias: 1900,
-                    proteinas: 175,
-                    carboidratos: 158,
-                    gorduras: 67,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Omelete (3 claras + 1 gema)', quantidade: '140g', proteina: 17, carbo: 1, gordura: 5 },
-                                { nome: 'Aveia em flocos', quantidade: '40g', proteina: 5, carbo: 27, gordura: 3 },
-                                { nome: 'Frutas vermelhas', quantidade: '80g', proteina: 1, carbo: 10, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '30g', proteina: 24, carbo: 3, gordura: 1 },
-                                { nome: 'Amêndoas', quantidade: '20g (10 unidades)', proteina: 4, carbo: 4, gordura: 10 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Carne magra (patinho)', quantidade: '150g', proteina: 36, carbo: 0, gordura: 6 },
-                                { nome: 'Batata doce cozida', quantidade: '100g (2 colheres)', proteina: 1, carbo: 20, gordura: 0 },
-                                { nome: 'Brócolis refogado', quantidade: '150g', proteina: 4, carbo: 10, gordura: 2 },
-                                { nome: 'Salada mista', quantidade: '100g', proteina: 1, carbo: 4, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da tarde (16h)',
-                            alimentos: [
-                                { nome: 'Atum em água', quantidade: '100g (1 lata)', proteina: 26, carbo: 0, gordura: 1 },
-                                { nome: 'Cream cheese light', quantidade: '30g', proteina: 3, carbo: 2, gordura: 3 },
-                                { nome: 'Torradas integrais', quantidade: '20g (4 unidades)', proteina: 2, carbo: 13, gordura: 1 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (19h)',
-                            alimentos: [
-                                { nome: 'Frango grelhado', quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
-                                { nome: 'Legumes grelhados', quantidade: '200g', proteina: 3, carbo: 15, gordura: 2 },
-                                { nome: 'Salada verde', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (21h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '30g', proteina: 24, carbo: 2, gordura: 1 },
-                                { nome: 'Nozes', quantidade: '15g (5 unidades)', proteina: 3, carbo: 2, gordura: 9 }
-                            ]
-                        }
-                    ]
-                },
-                endomorfo: {
-                    calorias: 1600,
-                    proteinas: 170,
-                    carboidratos: 106,
-                    gorduras: 66,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Claras de ovo cozidas', quantidade: '150g (5 claras)', proteina: 18, carbo: 1, gordura: 0 },
-                                { nome: 'Gema de ovo', quantidade: '17g (1 unidade)', proteina: 3, carbo: 0, gordura: 5 },
-                                { nome: 'Abacate', quantidade: '40g (1/4 unidade)', proteina: 1, carbo: 3, gordura: 6 },
-                                { nome: 'Café sem açúcar', quantidade: '200ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey isolado', quantidade: '30g', proteina: 27, carbo: 1, gordura: 0 },
-                                { nome: 'Castanha do Pará', quantidade: '5g (1 unidade)', proteina: 1, carbo: 1, gordura: 3 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Proteína magra (tilápia)', quantidade: '150g', proteina: 35, carbo: 0, gordura: 2 },
-                                { nome: 'Arroz integral', quantidade: '50g (1 colher)', proteina: 1, carbo: 14, gordura: 0 },
-                                { nome: 'Salada completa', quantidade: '200g', proteina: 2, carbo: 8, gordura: 0 },
-                                { nome: 'Azeite', quantidade: '5ml', proteina: 0, carbo: 0, gordura: 5 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da tarde (16h)',
-                            alimentos: [
-                                { nome: 'Iogurte desnatado', quantidade: '170g', proteina: 14, carbo: 20, gordura: 0 },
-                                { nome: 'Chia', quantidade: '10g (1 colher)', proteina: 2, carbo: 4, gordura: 3 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (19h)',
-                            alimentos: [
-                                { nome: 'Peixe branco (merluza)', quantidade: '150g', proteina: 32, carbo: 0, gordura: 2 },
-                                { nome: 'Salada de folhas', quantidade: '150g', proteina: 2, carbo: 5, gordura: 0 },
-                                { nome: 'Legumes no vapor', quantidade: '150g', proteina: 2, carbo: 12, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (21h)',
-                            alimentos: [
-                                { nome: 'Queijo cottage', quantidade: '100g', proteina: 12, carbo: 3, gordura: 2 },
-                                { nome: 'Chá de hibisco', quantidade: '200ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        }
-                    ]
-                }
-            },
-            definicao: {
-                ectomorfo: {
-                    calorias: 2500,
-                    proteinas: 180,
-                    carboidratos: 270,
-                    gorduras: 72,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Ovos inteiros', quantidade: '150g (3 ovos)', proteina: 19, carbo: 1, gordura: 15 },
-                                { nome: 'Pão integral', quantidade: '100g (4 fatias)', proteina: 8, carbo: 48, gordura: 4 },
-                                { nome: 'Pasta de amendoim', quantidade: '20g (1 colher)', proteina: 5, carbo: 4, gordura: 9 },
-                                { nome: 'Suco de laranja natural', quantidade: '200ml', proteina: 1, carbo: 20, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '40g', proteina: 32, carbo: 4, gordura: 1 },
-                                { nome: 'Aveia', quantidade: '50g', proteina: 6, carbo: 34, gordura: 4 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Carne vermelha magra', quantidade: '150g', proteina: 36, carbo: 0, gordura: 6 },
-                                { nome: 'Arroz integral', quantidade: '150g (4 colheres)', proteina: 4, carbo: 42, gordura: 1 },
-                                { nome: 'Feijão', quantidade: '100g (2 conchas)', proteina: 8, carbo: 20, gordura: 0 },
-                                { nome: 'Batata doce', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
-                                { nome: 'Salada', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pré-treino (15h)',
-                            alimentos: [
-                                { nome: 'Batata doce', quantidade: '150g', proteina: 2, carbo: 30, gordura: 0 },
-                                { nome: 'Whey protein', quantidade: '30g', proteina: 24, carbo: 3, gordura: 1 }
-                            ]
-                        },
-                        {
-                            hora: 'Pós-treino (18h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '40g', proteina: 32, carbo: 4, gordura: 1 },
-                                { nome: 'Dextrose', quantidade: '30g', proteina: 0, carbo: 30, gordura: 0 },
-                                { nome: 'Creatina', quantidade: '5g', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (20h)',
-                            alimentos: [
-                                { nome: 'Frango grelhado', quantidade: '150g', proteina: 39, carbo: 0, gordura: 4 },
-                                { nome: 'Macarrão integral', quantidade: '80g (cozido)', proteina: 6, carbo: 32, gordura: 1 },
-                                { nome: 'Molho de tomate caseiro', quantidade: '50g', proteina: 1, carbo: 5, gordura: 1 },
-                                { nome: 'Salada', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (22h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '40g', proteina: 32, carbo: 3, gordura: 1 },
-                                { nome: 'Pasta de amendoim', quantidade: '15g', proteina: 4, carbo: 3, gordura: 7 }
-                            ]
-                        }
-                    ]
-                },
-                mesomorfo: {
-                    calorias: 2300,
-                    proteinas: 210,
-                    carboidratos: 220,
-                    gorduras: 67,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Omelete (3 ovos)', quantidade: '150g', proteina: 19, carbo: 1, gordura: 15 },
-                                { nome: 'Aveia', quantidade: '50g', proteina: 6, carbo: 34, gordura: 4 },
-                                { nome: 'Morango', quantidade: '100g', proteina: 1, carbo: 8, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '40g', proteina: 32, carbo: 4, gordura: 1 },
-                                { nome: 'Mix de oleaginosas', quantidade: '25g', proteina: 5, carbo: 5, gordura: 12 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Proteína (frango/carne)', quantidade: '150g', proteina: 36, carbo: 0, gordura: 6 },
-                                { nome: 'Arroz branco', quantidade: '100g (3 colheres)', proteina: 3, carbo: 28, gordura: 0 },
-                                { nome: 'Feijão', quantidade: '80g', proteina: 6, carbo: 16, gordura: 0 },
-                                { nome: 'Legumes variados', quantidade: '150g', proteina: 2, carbo: 12, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pré-treino (15h)',
-                            alimentos: [
-                                { nome: 'Batata doce', quantidade: '120g', proteina: 1, carbo: 24, gordura: 0 },
-                                { nome: 'Peito de frango', quantidade: '100g', proteina: 26, carbo: 0, gordura: 2 }
-                            ]
-                        },
-                        {
-                            hora: 'Pós-treino (18h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '40g', proteina: 32, carbo: 4, gordura: 1 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 },
-                                { nome: 'Aveia', quantidade: '30g', proteina: 4, carbo: 20, gordura: 2 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (20h)',
-                            alimentos: [
-                                { nome: 'Peixe (salmão/tilápia)', quantidade: '150g', proteina: 33, carbo: 0, gordura: 8 },
-                                { nome: 'Arroz integral', quantidade: '100g', proteina: 3, carbo: 28, gordura: 1 },
-                                { nome: 'Vegetais', quantidade: '150g', proteina: 2, carbo: 10, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (22h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '35g', proteina: 28, carbo: 2, gordura: 1 },
-                                { nome: 'Omelete de claras', quantidade: '100g (3 claras)', proteina: 11, carbo: 1, gordura: 0 }
-                            ]
-                        }
-                    ]
-                },
-                endomorfo: {
-                    calorias: 2000,
-                    proteinas: 210,
-                    carboidratos: 158,
-                    gorduras: 70,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Claras de ovo', quantidade: '150g (5 claras)', proteina: 18, carbo: 1, gordura: 0 },
-                                { nome: 'Gema', quantidade: '17g (1 unidade)', proteina: 3, carbo: 0, gordura: 5 },
-                                { nome: 'Abacate', quantidade: '50g', proteina: 1, carbo: 4, gordura: 7 },
-                                { nome: 'Café', quantidade: '200ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey isolado', quantidade: '35g', proteina: 30, carbo: 1, gordura: 0 },
-                                { nome: 'Amêndoas', quantidade: '20g', proteina: 4, carbo: 4, gordura: 10 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Proteína magra', quantidade: '150g', proteina: 36, carbo: 0, gordura: 4 },
-                                { nome: 'Arroz integral', quantidade: '80g (2 colheres)', proteina: 2, carbo: 22, gordura: 1 },
-                                { nome: 'Salada grande', quantidade: '200g', proteina: 2, carbo: 8, gordura: 0 },
-                                { nome: 'Azeite', quantidade: '10ml', proteina: 0, carbo: 0, gordura: 10 }
-                            ]
-                        },
-                        {
-                            hora: 'Pré-treino (15h)',
-                            alimentos: [
-                                { nome: 'Batata doce', quantidade: '80g', proteina: 1, carbo: 16, gordura: 0 },
-                                { nome: 'Frango', quantidade: '100g', proteina: 26, carbo: 0, gordura: 2 }
-                            ]
-                        },
-                        {
-                            hora: 'Pós-treino (18h)',
-                            alimentos: [
-                                { nome: 'Whey isolado', quantidade: '40g', proteina: 34, carbo: 1, gordura: 0 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (20h)',
-                            alimentos: [
-                                { nome: 'Peixe branco', quantidade: '150g', proteina: 32, carbo: 0, gordura: 2 },
-                                { nome: 'Arroz integral', quantidade: '80g (2 colheres)', proteina: 2, carbo: 22, gordura: 1 },
-                                { nome: 'Salada', quantidade: '150g', proteina: 2, carbo: 5, gordura: 0 },
-                                { nome: 'Legumes', quantidade: '100g', proteina: 1, carbo: 8, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (22h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '35g', proteina: 28, carbo: 2, gordura: 1 },
-                                { nome: 'Castanhas', quantidade: '15g', proteina: 3, carbo: 3, gordura: 9 }
-                            ]
-                        }
-                    ]
-                }
-            },
-            hipertrofia: {
-                ectomorfo: {
-                    calorias: 3100,
-                    proteinas: 188,
-                    carboidratos: 440,
-                    gorduras: 71,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Ovos inteiros', quantidade: '200g (4 ovos)', proteina: 25, carbo: 2, gordura: 20 },
-                                { nome: 'Pão integral', quantidade: '150g (6 fatias)', proteina: 12, carbo: 72, gordura: 6 },
-                                { nome: 'Pasta de amendoim', quantidade: '30g', proteina: 8, carbo: 6, gordura: 14 },
-                                { nome: 'Suco natural', quantidade: '300ml', proteina: 2, carbo: 30, gordura: 0 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '50g', proteina: 40, carbo: 5, gordura: 2 },
-                                { nome: 'Aveia', quantidade: '60g', proteina: 7, carbo: 41, gordura: 5 },
-                                { nome: 'Mel', quantidade: '20g (1 colher)', proteina: 0, carbo: 17, gordura: 0 },
-                                { nome: 'Frutas vermelhas', quantidade: '100g', proteina: 1, carbo: 12, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Carne vermelha', quantidade: '200g', proteina: 48, carbo: 0, gordura: 8 },
-                                { nome: 'Arroz branco', quantidade: '200g (5 colheres)', proteina: 6, carbo: 56, gordura: 0 },
-                                { nome: 'Feijão', quantidade: '150g (3 conchas)', proteina: 12, carbo: 30, gordura: 0 },
-                                { nome: 'Batata', quantidade: '100g', proteina: 2, carbo: 17, gordura: 0 },
-                                { nome: 'Salada', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 },
-                                { nome: 'Suco', quantidade: '300ml', proteina: 2, carbo: 30, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pré-treino (15h)',
-                            alimentos: [
-                                { nome: 'Batata doce', quantidade: '200g', proteina: 2, carbo: 40, gordura: 0 },
-                                { nome: 'Frango', quantidade: '150g', proteina: 39, carbo: 0, gordura: 4 },
-                                { nome: 'Suco', quantidade: '200ml', proteina: 1, carbo: 20, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Intra-treino',
-                            alimentos: [
-                                { nome: 'Maltodextrina', quantidade: '40g', proteina: 0, carbo: 40, gordura: 0 },
-                                { nome: 'BCAA', quantidade: '10g', proteina: 10, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pós-treino (18h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '50g', proteina: 40, carbo: 5, gordura: 2 },
-                                { nome: 'Dextrose', quantidade: '40g', proteina: 0, carbo: 40, gordura: 0 },
-                                { nome: 'Creatina', quantidade: '5g', proteina: 0, carbo: 0, gordura: 0 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (20h)',
-                            alimentos: [
-                                { nome: 'Proteína (frango/peixe)', quantidade: '200g', proteina: 52, carbo: 0, gordura: 5 },
-                                { nome: 'Macarrão integral', quantidade: '120g', proteina: 9, carbo: 48, gordura: 2 },
-                                { nome: 'Molho caseiro', quantidade: '100g', proteina: 2, carbo: 10, gordura: 2 },
-                                { nome: 'Salada', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (22h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '50g', proteina: 40, carbo: 4, gordura: 1 },
-                                { nome: 'Aveia', quantidade: '40g', proteina: 5, carbo: 27, gordura: 3 },
-                                { nome: 'Pasta de amendoim', quantidade: '20g', proteina: 5, carbo: 4, gordura: 9 },
-                                { nome: 'Leite desnatado', quantidade: '200ml', proteina: 7, carbo: 10, gordura: 0 }
-                            ]
-                        }
-                    ]
-                },
-                mesomorfo: {
-                    calorias: 2900,
-                    proteinas: 225,
-                    carboidratos: 375,
-                    gorduras: 67,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Ovos', quantidade: '200g (4 ovos)', proteina: 25, carbo: 2, gordura: 20 },
-                                { nome: 'Aveia', quantidade: '60g', proteina: 7, carbo: 41, gordura: 5 },
-                                { nome: 'Frutas', quantidade: '150g', proteina: 1, carbo: 18, gordura: 0 },
-                                { nome: 'Pão integral', quantidade: '50g', proteina: 4, carbo: 24, gordura: 2 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '45g', proteina: 36, carbo: 5, gordura: 1 },
-                                { nome: 'Aveia', quantidade: '50g', proteina: 6, carbo: 34, gordura: 4 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 },
-                                { nome: 'Mel', quantidade: '15g', proteina: 0, carbo: 13, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Proteína', quantidade: '180g', proteina: 43, carbo: 0, gordura: 7 },
-                                { nome: 'Arroz integral', quantidade: '150g (4 colheres)', proteina: 4, carbo: 42, gordura: 1 },
-                                { nome: 'Feijão', quantidade: '100g', proteina: 8, carbo: 20, gordura: 0 },
-                                { nome: 'Batata doce', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
-                                { nome: 'Salada', quantidade: '100g', proteina: 1, carbo: 3, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pré-treino (15h)',
-                            alimentos: [
-                                { nome: 'Batata doce', quantidade: '150g', proteina: 2, carbo: 30, gordura: 0 },
-                                { nome: 'Frango', quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
-                                { nome: 'Café', quantidade: '200ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Intra-treino',
-                            alimentos: [
-                                { nome: 'Maltodextrina', quantidade: '30g', proteina: 0, carbo: 30, gordura: 0 },
-                                { nome: 'BCAA', quantidade: '8g', proteina: 8, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pós-treino (18h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '45g', proteina: 36, carbo: 5, gordura: 1 },
-                                { nome: 'Dextrose', quantidade: '35g', proteina: 0, carbo: 35, gordura: 0 },
-                                { nome: 'Creatina', quantidade: '5g', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (20h)',
-                            alimentos: [
-                                { nome: 'Carne/Peixe', quantidade: '180g', proteina: 43, carbo: 0, gordura: 7 },
-                                { nome: 'Arroz integral', quantidade: '100g', proteina: 3, carbo: 28, gordura: 1 },
-                                { nome: 'Legumes', quantidade: '150g', proteina: 2, carbo: 12, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (22h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '45g', proteina: 36, carbo: 3, gordura: 1 },
-                                { nome: 'Granola', quantidade: '40g', proteina: 4, carbo: 27, gordura: 5 },
-                                { nome: 'Pasta de amendoim', quantidade: '15g', proteina: 4, carbo: 3, gordura: 7 }
-                            ]
-                        }
-                    ]
-                },
-                endomorfo: {
-                    calorias: 2500,
-                    proteinas: 228,
-                    carboidratos: 260,
-                    gorduras: 72,
-                    refeicoes: [
-                        {
-                            hora: 'Café da manhã (7h)',
-                            alimentos: [
-                                { nome: 'Ovos', quantidade: '200g (4 ovos)', proteina: 25, carbo: 2, gordura: 20 },
-                                { nome: 'Pão integral', quantidade: '100g (4 fatias)', proteina: 8, carbo: 48, gordura: 4 },
-                                { nome: 'Abacate', quantidade: '50g', proteina: 1, carbo: 4, gordura: 7 }
-                            ]
-                        },
-                        {
-                            hora: 'Lanche da manhã (10h)',
-                            alimentos: [
-                                { nome: 'Whey protein', quantidade: '40g', proteina: 32, carbo: 4, gordura: 1 },
-                                { nome: 'Aveia', quantidade: '50g', proteina: 6, carbo: 34, gordura: 4 },
-                                { nome: 'Frutas vermelhas', quantidade: '80g', proteina: 1, carbo: 10, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Almoço (13h)',
-                            alimentos: [
-                                { nome: 'Proteína magra', quantidade: '180g', proteina: 43, carbo: 0, gordura: 7 },
-                                { nome: 'Arroz integral', quantidade: '100g (3 colheres)', proteina: 3, carbo: 28, gordura: 1 },
-                                { nome: 'Feijão', quantidade: '80g', proteina: 6, carbo: 16, gordura: 0 },
-                                { nome: 'Legumes', quantidade: '150g', proteina: 2, carbo: 12, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pré-treino (15h)',
-                            alimentos: [
-                                { nome: 'Batata doce', quantidade: '120g', proteina: 1, carbo: 24, gordura: 0 },
-                                { nome: 'Frango', quantidade: '100g', proteina: 26, carbo: 0, gordura: 2 }
-                            ]
-                        },
-                        {
-                            hora: 'Intra-treino',
-                            alimentos: [
-                                { nome: 'BCAA', quantidade: '10g', proteina: 10, carbo: 0, gordura: 0 },
-                                { nome: 'Eletrólitos', quantidade: '500ml', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Pós-treino (18h)',
-                            alimentos: [
-                                { nome: 'Whey isolado', quantidade: '45g', proteina: 38, carbo: 1, gordura: 0 },
-                                { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 },
-                                { nome: 'Creatina', quantidade: '5g', proteina: 0, carbo: 0, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Jantar (20h)',
-                            alimentos: [
-                                { nome: 'Peixe', quantidade: '150g', proteina: 33, carbo: 0, gordura: 4 },
-                                { nome: 'Arroz integral', quantidade: '80g (2 colheres)', proteina: 2, carbo: 22, gordura: 1 },
-                                { nome: 'Salada', quantidade: '150g', proteina: 2, carbo: 5, gordura: 0 },
-                                { nome: 'Legumes', quantidade: '100g', proteina: 1, carbo: 8, gordura: 0 }
-                            ]
-                        },
-                        {
-                            hora: 'Ceia (22h)',
-                            alimentos: [
-                                { nome: 'Caseína', quantidade: '40g', proteina: 32, carbo: 3, gordura: 1 },
-                                { nome: 'Oleaginosas', quantidade: '20g', proteina: 4, carbo: 4, gordura: 12 }
-                            ]
-                        }
-                    ]
-                }
-            }
-        };
-
-        // Seletores
         let selectedBiotipo = '';
         let selectedObjetivo = '';
+        let selectedOrcamento = '';
 
-        // Biotipo selection
+        // Biotipo
         document.querySelectorAll('.biotipo-card').forEach(card => {
             card.addEventListener('click', function() {
                 document.querySelectorAll('.biotipo-card').forEach(c => c.classList.remove('selected'));
@@ -1157,13 +450,23 @@
             });
         });
 
-        // Objetivo selection
+        // Objetivo
         document.querySelectorAll('.objetivo-card').forEach(card => {
             card.addEventListener('click', function() {
                 document.querySelectorAll('.objetivo-card').forEach(c => c.classList.remove('selected'));
                 this.classList.add('selected');
                 selectedObjetivo = this.dataset.objetivo;
                 document.getElementById('objetivo').value = selectedObjetivo;
+            });
+        });
+
+        // Orçamento
+        document.querySelectorAll('.orcamento-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.orcamento-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedOrcamento = this.dataset.orcamento;
+                document.getElementById('orcamento').value = selectedOrcamento;
             });
         });
 
@@ -1174,38 +477,141 @@
             const nome = document.getElementById('nome').value;
             const biotipo = document.getElementById('biotipo').value;
             const objetivo = document.getElementById('objetivo').value;
+            const orcamento = document.getElementById('orcamento').value;
 
-            if (!biotipo || !objetivo) {
-                alert('Por favor, selecione seu biotipo e objetivo!');
+            if (!biotipo || !objetivo || !orcamento) {
+                alert('Por favor, selecione seu biotipo, objetivo e orçamento!');
                 return;
             }
 
-            generateDietPlan(nome, biotipo, objetivo);
+            generateDietPlan(nome, biotipo, objetivo, orcamento);
         });
 
-        function generateDietPlan(nome, biotipo, objetivo) {
-            const diet = dietDatabase[objetivo][biotipo];
-
-            const objetivoNome = {
-                'emagrecimento': 'Emagrecimento',
-                'definicao': 'Definição Muscular',
-                'hipertrofia': 'Ganho de Massa Muscular'
+        function generateDietPlan(nome, biotipo, objetivo, orcamento) {
+            // Base das dietas - simplificado para caber no arquivo
+            const dietasBase = {
+                emagrecimento: { calorias: 1800, proteinas: 150, carboidratos: 160, gorduras: 60 },
+                definicao: { calorias: 2200, proteinas: 180, carboidratos: 220, gorduras: 65 },
+                hipertrofia: { calorias: 2800, proteinas: 200, carboidratos: 350, gorduras: 70 }
             };
 
-            document.getElementById('dietaDescricao').textContent = 
-                `Plano ${objetivoNome[objetivo]} para ${biotipo} - ${nome}`;
+            const diet = dietasBase[objetivo];
+            
+            // Ajustar alimentos baseado no orçamento
+            const alimentos = gerarAlimentosPorOrcamento(objetivo, orcamento);
 
-            // Mostrar macros
+            document.getElementById('dietaDescricao').textContent = 
+                `Plano ${objetivo} para ${biotipo} - ${nome} (Orçamento ${orcamento})`;
+
             document.getElementById('calorias').textContent = diet.calorias;
             document.getElementById('proteinas').textContent = diet.proteinas;
             document.getElementById('carboidratos').textContent = diet.carboidratos;
             document.getElementById('gorduras').textContent = diet.gorduras;
 
-            // Renderizar dieta com porções pesadas
+            renderDieta(alimentos);
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function gerarAlimentosPorOrcamento(objetivo, orcamento) {
+            // Dieta simplificada que muda baseado no orçamento
+            const dietas = {
+                baixo: [
+                    {
+                        hora: 'Café da manhã (7h)',
+                        alimentos: [
+                            { nome: 'Ovos cozidos', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
+                            { nome: 'Pão francês', quantidade: '50g', proteina: 4, carbo: 26, gordura: 1 },
+                            { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Almoço (13h)',
+                        alimentos: [
+                            { nome: 'Frango cozido', quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
+                            { nome: 'Arroz branco', quantidade: '100g', proteina: 3, carbo: 28, gordura: 0 },
+                            { nome: 'Feijão', quantidade: '80g', proteina: 6, carbo: 16, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Jantar (19h)',
+                        alimentos: [
+                            { nome: 'Ovo mexido', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
+                            { nome: 'Batata cozida', quantidade: '150g', proteina: 3, carbo: 26, gordura: 0 }
+                        ]
+                    }
+                ],
+                medio: [
+                    {
+                        hora: 'Café da manhã (7h)',
+                        alimentos: [
+                            { nome: 'Ovos mexidos', quantidade: '150g (3 ovos)', proteina: 19, carbo: 1, gordura: 15 },
+                            { nome: 'Pão integral', quantidade: '50g', proteina: 4, carbo: 24, gordura: 2 },
+                            { nome: 'Whey protein', quantidade: '30g', proteina: 24, carbo: 3, gordura: 1 }
+                        ]
+                    },
+                    {
+                        hora: 'Almoço (13h)',
+                        alimentos: [
+                            { nome: 'Peito de frango', quantidade: '150g', proteina: 39, carbo: 0, gordura: 4 },
+                            { nome: 'Arroz integral', quantidade: '100g', proteina: 3, carbo: 28, gordura: 1 },
+                            { nome: 'Batata doce', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
+                            { nome: 'Brócolis', quantidade: '100g', proteina: 3, carbo: 7, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Jantar (19h)',
+                        alimentos: [
+                            { nome: 'Tilápia grelhada', quantidade: '150g', proteina: 35, carbo: 0, gordura: 2 },
+                            { nome: 'Legumes', quantidade: '200g', proteina: 3, carbo: 15, gordura: 0 }
+                        ]
+                    }
+                ],
+                alto: [
+                    {
+                        hora: 'Café da manhã (7h)',
+                        alimentos: [
+                            { nome: 'Ovos orgânicos', quantidade: '200g (4 ovos)', proteina: 25, carbo: 2, gordura: 20 },
+                            { nome: 'Pão artesanal integral', quantidade: '100g', proteina: 8, carbo: 48, gordura: 4 },
+                            { nome: 'Whey isolado', quantidade: '40g', proteina: 34, carbo: 1, gordura: 0 },
+                            { nome: 'Frutas orgânicas', quantidade: '150g', proteina: 1, carbo: 18, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Almoço (13h)',
+                        alimentos: [
+                            { nome: 'Salmão selvagem', quantidade: '200g', proteina: 42, carbo: 0, gordura: 13 },
+                            { nome: 'Quinoa', quantidade: '100g', proteina: 4, carbo: 21, gordura: 2 },
+                            { nome: 'Aspargos', quantidade: '150g', proteina: 3, carbo: 6, gordura: 0 },
+                            { nome: 'Batata doce roxa', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Jantar (19h)',
+                        alimentos: [
+                            { nome: 'Filé mignon', quantidade: '180g', proteina: 45, carbo: 0, gordura: 9 },
+                            { nome: 'Risoto de funghi', quantidade: '100g', proteina: 3, carbo: 25, gordura: 3 },
+                            { nome: 'Mix de vegetais', quantidade: '150g', proteina: 2, carbo: 10, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Ceia (22h)',
+                        alimentos: [
+                            { nome: 'Caseína micelar', quantidade: '40g', proteina: 32, carbo: 3, gordura: 1 },
+                            { nome: 'Amêndoas premium', quantidade: '30g', proteina: 6, carbo: 6, gordura: 15 }
+                        ]
+                    }
+                ]
+            };
+
+            return dietas[orcamento];
+        }
+
+        function renderDieta(refeicoes) {
             const dietaList = document.getElementById('dietaList');
             dietaList.innerHTML = '';
             
-            diet.refeicoes.forEach(refeicao => {
+            refeicoes.forEach(refeicao => {
                 const totalP = refeicao.alimentos.reduce((sum, a) => sum + a.proteina, 0);
                 const totalC = refeicao.alimentos.reduce((sum, a) => sum + a.carbo, 0);
                 const totalG = refeicao.alimentos.reduce((sum, a) => sum + a.gordura, 0);
@@ -1233,10 +639,6 @@
                 `;
                 dietaList.appendChild(div);
             });
-
-            // Mostrar resultados
-            document.getElementById('results').classList.add('show');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
