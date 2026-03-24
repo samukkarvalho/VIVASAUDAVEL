@@ -283,32 +283,80 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .container { padding: 0; }
-            .header h1 { font-size: 2.5rem; }
-            .header p { font-size: 0.9rem; }
-            .form-wrapper { padding: 25px; border-radius: 20px; }
-            .section-title { font-size: 1.8rem; }
+            body { padding: 5px; }
+            .container { padding: 0; max-width: 100%; }
+            .header h1 { font-size: 2rem; margin-bottom: 5px; }
+            .header p { font-size: 0.85rem; }
+            .form-wrapper { 
+                padding: 15px; 
+                border-radius: 15px;
+                margin-bottom: 20px;
+            }
+            .section-title { 
+                font-size: 1.4rem; 
+                margin-bottom: 15px;
+            }
             .biotipo-grid, .objetivo-grid, .orcamento-grid { 
                 grid-template-columns: 1fr; 
-                gap: 15px;
+                gap: 10px;
             }
-            .biotipo-card, .objetivo-card, .orcamento-card { padding: 20px; }
-            .macros-grid { grid-template-columns: 1fr; gap: 15px; }
+            .biotipo-card, .objetivo-card, .orcamento-card { 
+                padding: 15px;
+                border-radius: 15px;
+            }
+            .biotipo-card .card-icon,
+            .objetivo-card .card-icon,
+            .orcamento-card .card-icon { 
+                font-size: 2rem; 
+                margin-bottom: 8px;
+            }
+            .biotipo-card .card-name,
+            .objetivo-card .card-name,
+            .orcamento-card .card-name { 
+                font-size: 0.95rem;
+            }
+            .biotipo-card p,
+            .objetivo-card p,
+            .orcamento-card p { 
+                font-size: 0.75rem;
+                margin-top: 3px;
+            }
+            .macros-grid { grid-template-columns: 1fr; gap: 10px; }
             .food-item { 
                 grid-template-columns: 1fr; 
                 text-align: center;
-                padding: 15px;
+                padding: 12px;
             }
-            input, select { padding: 14px 16px; font-size: 0.95rem; }
-            .submit-btn { padding: 16px; font-size: 1rem; }
-            .meal-section { padding: 20px; }
+            input, select { 
+                padding: 10px 12px; 
+                font-size: 0.9rem;
+                border-radius: 10px;
+            }
+            label { font-size: 0.8rem; }
+            .submit-btn { 
+                padding: 14px; 
+                font-size: 0.95rem;
+                border-radius: 15px;
+            }
+            .meal-section { 
+                padding: 15px;
+                border-radius: 15px;
+            }
+            /* Botão voltar compacto */
+            a[href="index.html"] { 
+                padding: 8px 16px !important;
+                font-size: 0.85rem !important;
+                margin-bottom: 15px !important;
+                border: none !important;
+            }
+            a[href="index.html"] span { font-size: 1.1rem !important; }
         }
         @media (max-width: 480px) {
-            .header h1 { font-size: 2rem; }
-            .form-wrapper { padding: 20px; }
-            .section-title { font-size: 1.5rem; }
-            input[type="number"] { font-size: 16px; }
+            .header h1 { font-size: 1.7rem; }
+            .form-wrapper { padding: 12px; }
+            .section-title { font-size: 1.2rem; }
+            input[type="number"], input[type="text"] { font-size: 16px; }
+            .biotipo-card, .objetivo-card, .orcamento-card { padding: 12px; }
         }
     </style>
 </head>

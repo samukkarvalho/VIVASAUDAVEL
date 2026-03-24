@@ -393,24 +393,44 @@
         }
 
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .container { padding: 0; }
-            .header h1 { font-size: 2.5rem; }
-            .header p { font-size: 0.9rem; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .card { padding: 20px; border-radius: 20px; }
-            .card-title { font-size: 1.1rem; }
-            .stat-number { font-size: 2rem; }
-            .photo-container { width: 120px; height: 120px; }
+            body { padding: 5px; }
+            .container { padding: 0; max-width: 100%; }
+            .header h1 { font-size: 2rem; margin-bottom: 5px; }
+            .header p { font-size: 0.85rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+            .card { 
+                padding: 15px; 
+                border-radius: 15px; 
+            }
+            .card-title { font-size: 1rem; }
+            .stat-number { font-size: 1.8rem; }
+            .photo-container { width: 100px; height: 100px; }
             .timeline-data { grid-template-columns: 1fr; }
-            input, select { padding: 12px; font-size: 0.95rem; }
-            .btn { padding: 12px 24px; font-size: 0.9rem; }
+            input, select { 
+                padding: 10px 12px; 
+                font-size: 0.9rem;
+                border-radius: 10px;
+            }
+            label { font-size: 0.8rem; }
+            .btn { 
+                padding: 10px 20px; 
+                font-size: 0.85rem;
+                border-radius: 10px;
+            }
+            /* Botão voltar */
+            a[href="index.html"] { 
+                padding: 8px 16px !important;
+                font-size: 0.85rem !important;
+                margin-bottom: 15px !important;
+                border: none !important;
+            }
+            a[href="index.html"] span { font-size: 1.1rem !important; }
         }
         
         @media (max-width: 480px) {
-            .header h1 { font-size: 2rem; }
-            .card { padding: 15px; }
-            input[type="number"] { font-size: 16px; }
+            .header h1 { font-size: 1.7rem; }
+            .card { padding: 12px; }
+            input[type="number"], input[type="text"] { font-size: 16px; }
         }
 
         /* Canvas for charts */
