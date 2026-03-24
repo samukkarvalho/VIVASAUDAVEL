@@ -378,87 +378,97 @@
             document.getElementById('modalTip').textContent = exercise.tip;
             document.getElementById('modalWarning').textContent = exercise.warning;
             
-            // Biblioteca COMPLETA de GIFs - TODOS os 58 exercícios
+            // Biblioteca de vídeos do YouTube - Demonstrações profissionais
             const mediaLibrary = {
-                // ==================== PEITO (10) ====================
-                'Supino Reto': 'https://media.giphy.com/media/3o7TKqnN349PBUtGFO/giphy.gif',
-                'Supino Inclinado': 'https://media.giphy.com/media/l0HlQ96E8zi8SPjdC/giphy.gif',
-                'Supino Declinado': 'https://media.giphy.com/media/3oKIPgpn8O9Q1kuMnu/giphy.gif',
-                'Crucifixo Reto': 'https://media.giphy.com/media/xT8qBpPTFsLrkrZahO/giphy.gif',
-                'Crucifixo Inclinado': 'https://media.giphy.com/media/l0HlDHQEiIdY3kxlm/giphy.gif',
-                'Flexão de Braço': 'https://media.giphy.com/media/3o6Zt7g9nH1nFGgBiU/giphy.gif',
-                'Paralelas': 'https://media.giphy.com/media/l0MYsNd90CzcAX6xi/giphy.gif',
-                'Peck Deck': 'https://media.giphy.com/media/xT8qBeEqnpdMbIbtVK/giphy.gif',
-                'Cross Over': 'https://media.giphy.com/media/3oKIPa2TdahY8LAAxy/giphy.gif',
-                'Pullover': 'https://media.giphy.com/media/l0HlMPcbD4jdARjRC/giphy.gif',
+                // Vídeos de demonstração profissional estilo AnimatedMuscles
+                // Links serão adicionados após busca no YouTube
                 
-                // ==================== COSTAS (10) ====================
-                'Barra Fixa': 'https://media.giphy.com/media/xT77XTpyEzJ4OJO06c/giphy.gif',
-                'Puxada Frontal': 'https://media.giphy.com/media/3oKIPcIzUFUincRdYY/giphy.gif',
-                'Puxada Triangulo': 'https://media.giphy.com/media/l0HlQXlQ3nHyLMvte/giphy.gif',
-                'Remada Curvada': 'https://media.giphy.com/media/3oKIPd8VgjCB7aNSGQ/giphy.gif',
-                'Remada Cavalinho': 'https://media.giphy.com/media/xT8qBgvOUl9mj0yokE/giphy.gif',
-                'Remada Unilateral': 'https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif',
-                'Remada Baixa': 'https://media.giphy.com/media/3oKIPnbKgN3bXeVpvy/giphy.gif',
-                'Levantamento Terra': 'https://media.giphy.com/media/3o7TKqnN349PBUtGFO/giphy.gif',
-                'Encolhimento': 'https://media.giphy.com/media/xT8qBeAWSkNE3gRFpS/giphy.gif',
-                'Pulldown': 'https://media.giphy.com/media/l0HlMURBu2YYcIlVK/giphy.gif',
+                // PEITO
+                'Supino Reto': 'https://www.youtube.com/embed/rT7DgCr-3pg',
+                'Supino Inclinado': '',
+                'Supino Declinado': '',
+                'Crucifixo Reto': '',
+                'Crucifixo Inclinado': '',
+                'Flexão de Braço': 'https://www.youtube.com/embed/IODxDxX7oi4',
+                'Paralelas': '',
+                'Peck Deck': '',
+                'Cross Over': '',
+                'Pullover': '',
                 
-                // ==================== OMBROS (8) ====================
-                'Desenvolvimento Barra': 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-                'Desenvolvimento Halteres': 'https://media.giphy.com/media/3oKIPgqijYQ2QDTO9O/giphy.gif',
-                'Elevação Lateral': 'https://media.giphy.com/media/xT8qBb8KqdBN3J26oU/giphy.gif',
-                'Elevação Frontal': 'https://media.giphy.com/media/l0HlvtIPiEL7kNHoY/giphy.gif',
-                'Elevação Posterior': 'https://media.giphy.com/media/xT8qBePvPX1bHuSR8I/giphy.gif',
-                'Remada Alta': 'https://media.giphy.com/media/3oKIPbNb1vWdftiVLq/giphy.gif',
-                'Arnold Press': 'https://media.giphy.com/media/l0HlHFRbmaZtBRhXG/giphy.gif',
-                'Crucifixo Inverso': 'https://media.giphy.com/media/3oKIPq2LPFHN8pPvKE/giphy.gif',
+                // COSTAS
+                'Barra Fixa': 'https://www.youtube.com/embed/eGo4IYlbE5g',
+                'Puxada Frontal': '',
+                'Puxada Triangulo': '',
+                'Remada Curvada': '',
+                'Remada Cavalinho': '',
+                'Remada Unilateral': '',
+                'Remada Baixa': '',
+                'Levantamento Terra': 'https://www.youtube.com/embed/op9kVnSso6Q',
+                'Encolhimento': '',
+                'Pulldown': '',
                 
-                // ==================== BRAÇOS (10) ====================
-                'Rosca Direta Barra': 'https://media.giphy.com/media/xT77XWum9yH7zNkFW0/giphy.gif',
-                'Rosca Alternada': 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif',
-                'Rosca Martelo': 'https://media.giphy.com/media/l0HlvJdqAK9Vk9yXm/giphy.gif',
-                'Rosca Scott': 'https://media.giphy.com/media/xT8qBfv2BCz9CuKN8I/giphy.gif',
-                'Rosca Concentrada': 'https://media.giphy.com/media/l0HlQoJRuWbwvIuqI/giphy.gif',
-                'Tríceps Testa': 'https://media.giphy.com/media/3oKIPdPOUKv3J5kpjO/giphy.gif',
-                'Tríceps Corda': 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-                'Tríceps Francês': 'https://media.giphy.com/media/xT8qBe3K4PEqR00OeA/giphy.gif',
-                'Mergulho Banco': 'https://media.giphy.com/media/3oKIPbTJXCqZp8vQFq/giphy.gif',
-                'Tríceps Coice': 'https://media.giphy.com/media/l0HlOF1sBVOkK7XxK/giphy.gif',
+                // OMBROS
+                'Desenvolvimento Barra': '',
+                'Desenvolvimento Halteres': '',
+                'Elevação Lateral': '',
+                'Elevação Frontal': '',
+                'Elevação Posterior': '',
+                'Remada Alta': '',
+                'Arnold Press': '',
+                'Crucifixo Inverso': '',
                 
-                // ==================== PERNAS (12) ====================
-                'Agachamento Livre': 'https://media.giphy.com/media/l0HlPwMAzh13pcZ20/giphy.gif',
-                'Agachamento Hack': 'https://media.giphy.com/media/3oKIPnbN0AW3MH0rPq/giphy.gif',
-                'Leg Press 45°': 'https://media.giphy.com/media/xT8qBsOjMOcdeGJIU8/giphy.gif',
-                'Cadeira Extensora': 'https://media.giphy.com/media/3oKIPnSQqvJb5lR3fW/giphy.gif',
-                'Mesa Flexora': 'https://media.giphy.com/media/l0HlvPLlYcH8WnMKQ/giphy.gif',
-                'Stiff': 'https://media.giphy.com/media/xT8qBfPGFMRKdZxIiI/giphy.gif',
-                'Afundo': 'https://media.giphy.com/media/3oKIPbCNuQkY7ZLRHq/giphy.gif',
-                'Búlgaro': 'https://media.giphy.com/media/l0HlNOJbYRFL3L5uM/giphy.gif',
-                'Panturrilha em Pé': 'https://media.giphy.com/media/xT8qBePcnMVUnXWWBi/giphy.gif',
-                'Panturrilha Sentado': 'https://media.giphy.com/media/3oKIPfPKqOu8CmO0fu/giphy.gif',
-                'Cadeira Adutora': 'https://media.giphy.com/media/l0HlOqiFyvW6D99bW/giphy.gif',
-                'Cadeira Abdutora': 'https://media.giphy.com/media/xT8qBvAJfB07LVOp8c/giphy.gif',
+                // BRAÇOS
+                'Rosca Direta Barra': '',
+                'Rosca Alternada': '',
+                'Rosca Martelo': '',
+                'Rosca Scott': '',
+                'Rosca Concentrada': '',
+                'Tríceps Testa': '',
+                'Tríceps Corda': '',
+                'Tríceps Francês': '',
+                'Mergulho Banco': '',
+                'Tríceps Coice': '',
                 
-                // ==================== ABDÔMEN (8) ====================
-                'Abdominal Supra': 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-                'Abdominal Infra': 'https://media.giphy.com/media/3oKIPyKMyJ3KqXeqVW/giphy.gif',
-                'Prancha': 'https://media.giphy.com/media/xT8qBeLXnF75zYvABO/giphy.gif',
-                'Prancha Lateral': 'https://media.giphy.com/media/l0HlvR1y3JCqEe1yg/giphy.gif',
-                'Abdominal Bicicleta': 'https://media.giphy.com/media/3oKIPnYYJGKb7CQBSM/giphy.gif',
-                'Elevação de Pernas Barra': 'https://media.giphy.com/media/xT8qBb2dZvUxNX1sdy/giphy.gif',
-                'Abdominal Canivete': 'https://media.giphy.com/media/l0HlQZ9vWYPdWq2OY/giphy.gif',
-                'Roda Abdominal': 'https://media.giphy.com/media/3oKIPbOXXCRqm8vDAA/giphy.gif'
+                // PERNAS
+                'Agachamento Livre': 'https://www.youtube.com/embed/ultWZbUMPL8',
+                'Agachamento Hack': '',
+                'Leg Press 45°': '',
+                'Cadeira Extensora': '',
+                'Mesa Flexora': '',
+                'Stiff': '',
+                'Afundo': '',
+                'Búlgaro': '',
+                'Panturrilha em Pé': '',
+                'Panturrilha Sentado': '',
+                'Cadeira Adutora': '',
+                'Cadeira Abdutora': '',
+                
+                // ABDÔMEN
+                'Abdominal Supra': '',
+                'Abdominal Infra': '',
+                'Prancha': '',
+                'Prancha Lateral': '',
+                'Abdominal Bicicleta': '',
+                'Elevação de Pernas Barra': '',
+                'Abdominal Canivete': '',
+                'Roda Abdominal': ''
             };
             
             const mediaUrl = mediaLibrary[exercise.name];
             
             if (mediaUrl) {
-                // Se tem GIF disponível
+                // Se tem vídeo do YouTube disponível
                 document.getElementById('videoPlayer').innerHTML = `
-                    <img src="${mediaUrl}" 
-                         style="width: 100%; height: 100%; object-fit: contain; border-radius: 15px;"
-                         alt="${exercise.name}">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="${mediaUrl}"
+                        title="${exercise.name}"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        style="border-radius: 15px;">
+                    </iframe>
                 `;
             } else {
                 // Placeholder com animação CSS
