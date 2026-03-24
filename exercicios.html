@@ -190,6 +190,11 @@
             font-weight: 600;
         }
         
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
         @media (max-width: 768px) {
             .header h1 { font-size: 3rem; }
             .exercises-grid { grid-template-columns: 1fr; }
@@ -373,16 +378,43 @@
             document.getElementById('modalTip').textContent = exercise.tip;
             document.getElementById('modalWarning').textContent = exercise.warning;
             
-            // Aqui você vai colocar o link do vídeo quando criar
-            document.getElementById('videoPlayer').innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <div style="font-size: 4rem; margin-bottom: 20px;">🎬</div>
-                    <div style="font-size: 1.2rem;">Vídeo em breve!</div>
-                    <div style="margin-top: 10px; color: rgba(255,255,255,0.6);">
-                        Você poderá adicionar seus vídeos aqui
+            // Biblioteca de GIFs e vídeos
+            const mediaLibrary = {
+                'Supino Reto': 'https://thumbs.gfycat.com/FlashyAfraidGermanwirehairedpointer-size_restricted.gif',
+                'Agachamento Livre': 'https://thumbs.gfycat.com/AdmiredFlakyAmericancrayfish-size_restricted.gif',
+                'Barra Fixa': 'https://thumbs.gfycat.com/AgedGiddyKiskadee-size_restricted.gif',
+                'Levantamento Terra': 'https://thumbs.gfycat.com/ComplexUnawareKakarikis-size_restricted.gif',
+                'Rosca Direta Barra': 'https://thumbs.gfycat.com/SinfulDeliciousBarbet-size_restricted.gif',
+                'Flexão de Braço': 'https://thumbs.gfycat.com/DefinitiveGreenHectorsdolphin-size_restricted.gif',
+                'Prancha': 'https://thumbs.gfycat.com/DearestGoodnaturedHoneybadger-size_restricted.gif',
+                'Abdominal Supra': 'https://thumbs.gfycat.com/HandyThoseBanteng-size_restricted.gif'
+            };
+            
+            const mediaUrl = mediaLibrary[exercise.name];
+            
+            if (mediaUrl) {
+                // Se tem GIF disponível
+                document.getElementById('videoPlayer').innerHTML = `
+                    <img src="${mediaUrl}" 
+                         style="width: 100%; height: 100%; object-fit: contain; border-radius: 15px;"
+                         alt="${exercise.name}">
+                `;
+            } else {
+                // Placeholder com animação CSS
+                document.getElementById('videoPlayer').innerHTML = `
+                    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(245, 158, 11, 0.1)); border-radius: 15px;">
+                        <div style="font-size: 5rem; margin-bottom: 20px; animation: pulse 2s infinite;">${exercise.icon}</div>
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">${exercise.name}</div>
+                        <div style="color: rgba(255,255,255,0.6); text-align: center; padding: 0 40px;">
+                            <p style="margin-bottom: 15px;">💡 <strong>Dica:</strong> ${exercise.tip}</p>
+                            <p>⚠️ <strong>Atenção:</strong> ${exercise.warning}</p>
+                        </div>
+                        <div style="margin-top: 30px; padding: 15px 30px; background: rgba(16, 185, 129, 0.2); border-radius: 50px; font-size: 0.9rem;">
+                            🎥 Vídeo demonstrativo em breve
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
             
             document.getElementById('videoModal').classList.add('show');
         }
