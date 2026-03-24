@@ -3,65 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ficha de Treino - VidaSaudável AI</title>
+    <title>Gerador de Treino Profissional - VidaSaudável AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #10b981;
             --primary-dark: #059669;
             --accent: #f59e0b;
             --dark: #0f172a;
-            --gray: #64748b;
-            --light: #f8fafc;
         }
-
         body {
             font-family: 'Outfit', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 20px;
         }
-
-        /* Background effects */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 60px; }
         .header h1 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 5rem;
@@ -69,67 +29,26 @@
             background: linear-gradient(135deg, #10b981, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             margin-bottom: 10px;
-            text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
         }
-
-        .header p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 300;
-        }
-
-        /* Form container */
         .form-wrapper {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 50px;
-            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+            margin-bottom: 40px;
         }
-
         .section-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2.5rem;
             letter-spacing: 2px;
             color: var(--primary);
             margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
-
-        .section-title::before {
-            content: '';
-            width: 50px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 2px;
-        }
-
-        /* Form grid */
-        .form-grid {
-            display: grid;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        label {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.9);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
+        .form-grid { display: grid; gap: 30px; margin-bottom: 40px; }
+        .form-group { display: flex; flex-direction: column; gap: 12px; }
+        label { font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
         input, select {
             padding: 16px 20px;
             background: rgba(255, 255, 255, 0.1);
@@ -141,97 +60,13 @@
             transition: all 0.3s;
             outline: none;
         }
-
         input:focus, select:focus {
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
         }
-
-        select option {
-            background: var(--dark);
-            color: white;
-        }
-
-        /* Biotipo selector */
-        .biotipo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .biotipo-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .biotipo-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .biotipo-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-        }
-
-        .biotipo-card.selected {
-            border-color: var(--primary);
-            background: rgba(16, 185, 129, 0.1);
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
-        }
-
-        .biotipo-card.selected::before {
-            opacity: 0.1;
-        }
-
-        .biotipo-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .biotipo-name {
-            font-weight: 800;
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .biotipo-desc {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.5;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Objetivo cards */
-        .objetivo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 15px;
-        }
-
+        select option { background: var(--dark); }
+        .objetivo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
         .objetivo-card {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -241,29 +76,30 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .objetivo-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
+        .objetivo-card:hover { transform: translateY(-5px); border-color: var(--accent); }
         .objetivo-card.selected {
             border-color: var(--accent);
             background: rgba(245, 158, 11, 0.1);
             box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
         }
-
-        .objetivo-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+        .objetivo-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .objetivo-name { font-weight: 700; font-size: 1.1rem; }
+        .nivel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .nivel-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-
-        .objetivo-name {
-            font-weight: 700;
-            font-size: 1.1rem;
+        .nivel-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .nivel-card.selected {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
         }
-
-        /* Submit button */
         .submit-btn {
             width: 100%;
             padding: 20px;
@@ -280,153 +116,89 @@
             font-family: 'Bebas Neue', sans-serif;
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
         }
-
         .submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
         }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Results */
-        .results {
-            display: none;
-            margin-top: 40px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .results.show {
-            display: block;
-        }
-
-        .result-card {
+        .results { display: none; }
+        .results.show { display: block; }
+        .treino-day {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
             border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
+            padding: 30px;
             margin-bottom: 30px;
+            border-left: 5px solid var(--accent);
         }
-
-        .result-header {
+        .day-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
-
-        .result-header-icon {
-            font-size: 3rem;
-        }
-
-        .result-header-text h3 {
+        .day-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2rem;
-            letter-spacing: 2px;
-            color: var(--primary);
+            color: var(--accent);
         }
-
-        .result-header-text p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
+        .day-muscle {
+            background: rgba(245, 158, 11, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
         }
-
-        .exercise-list {
-            display: grid;
-            gap: 20px;
-        }
-
+        .exercise-list { display: grid; gap: 15px; }
         .exercise-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid var(--primary);
+            background: rgba(255, 255, 255, 0.05);
             padding: 20px;
-            border-radius: 10px;
-            transition: all 0.3s;
+            border-radius: 15px;
+            display: grid;
+            grid-template-columns: 50px 2fr 1fr 1fr;
+            gap: 20px;
+            align-items: center;
         }
-
-        .exercise-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateX(5px);
+        .exercise-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
         }
-
         .exercise-name {
             font-weight: 700;
             font-size: 1.1rem;
-            color: var(--primary);
-            margin-bottom: 8px;
         }
-
-        .exercise-details {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .exercise-muscle-target {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
         }
-
-        .diet-meal {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid var(--accent);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .meal-time {
+        .exercise-sets {
+            text-align: center;
             font-weight: 700;
-            color: var(--accent);
-            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        .exercise-rest {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .obs-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--primary);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .obs-title {
+            font-weight: 700;
+            color: var(--primary);
             margin-bottom: 10px;
+            font-size: 1.1rem;
         }
-
-        .meal-foods {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 3rem;
-            }
-
-            .form-wrapper {
-                padding: 30px;
-            }
-
-            .biotipo-grid,
-            .objetivo-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
+            .header h1 { font-size: 3rem; }
+            .objetivo-grid, .nivel-grid { grid-template-columns: 1fr; }
+            .exercise-item { grid-template-columns: 1fr; text-align: center; }
         }
     </style>
 </head>
@@ -434,12 +206,11 @@
     <div class="container">
         <div class="header">
             <h1>GERADOR DE TREINO</h1>
-            <p>Monte seu plano personalizado de treino e dieta</p>
+            <p>Monte sua ficha profissional completa</p>
         </div>
 
         <div class="form-wrapper">
-            <form id="workoutForm">
-                <!-- Dados Pessoais -->
+            <form id="treinoForm">
                 <div class="section-title">📋 Seus Dados</div>
                 <div class="form-grid">
                     <div class="form-group">
@@ -449,49 +220,19 @@
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                         <div>
                             <label for="idade">Idade</label>
-                            <input type="number" id="idade" required placeholder="25" min="15" max="100">
+                            <input type="number" id="idade" required placeholder="25">
                         </div>
                         <div>
                             <label for="peso">Peso (kg)</label>
-                            <input type="number" id="peso" required placeholder="70" min="30" max="300">
+                            <input type="number" id="peso" required placeholder="70">
                         </div>
                         <div>
                             <label for="altura">Altura (cm)</label>
-                            <input type="number" id="altura" required placeholder="170" min="100" max="250">
+                            <input type="number" id="altura" required placeholder="170">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Sexo</label>
-                        <select id="sexo" required>
-                            <option value="">Selecione</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="feminino">Feminino</option>
-                        </select>
-                    </div>
                 </div>
 
-                <!-- Biotipo -->
-                <div class="section-title">💪 Seu Biotipo</div>
-                <div class="biotipo-grid">
-                    <div class="biotipo-card" data-biotipo="ectomorfo">
-                        <div class="biotipo-icon">🏃</div>
-                        <div class="biotipo-name">Ectomorfo</div>
-                        <div class="biotipo-desc">Corpo magro, metabolismo rápido, dificuldade para ganhar peso</div>
-                    </div>
-                    <div class="biotipo-card" data-biotipo="mesomorfo">
-                        <div class="biotipo-icon">💪</div>
-                        <div class="biotipo-name">Mesomorfo</div>
-                        <div class="biotipo-desc">Corpo atlético, facilidade para ganhar músculo e perder gordura</div>
-                    </div>
-                    <div class="biotipo-card" data-biotipo="endomorfo">
-                        <div class="biotipo-icon">🏋️</div>
-                        <div class="biotipo-name">Endomorfo</div>
-                        <div class="biotipo-desc">Corpo robusto, facilidade para ganhar peso, metabolismo lento</div>
-                    </div>
-                </div>
-                <input type="hidden" id="biotipo" required>
-
-                <!-- Objetivo -->
                 <div class="section-title" style="margin-top: 40px;">🎯 Seu Objetivo</div>
                 <div class="objetivo-grid">
                     <div class="objetivo-card" data-objetivo="emagrecimento">
@@ -509,410 +250,36 @@
                 </div>
                 <input type="hidden" id="objetivo" required>
 
-                <!-- Experiência -->
-                <div class="section-title" style="margin-top: 40px;">⏱️ Experiência</div>
-                <div class="form-group">
-                    <label>Nível de Treinamento</label>
-                    <select id="nivel" required>
-                        <option value="">Selecione</option>
-                        <option value="iniciante">Iniciante (0-6 meses)</option>
-                        <option value="intermediario">Intermediário (6-24 meses)</option>
-                        <option value="avancado">Avançado (+24 meses)</option>
-                    </select>
+                <div class="section-title" style="margin-top: 40px;">📊 Seu Nível</div>
+                <div class="nivel-grid">
+                    <div class="nivel-card" data-nivel="iniciante">
+                        <div class="objetivo-icon">🌱</div>
+                        <div class="objetivo-name">Iniciante</div>
+                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 5px;">0-6 meses</p>
+                    </div>
+                    <div class="nivel-card" data-nivel="intermediario">
+                        <div class="objetivo-icon">💪</div>
+                        <div class="objetivo-name">Intermediário</div>
+                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 5px;">6-18 meses</p>
+                    </div>
+                    <div class="nivel-card" data-nivel="avancado">
+                        <div class="objetivo-icon">🏆</div>
+                        <div class="objetivo-name">Avançado</div>
+                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 5px;">+18 meses</p>
+                    </div>
                 </div>
+                <input type="hidden" id="nivel" required>
 
-                <button type="submit" class="submit-btn">Gerar Meu Plano</button>
+                <button type="submit" class="submit-btn" style="margin-top: 40px;">Gerar Meu Treino</button>
             </form>
         </div>
 
-        <!-- Results -->
-        <div class="results" id="results">
-            <div class="result-card">
-                <div class="result-header">
-                    <div class="result-header-icon">💪</div>
-                    <div class="result-header-text">
-                        <h3>Sua Ficha de Treino</h3>
-                        <p id="planoDescricao"></p>
-                    </div>
-                </div>
-                <div class="exercise-list" id="exerciseList"></div>
-            </div>
-
-            <div class="result-card">
-                <div class="result-header">
-                    <div class="result-header-icon">🍎</div>
-                    <div class="result-header-text">
-                        <h3>Seu Plano Alimentar</h3>
-                        <p id="dietaDescricao"></p>
-                    </div>
-                </div>
-                <div id="dietaList"></div>
-            </div>
-        </div>
+        <div class="results" id="results"></div>
     </div>
 
     <script>
-        // Database de treinos
-        const workoutDatabase = {
-            emagrecimento: {
-                ectomorfo: {
-                    iniciante: [
-                        { nome: 'Caminhada rápida', detalhes: '30 minutos, 5x/semana, intensidade moderada' },
-                        { nome: 'Agachamento livre', detalhes: '3 séries de 15 repetições' },
-                        { nome: 'Flexão de braço (joelhos)', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Prancha abdominal', detalhes: '3 séries de 30 segundos' },
-                        { nome: 'Burpees', detalhes: '3 séries de 8 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Corrida intervalada', detalhes: '40 minutos, 4x/semana, alternando alta/baixa intensidade' },
-                        { nome: 'Agachamento com salto', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Flexão de braço', detalhes: '4 séries de 15 repetições' },
-                        { nome: 'Mountain climbers', detalhes: '4 séries de 20 repetições' },
-                        { nome: 'Burpees com flexão', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Prancha lateral', detalhes: '3 séries de 45 segundos cada lado' }
-                    ],
-                    avancado: [
-                        { nome: 'HIIT - Sprint', detalhes: '45 minutos, 5x/semana, 30s sprint / 30s descanso' },
-                        { nome: 'Agachamento búlgaro', detalhes: '4 séries de 15 repetições cada perna' },
-                        { nome: 'Flexão com palma', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Box jumps', detalhes: '4 séries de 15 repetições' },
-                        { nome: 'Burpee box jump', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Circuito abdominal', detalhes: '4 circuitos de 1 minuto cada exercício' }
-                    ]
-                },
-                mesomorfo: {
-                    iniciante: [
-                        { nome: 'Caminhada inclinada', detalhes: '30 minutos, 5x/semana' },
-                        { nome: 'Agachamento', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Supino reto', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Remada curvada', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Abdominais', detalhes: '3 séries de 20 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Corrida', detalhes: '40 minutos, 4x/semana' },
-                        { nome: 'Leg press', detalhes: '4 séries de 15 repetições' },
-                        { nome: 'Supino inclinado', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Pulldown', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Shoulder press', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Circuito abdominal', detalhes: '3 circuitos completos' }
-                    ],
-                    avancado: [
-                        { nome: 'HIIT cycling', detalhes: '45 minutos, 5x/semana' },
-                        { nome: 'Agachamento livre pesado', detalhes: '5 séries de 10 repetições' },
-                        { nome: 'Supino + crucifixo', detalhes: 'Drop set 4 séries' },
-                        { nome: 'Barra fixa', detalhes: '4 séries até falha' },
-                        { nome: 'Clean and press', detalhes: '4 séries de 8 repetições' },
-                        { nome: 'Core training', detalhes: '20 minutos de circuito intenso' }
-                    ]
-                },
-                endomorfo: {
-                    iniciante: [
-                        { nome: 'Caminhada', detalhes: '45 minutos, 6x/semana, ritmo constante' },
-                        { nome: 'Leg press', detalhes: '3 séries de 15 repetições' },
-                        { nome: 'Peck deck', detalhes: '3 séries de 15 repetições' },
-                        { nome: 'Remada máquina', detalhes: '3 séries de 15 repetições' },
-                        { nome: 'Bicicleta', detalhes: '3 séries de 2 minutos' }
-                    ],
-                    intermediario: [
-                        { nome: 'Elíptico', detalhes: '50 minutos, 5x/semana' },
-                        { nome: 'Agachamento + leg press', detalhes: '4 séries de 15-20 repetições' },
-                        { nome: 'Supino + flexão', detalhes: '4 séries de 12-15 repetições' },
-                        { nome: 'Pulldown + remada', detalhes: '4 séries de 12-15 repetições' },
-                        { nome: 'Circuito funcional', detalhes: '20 minutos de exercícios variados' }
-                    ],
-                    avancado: [
-                        { nome: 'Cardio LISS', detalhes: '60 minutos, 6x/semana' },
-                        { nome: 'Treino full body', detalhes: '3x/semana, alta intensidade' },
-                        { nome: 'Circuito metabólico', detalhes: '40 minutos, exercícios compostos' },
-                        { nome: 'Swimming', detalhes: '45 minutos, 2x/semana' },
-                        { nome: 'Box training', detalhes: '30 minutos, alta intensidade' }
-                    ]
-                }
-            },
-            definicao: {
-                ectomorfo: {
-                    iniciante: [
-                        { nome: 'Supino reto', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Agachamento', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Desenvolvimento', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Remada baixa', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Rosca direta', detalhes: '3 séries de 12 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Supino inclinado + reto', detalhes: '4 séries de 10 repetições cada' },
-                        { nome: 'Agachamento + leg press', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Desenvolvimento + elevação lateral', detalhes: '4 séries de 10-12 reps' },
-                        { nome: 'Barra fixa + remada', detalhes: '4 séries de 10-12 repetições' },
-                        { nome: 'Rosca 21', detalhes: '3 séries' }
-                    ],
-                    avancado: [
-                        { nome: 'Peito completo', detalhes: 'Supino, inclinado, crucifixo - 5 séries cada' },
-                        { nome: 'Pernas completo', detalhes: 'Agachamento, leg, cadeira - 5 séries cada' },
-                        { nome: 'Ombros 3D', detalhes: 'Desenvolvimento, lateral, posterior - 4 séries' },
-                        { nome: 'Costas V-shape', detalhes: 'Barra, remada, pulldown - 5 séries cada' },
-                        { nome: 'Braços pump', detalhes: 'Bíceps e tríceps - 4 exercícios cada' }
-                    ]
-                },
-                mesomorfo: {
-                    iniciante: [
-                        { nome: 'Supino reto', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Agachamento livre', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Pulldown frontal', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Desenvolvimento militar', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Abdominal supra', detalhes: '3 séries de 15 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Supino + crucifixo', detalhes: '4 séries de 8-12 repetições' },
-                        { nome: 'Agachamento + afundo', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Barra fixa + remada', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Ombros 360°', detalhes: '4 exercícios, 3 séries cada' },
-                        { nome: 'Core stability', detalhes: '15 minutos de exercícios variados' }
-                    ],
-                    avancado: [
-                        { nome: 'Push day intenso', detalhes: 'Peito + ombro + tríceps - Volume alto' },
-                        { nome: 'Pull day intenso', detalhes: 'Costas + bíceps - Volume alto' },
-                        { nome: 'Leg day completo', detalhes: 'Quadríceps, posterior, glúteos - 6 exercícios' },
-                        { nome: 'Cardio HIIT', detalhes: '20 minutos pós-treino, 3x/semana' },
-                        { nome: 'Core avançado', detalhes: 'Exercícios com peso, 4 séries cada' }
-                    ]
-                },
-                endomorfo: {
-                    iniciante: [
-                        { nome: 'Supino máquina', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Leg press', detalhes: '3 séries de 15 repetições' },
-                        { nome: 'Remada máquina', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Shoulder press', detalhes: '3 séries de 12 repetições' },
-                        { nome: 'Bicicleta', detalhes: '15 minutos pós-treino' }
-                    ],
-                    intermediario: [
-                        { nome: 'Supino livre + máquina', detalhes: '4 séries de 10-12 repetições' },
-                        { nome: 'Agachamento + extensora', detalhes: '4 séries de 12-15 repetições' },
-                        { nome: 'Pulldown + remada curvada', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Desenvolvimento + elevações', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Cardio moderado', detalhes: '25 minutos pós-treino' }
-                    ],
-                    avancado: [
-                        { nome: 'Upper body', detalhes: 'Peito, costas, ombros - 5 exercícios cada' },
-                        { nome: 'Lower body', detalhes: 'Quadríceps, posterior, panturrilha - Alto volume' },
-                        { nome: 'Full body circuit', detalhes: '1x/semana - Exercícios compostos' },
-                        { nome: 'Cardio steady', detalhes: '30-40 minutos, 4x/semana' },
-                        { nome: 'Functional training', detalhes: '20 minutos, exercícios funcionais' }
-                    ]
-                }
-            },
-            hipertrofia: {
-                ectomorfo: {
-                    iniciante: [
-                        { nome: 'Supino reto', detalhes: '4 séries de 8-10 repetições' },
-                        { nome: 'Agachamento livre', detalhes: '4 séries de 8-10 repetições' },
-                        { nome: 'Remada curvada', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Desenvolvimento', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Rosca direta', detalhes: '3 séries de 12 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Supino + crucifixo + crossover', detalhes: '4 séries de 8-12 reps cada' },
-                        { nome: 'Agachamento + leg press + extensora', detalhes: '4 séries cada' },
-                        { nome: 'Barra + remada + pulldown', detalhes: '4 séries de 8-12 reps' },
-                        { nome: 'Desenvolvimento + elevações', detalhes: '4 séries cada' },
-                        { nome: 'Rosca + tríceps', detalhes: '4 exercícios, 3 séries cada' }
-                    ],
-                    avancado: [
-                        { nome: 'Peito massa', detalhes: 'Supino, inclinado, decline, crossover - 5 séries' },
-                        { nome: 'Pernas volume', detalhes: 'Agachamento, leg press, hack - 5 séries' },
-                        { nome: 'Costas largura', detalhes: 'Barra, remada T, pulldown - 5 séries' },
-                        { nome: 'Ombros 3D', detalhes: 'Desenvolvimento, lateral, posterior - 5 séries' },
-                        { nome: 'Braços pump', detalhes: 'Bíceps e tríceps - 5 exercícios cada' }
-                    ]
-                },
-                mesomorfo: {
-                    iniciante: [
-                        { nome: 'Supino reto barra', detalhes: '4 séries de 8 repetições' },
-                        { nome: 'Agachamento livre', detalhes: '4 séries de 8 repetições' },
-                        { nome: 'Pulldown frontal', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Desenvolvimento barra', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Rosca barra W', detalhes: '3 séries de 10 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Push A', detalhes: 'Peito + ombro + tríceps - 5 exercícios cada' },
-                        { nome: 'Pull A', detalhes: 'Costas + bíceps - 5 exercícios cada' },
-                        { nome: 'Legs A', detalhes: 'Quadríceps + posterior - 6 exercícios' },
-                        { nome: 'Push B', detalhes: 'Variações diferentes de A' },
-                        { nome: 'Pull B', detalhes: 'Variações diferentes de A' }
-                    ],
-                    avancado: [
-                        { nome: 'Peito heavy', detalhes: 'Supino 5x5, volume alto depois' },
-                        { nome: 'Pernas heavy', detalhes: 'Agachamento 5x5, volume alto depois' },
-                        { nome: 'Costas heavy', detalhes: 'Barra 5x5, volume alto depois' },
-                        { nome: 'Ombros volume', detalhes: '6 exercícios, 4-5 séries cada' },
-                        { nome: 'Braços especialização', detalhes: 'Dia dedicado, 8 exercícios' }
-                    ]
-                },
-                endomorfo: {
-                    iniciante: [
-                        { nome: 'Supino reto', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Leg press', detalhes: '4 séries de 12 repetições' },
-                        { nome: 'Remada baixa', detalhes: '4 séries de 10 repetições' },
-                        { nome: 'Shoulder press', detalhes: '3 séries de 10 repetições' },
-                        { nome: 'Rosca direta', detalhes: '3 séries de 12 repetições' }
-                    ],
-                    intermediario: [
-                        { nome: 'Peito + tríceps', detalhes: '5 exercícios peito, 3 tríceps' },
-                        { nome: 'Costas + bíceps', detalhes: '5 exercícios costas, 3 bíceps' },
-                        { nome: 'Pernas completo', detalhes: '6 exercícios, quadríceps e posterior' },
-                        { nome: 'Ombros + abdômen', detalhes: '4 exercícios ombros, 3 core' },
-                        { nome: 'Cardio leve', detalhes: '20 minutos pós-treino' }
-                    ],
-                    avancado: [
-                        { nome: 'Upper A (força)', detalhes: 'Compostos pesados - 5x5' },
-                        { nome: 'Lower A (força)', detalhes: 'Agachamento e variações - 5x5' },
-                        { nome: 'Upper B (volume)', detalhes: 'Hipertrofia - 4x12' },
-                        { nome: 'Lower B (volume)', detalhes: 'Hipertrofia - 4x12' },
-                        { nome: 'Cardio HIIT', detalhes: '15 minutos, 3x/semana' }
-                    ]
-                }
-            }
-        };
-
-        // Database de dietas
-        const dietDatabase = {
-            emagrecimento: {
-                ectomorfo: {
-                    calorias: '2000-2200 kcal/dia',
-                    macros: 'Proteína: 30% | Carbo: 40% | Gordura: 30%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '2 ovos mexidos + 1 fatia de pão integral + 1 banana + café sem açúcar' },
-                        { hora: 'Lanche (10h)', alimentos: '1 iogurte grego natural + 1 colher de granola' },
-                        { hora: 'Almoço (13h)', alimentos: '120g peito de frango grelhado + 3 col. arroz integral + salada verde + 2 col. feijão' },
-                        { hora: 'Lanche (16h)', alimentos: '1 shake de whey protein + 1 maçã' },
-                        { hora: 'Jantar (19h)', alimentos: '150g salmão assado + legumes no vapor + salada' },
-                        { hora: 'Ceia (21h)', alimentos: 'Omelete de 2 claras + chá verde' }
-                    ]
-                },
-                mesomorfo: {
-                    calorias: '1800-2000 kcal/dia',
-                    macros: 'Proteína: 35% | Carbo: 35% | Gordura: 30%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: 'Omelete de 3 claras + 1 gema + aveia + frutas vermelhas' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey protein + 10 amêndoas' },
-                        { hora: 'Almoço (13h)', alimentos: '150g carne magra + 2 col. batata doce + brócolis + salada' },
-                        { hora: 'Lanche (16h)', alimentos: 'Atum + cream cheese light + torradas integrais' },
-                        { hora: 'Jantar (19h)', alimentos: '120g frango + legumes grelhados + salada verde' },
-                        { hora: 'Ceia (21h)', alimentos: 'Caseína ou cottage + nozes' }
-                    ]
-                },
-                endomorfo: {
-                    calorias: '1500-1700 kcal/dia',
-                    macros: 'Proteína: 40% | Carbo: 25% | Gordura: 35%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '3 claras + 1 gema + abacate + café' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey isolado + 1 castanha do Pará' },
-                        { hora: 'Almoço (13h)', alimentos: '150g proteína magra + salada grande + 1 col. arroz integral' },
-                        { hora: 'Lanche (16h)', alimentos: 'Iogurte desnatado + chia' },
-                        { hora: 'Jantar (19h)', alimentos: '150g peixe + salada + legumes' },
-                        { hora: 'Ceia (21h)', alimentos: 'Queijo cottage + chá' }
-                    ]
-                }
-            },
-            definicao: {
-                ectomorfo: {
-                    calorias: '2400-2600 kcal/dia',
-                    macros: 'Proteína: 30% | Carbo: 45% | Gordura: 25%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '3 ovos + 2 fatias pão integral + pasta de amendoim + suco natural' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey + aveia + banana' },
-                        { hora: 'Almoço (13h)', alimentos: '150g carne + 4 col. arroz integral + feijão + batata doce + salada' },
-                        { hora: 'Pré-treino (15h)', alimentos: 'Batata doce + whey' },
-                        { hora: 'Pós-treino (18h)', alimentos: 'Whey + dextrose + creatina' },
-                        { hora: 'Jantar (20h)', alimentos: '150g frango + macarrão integral + molho caseiro' },
-                        { hora: 'Ceia (22h)', alimentos: 'Caseína + pasta de amendoim' }
-                    ]
-                },
-                mesomorfo: {
-                    calorias: '2200-2400 kcal/dia',
-                    macros: 'Proteína: 35% | Carbo: 40% | Gordura: 25%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: 'Omelete 3 ovos + aveia + frutas' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey + mix de nuts' },
-                        { hora: 'Almoço (13h)', alimentos: '150g proteína + arroz + feijão + legumes' },
-                        { hora: 'Pré-treino (15h)', alimentos: 'Batata doce + frango' },
-                        { hora: 'Pós-treino (18h)', alimentos: 'Whey + banana + aveia' },
-                        { hora: 'Jantar (20h)', alimentos: 'Peixe + arroz integral + vegetais' },
-                        { hora: 'Ceia (22h)', alimentos: 'Caseína ou omelete de claras' }
-                    ]
-                },
-                endomorfo: {
-                    calorias: '1900-2100 kcal/dia',
-                    macros: 'Proteína: 40% | Carbo: 30% | Gordura: 30%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '4 claras + 1 gema + abacate + café' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey isolado + amêndoas' },
-                        { hora: 'Almoço (13h)', alimentos: '150g proteína magra + 2 col. arroz + salada grande' },
-                        { hora: 'Pré-treino (15h)', alimentos: 'Batata doce pequena + frango' },
-                        { hora: 'Pós-treino (18h)', alimentos: 'Whey + banana' },
-                        { hora: 'Jantar (20h)', alimentos: 'Peixe + legumes + salada' },
-                        { hora: 'Ceia (22h)', alimentos: 'Caseína + oleaginosas' }
-                    ]
-                }
-            },
-            hipertrofia: {
-                ectomorfo: {
-                    calorias: '3000-3200 kcal/dia',
-                    macros: 'Proteína: 25% | Carbo: 55% | Gordura: 20%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '4 ovos + 3 fatias pão + pasta amendoim + suco + banana' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey + aveia + mel + frutas' },
-                        { hora: 'Almoço (13h)', alimentos: '200g carne + 5 col. arroz + feijão + batata + salada + suco' },
-                        { hora: 'Pré-treino (15h)', alimentos: 'Batata doce + frango + suco' },
-                        { hora: 'Intra-treino', alimentos: 'Maltodextrina + BCAA' },
-                        { hora: 'Pós-treino (18h)', alimentos: 'Whey + dextrose + creatina + banana' },
-                        { hora: 'Jantar (20h)', alimentos: '200g proteína + macarrão + molho + salada' },
-                        { hora: 'Ceia (22h)', alimentos: 'Caseína + aveia + pasta amendoim + leite' }
-                    ]
-                },
-                mesomorfo: {
-                    calorias: '2800-3000 kcal/dia',
-                    macros: 'Proteína: 30% | Carbo: 50% | Gordura: 20%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '4 ovos + aveia + frutas + pão integral' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey + aveia + banana + mel' },
-                        { hora: 'Almoço (13h)', alimentos: '180g proteína + 4 col. arroz + feijão + batata doce + salada' },
-                        { hora: 'Pré-treino (15h)', alimentos: 'Batata doce + frango + café' },
-                        { hora: 'Intra-treino', alimentos: 'Maltodextrina + BCAA' },
-                        { hora: 'Pós-treino (18h)', alimentos: 'Whey + dextrose + creatina' },
-                        { hora: 'Jantar (20h)', alimentos: '180g carne + arroz integral + legumes' },
-                        { hora: 'Ceia (22h)', alimentos: 'Caseína + granola + pasta amendoim' }
-                    ]
-                },
-                endomorfo: {
-                    calorias: '2400-2600 kcal/dia',
-                    macros: 'Proteína: 35% | Carbo: 40% | Gordura: 25%',
-                    refeicoes: [
-                        { hora: 'Café da manhã (7h)', alimentos: '4 ovos + 2 fatias pão integral + abacate' },
-                        { hora: 'Lanche (10h)', alimentos: 'Whey + aveia + frutas vermelhas' },
-                        { hora: 'Almoço (13h)', alimentos: '180g proteína + 3 col. arroz integral + feijão + legumes' },
-                        { hora: 'Pré-treino (15h)', alimentos: 'Batata doce + frango' },
-                        { hora: 'Intra-treino', alimentos: 'BCAA + eletrólitos' },
-                        { hora: 'Pós-treino (18h)', alimentos: 'Whey isolado + banana + creatina' },
-                        { hora: 'Jantar (20h)', alimentos: '150g peixe + 2 col. arroz + salada + legumes' },
-                        { hora: 'Ceia (22h)', alimentos: 'Caseína + oleaginosas' }
-                    ]
-                }
-            }
-        };
-
-        // Seletores
-        let selectedBiotipo = '';
         let selectedObjetivo = '';
-
-        // Biotipo selection
-        document.querySelectorAll('.biotipo-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('.biotipo-card').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedBiotipo = this.dataset.biotipo;
-                document.getElementById('biotipo').value = selectedBiotipo;
-            });
-        });
+        let selectedNivel = '';
 
         // Objetivo selection
         document.querySelectorAll('.objetivo-card').forEach(card => {
@@ -924,74 +291,735 @@
             });
         });
 
-        // Form submission
-        document.getElementById('workoutForm').addEventListener('submit', function(e) {
+        // Nível selection
+        document.querySelectorAll('.nivel-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedNivel = this.dataset.nivel;
+                document.getElementById('nivel').value = selectedNivel;
+            });
+        });
+
+        // Form Submit
+        document.getElementById('treinoForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const nome = document.getElementById('nome').value;
-            const idade = document.getElementById('idade').value;
-            const peso = document.getElementById('peso').value;
-            const altura = document.getElementById('altura').value;
-            const sexo = document.getElementById('sexo').value;
-            const nivel = document.getElementById('nivel').value;
-            const biotipo = document.getElementById('biotipo').value;
             const objetivo = document.getElementById('objetivo').value;
+            const nivel = document.getElementById('nivel').value;
 
-            if (!biotipo || !objetivo) {
-                alert('Por favor, selecione seu biotipo e objetivo!');
+            if (!objetivo || !nivel) {
+                alert('Por favor, selecione seu objetivo e nível!');
                 return;
             }
 
-            // Gerar plano
-            generateWorkoutPlan(nome, idade, peso, altura, sexo, nivel, biotipo, objetivo);
+            gerarTreino(nome, objetivo, nivel);
         });
 
-        function generateWorkoutPlan(nome, idade, peso, altura, sexo, nivel, biotipo, objetivo) {
-            // Buscar treino
-            const workout = workoutDatabase[objetivo][biotipo][nivel];
-            const diet = dietDatabase[objetivo][biotipo];
-
-            // Descrição do plano
-            const objetivoNome = {
-                'emagrecimento': 'Emagrecimento',
-                'definicao': 'Definição Muscular',
-                'hipertrofia': 'Ganho de Massa Muscular'
+        function gerarTreino(nome, objetivo, nivel) {
+            // Função para gerar aquecimento específico por grupo muscular
+            function getAquecimento(musculo) {
+                const aquecimentos = {
+                    'Peito + Tríceps + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio Leve:</strong> 5min esteira/bike/elíptico (frequência cardíaca leve)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Mobilidade Ombros:</strong> 10 círculos para frente + 10 para trás com os braços
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Alongamento Dinâmico:</strong> Braços cruzados no peito (15 segundos cada lado)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Série de Ativação:</strong> 15 flexões de joelhos + 10 mergulhos no banco
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Séries Progressivas:</strong> 1 série leve de cada exercício (50% da carga) antes de começar
+                        </div>
+                    `,
+                    'Peito + Tríceps': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio Leve:</strong> 5min esteira/bike (aumente temperatura corporal)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Rotação Ombros:</strong> 15 rotações amplas (frente e trás)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Flexões Leves:</strong> 2 séries de 10 flexões (joelhos no chão se necessário)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Band Pull-Aparts:</strong> 15 repetições com elástico (ativa posterior de ombro)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Séries de Aquecimento:</strong> Supino com barra vazia: 1x15 + 1x12 com 50% da carga
+                        </div>
+                    `,
+                    'Costas + Bíceps': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio Leve:</strong> 5min remada ergométrica ou elíptico
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Mobilidade Escapular:</strong> Retração escapular 20x (junte omoplatas)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Cat-Cow:</strong> 10 repetições (mobilidade da coluna)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Hang na Barra:</strong> 2x 20 segundos (decompress a coluna)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Puxadas Leves:</strong> Puxada frontal 1x15 com carga mínima + remada baixa 1x15
+                        </div>
+                    `,
+                    'Costas Completo': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio:</strong> 5-7min remada ou bike (foco em costas)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Mobilidade Torácica:</strong> Rotações de tronco 15x cada lado
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Alongamento Lombar:</strong> Gato-vaca + child pose (30 segundos cada)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Ativação Glúteos:</strong> Ponte de glúteo 2x15 (prepara para terra)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Terra Técnico:</strong> 2 séries com barra vazia (padrão motor perfeito)
+                        </div>
+                    `,
+                    'Pernas + Ombros + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio:</strong> 5-7min bike ou elíptico (aquece pernas)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Mobilidade Quadril:</strong> Leg swings 15x (frente/trás e lateral)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Agachamento Peso Corporal:</strong> 2x15 (amplitude completa)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Lunges Dinâmicos:</strong> 10 passos (cada perna)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Série Leve:</strong> Agachamento com barra vazia 1x15 + Leg press 1x12 leve
+                        </div>
+                    `,
+                    'Pernas Completo': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio:</strong> 7-10min bike (prepara joelhos e quadril)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Mobilidade Articular:</strong> Círculos de tornozelo 20x + rotação quadril 15x
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Goblet Squat:</strong> 2x10 com halter leve (mobilidade + ativação)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Glute Bridge:</strong> 2x20 (ativa posterior e glúteos)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Agachamento Progressivo:</strong> Barra vazia 1x15 → 40% 1x10 → 60% 1x8
+                        </div>
+                    `,
+                    'Pernas + Glúteos': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio:</strong> 7-10min bike ou escada (ativa inferior)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Alongamento Dinâmico:</strong> Balanço de perna 15x (todos os planos)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Ativação Glúteos:</strong> Clamshell 15x + fire hydrant 15x cada lado
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Agachamento Búlgaro:</strong> 2x10 só com peso corporal
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Séries Progressivas:</strong> Agachamento: vazio 1x15 → 50% 1x10 → 70% 1x5
+                        </div>
+                    `,
+                    'Ombros + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio Leve:</strong> 5min qualquer aparelho (aumenta temperatura)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Círculos de Braço:</strong> 20 rotações completas (pequenas → grandes)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Band Pull-Aparts:</strong> 2x15 (ativa manguito rotador)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Face Pulls:</strong> 2x15 com carga leve (previne lesão)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Desenvolvimento Vazio:</strong> 1x15 técnica perfeita + elevação lateral 1x15 leve
+                        </div>
+                    `,
+                    'Ombros + Trapézio': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio:</strong> 5min aparelho de preferência
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Rotação Externa:</strong> 2x15 com elástico (proteção do ombro)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ YTW no Banco:</strong> 10 repetições de cada letra (ativa posterior)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Dislocação Ombros:</strong> 10x com bastão (mobilidade cápsula)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Progressão:</strong> Desenvolvimento halteres leves 2x12 → 50% carga 1x10
+                        </div>
+                    `,
+                    'Peito Completo': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio:</strong> 5-7min para elevar temperatura
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Pec Stretch:</strong> 30s na porta (abre peito) + rotação toráxica 10x
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Flexões Variadas:</strong> 10 normais + 10 diamante + 10 amplas
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Band Flyes:</strong> 2x15 com elástico (pre-ativa peito)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Pirâmide Supino:</strong> Barra vazia 1x15 → 40% 1x10 → 60% 1x8 → 80% 1x5
+                        </div>
+                    `,
+                    'Braços + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>1️⃣ Cardio Leve:</strong> 5min leve (circulação nos braços)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>2️⃣ Rotação Pulsos:</strong> 20 círculos cada direção
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>3️⃣ Alongamento Antebraço:</strong> Flexão/extensão punho 15s cada
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>4️⃣ Rosca/Tríceps Leve:</strong> 2x15 com halteres leves (3-5kg)
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                            <strong>5️⃣ Bomba Sanguínea:</strong> 1x20 rosca + 1x20 tríceps polia (carga mínima)
+                        </div>
+                    `
+                };
+                
+                return aquecimentos[musculo] || aquecimentos['Peito + Tríceps'];
+            }
+            
+            // Função para gerar alongamento específico por grupo muscular
+            function getAlongamento(musculo) {
+                const alongamentos = {
+                    'Peito + Tríceps + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🤸</span>
+                            <div><strong>Peito na Porta:</strong> 30-45s cada lado (braço a 90°)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">💪</span>
+                            <div><strong>Tríceps Overhead:</strong> 30s cada braço (puxe cotovelo atrás da cabeça)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Child Pose:</strong> 45-60s (relaxa ombros e peito)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🌊</span>
+                            <div><strong>Cat-Cow:</strong> 10 repetições lentas (mobilidade coluna)</div>
+                        </div>
+                    `,
+                    'Peito + Tríceps': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🤸</span>
+                            <div><strong>Peito na Parede:</strong> 45s cada lado (ângulos diferentes)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">💪</span>
+                            <div><strong>Tríceps Cross-Body:</strong> 30s cada braço</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🙌</span>
+                            <div><strong>Ombro Passivo:</strong> 30s (braço cruzado no peito)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Thread the Needle:</strong> 30s cada lado</div>
+                        </div>
+                    `,
+                    'Costas + Bíceps': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦍</span>
+                            <div><strong>Hang Passivo:</strong> 30-60s na barra (decompressão coluna)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Child Pose Largo:</strong> 60s (alonga dorsal)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🌀</span>
+                            <div><strong>Rotação Torácica:</strong> 10x cada lado (sentado)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">💪</span>
+                            <div><strong>Bíceps na Parede:</strong> 30s cada braço (palma virada para trás)</div>
+                        </div>
+                    `,
+                    'Costas Completo': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦍</span>
+                            <div><strong>Hang na Barra:</strong> 45-90s (ESSENCIAL pós-Terra)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🐈</span>
+                            <div><strong>Cat-Cow:</strong> 15 repetições (recupera coluna)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Child Pose:</strong> 60-90s (relaxamento lombar)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🔄</span>
+                            <div><strong>Pigeon Pose:</strong> 45s cada lado (abre quadril)</div>
+                        </div>
+                    `,
+                    'Pernas + Ombros + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦵</span>
+                            <div><strong>Quadríceps em Pé:</strong> 45s cada perna</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Posterior Sentado:</strong> 60s (pernas estendidas)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦋</span>
+                            <div><strong>Borboleta:</strong> 60s (abre quadril interno)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🤸</span>
+                            <div><strong>Pigeon Pose:</strong> 45s cada lado</div>
+                        </div>
+                    `,
+                    'Pernas Completo': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦵</span>
+                            <div><strong>Quad Stretch Deitado:</strong> 60s cada perna</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Posterior Deitado:</strong> 60s cada perna (toalha no pé)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦋</span>
+                            <div><strong>Borboleta Profunda:</strong> 90s (pressão nos joelhos)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🐸</span>
+                            <div><strong>Frog Pose:</strong> 60s (abertura máxima quadril)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🔄</span>
+                            <div><strong>Figure-4:</strong> 45s cada lado (glúteo e piriforme)</div>
+                        </div>
+                    `,
+                    'Pernas + Glúteos': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦵</span>
+                            <div><strong>Quadríceps Assistido:</strong> 60s cada (use parede para apoio)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🍑</span>
+                            <div><strong>Glute Stretch 90-90:</strong> 60s cada lado</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Pigeon Profundo:</strong> 90s cada lado</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🦋</span>
+                            <div><strong>Borboleta:</strong> 60s (adutores)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🌙</span>
+                            <div><strong>Crescent Lunge:</strong> 45s cada lado (hip flexor)</div>
+                        </div>
+                    `,
+                    'Ombros + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🙌</span>
+                            <div><strong>Cross-Body Shoulder:</strong> 30s cada lado</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🔄</span>
+                            <div><strong>Behind Back Clasp:</strong> 30s cada lado</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Thread Needle:</strong> 45s cada lado</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🌙</span>
+                            <div><strong>Neck Stretches:</strong> 20s cada direção (trapézio superior)</div>
+                        </div>
+                    `,
+                    'Ombros + Trapézio': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🙌</span>
+                            <div><strong>Sleeper Stretch:</strong> 45s cada lado (rotadores)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🔄</span>
+                            <div><strong>Doorway Stretch:</strong> 45s cada ângulo</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🌙</span>
+                            <div><strong>Upper Trap:</strong> 30s cada lado (orelha ao ombro)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Child Pose:</strong> 60s (relaxamento geral)</div>
+                        </div>
+                    `,
+                    'Peito Completo': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🤸</span>
+                            <div><strong>Pec Corner Stretch:</strong> 60s (ambos os braços)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🔄</span>
+                            <div><strong>Doorway 3 Ângulos:</strong> 30s cada (alto/médio/baixo)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🧘</span>
+                            <div><strong>Cobra Pose:</strong> 45s (abre peito e ombros)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🌊</span>
+                            <div><strong>Cat-Cow:</strong> 10 repetições (mobilidade)</div>
+                        </div>
+                    `,
+                    'Braços + Abdômen': `
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">💪</span>
+                            <div><strong>Bíceps Wall:</strong> 30s cada (palma para trás)</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">💪</span>
+                            <div><strong>Tricep Overhead:</strong> 30s cada braço</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🤲</span>
+                            <div><strong>Wrist Flexion/Extension:</strong> 20s cada</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🙌</span>
+                            <div><strong>Prayer Pose:</strong> 30s (antebraços)</div>
+                        </div>
+                    `
+                };
+                
+                return alongamentos[musculo] || alongamentos['Peito + Tríceps'];
+            }
+            
+            // Database de treinos PROFISSIONAIS
+            const treinos = {
+                emagrecimento: {
+                    iniciante: {
+                        divisao: 'ABC (3x por semana)',
+                        dias: [
+                            {
+                                dia: 'DIA A - Segunda',
+                                musculo: 'Peito + Tríceps + Abdômen',
+                                exercicios: [
+                                    { nome: 'Supino Reto', alvo: 'Peitoral Maior', series: '3x12', descanso: '60s' },
+                                    { nome: 'Supino Inclinado Halteres', alvo: 'Peitoral Superior', series: '3x12', descanso: '60s' },
+                                    { nome: 'Crucifixo Máquina', alvo: 'Peitoral', series: '3x15', descanso: '45s' },
+                                    { nome: 'Tríceps Polia', alvo: 'Tríceps', series: '3x15', descanso: '45s' },
+                                    { nome: 'Tríceps Francês', alvo: 'Tríceps', series: '3x12', descanso: '45s' },
+                                    { nome: 'Abdominal Supra', alvo: 'Abdômen Superior', series: '3x20', descanso: '30s' },
+                                    { nome: 'Prancha', alvo: 'Core', series: '3x30s', descanso: '30s' }
+                                ],
+                                obs: 'Aquecimento: 5min esteira leve. Alongamento final: 5min.'
+                            },
+                            {
+                                dia: 'DIA B - Quarta',
+                                musculo: 'Costas + Bíceps',
+                                exercicios: [
+                                    { nome: 'Puxada Frontal', alvo: 'Dorsal', series: '3x12', descanso: '60s' },
+                                    { nome: 'Remada Baixa', alvo: 'Dorsal Médio', series: '3x12', descanso: '60s' },
+                                    { nome: 'Remada Unilateral', alvo: 'Dorsal', series: '3x12', descanso: '45s' },
+                                    { nome: 'Pulldown Reto', alvo: 'Dorsal Inferior', series: '3x15', descanso: '45s' },
+                                    { nome: 'Rosca Direta', alvo: 'Bíceps', series: '3x12', descanso: '45s' },
+                                    { nome: 'Rosca Martelo', alvo: 'Bíceps + Antebraço', series: '3x15', descanso: '45s' },
+                                    { nome: 'Rosca Concentrada', alvo: 'Bíceps', series: '3x12', descanso: '45s' }
+                                ],
+                                obs: 'Foco em postura! Costas sempre retas. Controleum a descida.'
+                            },
+                            {
+                                dia: 'DIA C - Sexta',
+                                musculo: 'Pernas + Ombros + Abdômen',
+                                exercicios: [
+                                    { nome: 'Agachamento Livre', alvo: 'Quadríceps + Glúteos', series: '4x12', descanso: '90s' },
+                                    { nome: 'Leg Press 45°', alvo: 'Quadríceps', series: '3x15', descanso: '60s' },
+                                    { nome: 'Cadeira Extensora', alvo: 'Quadríceps', series: '3x15', descanso: '45s' },
+                                    { nome: 'Mesa Flexora', alvo: 'Posterior', series: '3x15', descanso: '45s' },
+                                    { nome: 'Panturrilha em Pé', alvo: 'Panturrilha', series: '4x20', descanso: '45s' },
+                                    { nome: 'Desenvolvimento Halteres', alvo: 'Ombros', series: '3x12', descanso: '60s' },
+                                    { nome: 'Elevação Lateral', alvo: 'Ombro Lateral', series: '3x15', descanso: '45s' },
+                                    { nome: 'Abdominal Infra', alvo: 'Abdômen Inferior', series: '3x15', descanso: '30s' }
+                                ],
+                                obs: 'DIA MAIS PESADO! Hidrate-se bem. Agachamento é REI!'
+                            }
+                        ]
+                    },
+                    intermediario: {
+                        divisao: 'ABCD (4x por semana)',
+                        dias: [
+                            {
+                                dia: 'DIA A - Segunda',
+                                musculo: 'Peito + Tríceps',
+                                exercicios: [
+                                    { nome: 'Supino Reto', alvo: 'Peitoral Maior', series: '4x10', descanso: '75s' },
+                                    { nome: 'Supino Inclinado', alvo: 'Peitoral Superior', series: '4x10', descanso: '75s' },
+                                    { nome: 'Supino Declinado', alvo: 'Peitoral Inferior', series: '3x12', descanso: '60s' },
+                                    { nome: 'Crucifixo Reto', alvo: 'Peitoral', series: '3x12', descanso: '60s' },
+                                    { nome: 'Cross Over', alvo: 'Peitoral', series: '3x15', descanso: '45s' },
+                                    { nome: 'Tríceps Testa', alvo: 'Tríceps', series: '4x10', descanso: '60s' },
+                                    { nome: 'Tríceps Corda', alvo: 'Tríceps', series: '3x15', descanso: '45s' },
+                                    { nome: 'Tríceps Coice', alvo: 'Tríceps', series: '3x12', descanso: '45s' }
+                                ],
+                                obs: 'Volume moderado. Foco em técnica perfeita.'
+                            },
+                            {
+                                dia: 'DIA B - Terça',
+                                musculo: 'Costas + Bíceps',
+                                exercicios: [
+                                    { nome: 'Barra Fixa', alvo: 'Dorsal', series: '4x8-10', descanso: '90s' },
+                                    { nome: 'Remada Curvada', alvo: 'Dorsal + Trapézio', series: '4x10', descanso: '75s' },
+                                    { nome: 'Puxada Triangulo', alvo: 'Dorsal', series: '3x12', descanso: '60s' },
+                                    { nome: 'Remada Cavalinho', alvo: 'Dorsal', series: '3x12', descanso: '60s' },
+                                    { nome: 'Remada Baixa', alvo: 'Dorsal Médio', series: '3x15', descanso: '45s' },
+                                    { nome: 'Rosca Direta Barra', alvo: 'Bíceps', series: '4x10', descanso: '60s' },
+                                    { nome: 'Rosca Alternada', alvo: 'Bíceps', series: '3x12', descanso: '45s' },
+                                    { nome: 'Rosca Scott', alvo: 'Bíceps', series: '3x12', descanso: '45s' }
+                                ],
+                                obs: 'Pegada firme! Controle excêntrico (descida lenta).'
+                            },
+                            {
+                                dia: 'DIA C - Quinta',
+                                musculo: 'Pernas Completo',
+                                exercicios: [
+                                    { nome: 'Agachamento Livre', alvo: 'Quadríceps + Glúteos', series: '4x8-10', descanso: '2min' },
+                                    { nome: 'Leg Press 45°', alvo: 'Quadríceps', series: '4x12', descanso: '90s' },
+                                    { nome: 'Hack Squat', alvo: 'Quadríceps', series: '3x12', descanso: '75s' },
+                                    { nome: 'Cadeira Extensora', alvo: 'Quadríceps', series: '3x15', descanso: '60s' },
+                                    { nome: 'Stiff', alvo: 'Posterior + Glúteos', series: '4x10', descanso: '75s' },
+                                    { nome: 'Mesa Flexora', alvo: 'Posterior', series: '3x12', descanso: '60s' },
+                                    { nome: 'Cadeira Adutora', alvo: 'Adutores', series: '3x15', descanso: '45s' },
+                                    { nome: 'Cadeira Abdutora', alvo: 'Abdutores', series: '3x15', descanso: '45s' },
+                                    { nome: 'Panturrilha em Pé', alvo: 'Panturrilha', series: '4x20', descanso: '60s' }
+                                ],
+                                obs: 'TREINO BRUTAL! Não pule leg day. Técnica é FUNDAMENTAL.'
+                            },
+                            {
+                                dia: 'DIA D - Sábado',
+                                musculo: 'Ombros + Abdômen',
+                                exercicios: [
+                                    { nome: 'Desenvolvimento Barra', alvo: 'Ombro Completo', series: '4x10', descanso: '90s' },
+                                    { nome: 'Desenvolvimento Halteres', alvo: 'Ombros', series: '4x10', descanso: '75s' },
+                                    { nome: 'Elevação Lateral', alvo: 'Ombro Lateral', series: '4x12', descanso: '60s' },
+                                    { nome: 'Elevação Frontal', alvo: 'Ombro Frontal', series: '3x12', descanso: '60s' },
+                                    { nome: 'Elevação Posterior', alvo: 'Ombro Posterior', series: '4x12', descanso: '60s' },
+                                    { nome: 'Encolhimento', alvo: 'Trapézio', series: '4x15', descanso: '60s' },
+                                    { nome: 'Abdominal Supra', alvo: 'Abdômen Superior', series: '4x20', descanso: '45s' },
+                                    { nome: 'Abdominal Infra', alvo: 'Abdômen Inferior', series: '4x15', descanso: '45s' },
+                                    { nome: 'Prancha', alvo: 'Core', series: '3x60s', descanso: '60s' }
+                                ],
+                                obs: 'Ombros exigem TÉCNICA! Não use peso excessivo.'
+                            }
+                        ]
+                    },
+                    avancado: {
+                        divisao: 'ABCDE (5x por semana)',
+                        dias: [
+                            {
+                                dia: 'DIA A - Segunda',
+                                musculo: 'Peito Completo',
+                                exercicios: [
+                                    { nome: 'Supino Reto', alvo: 'Peitoral Maior', series: '5x6-8', descanso: '2min' },
+                                    { nome: 'Supino Inclinado', alvo: 'Peitoral Superior', series: '4x8', descanso: '90s' },
+                                    { nome: 'Supino Declinado', alvo: 'Peitoral Inferior', series: '4x10', descanso: '75s' },
+                                    { nome: 'Crucifixo Reto', alvo: 'Peitoral', series: '4x10', descanso: '60s' },
+                                    { nome: 'Crucifixo Inclinado', alvo: 'Peitoral Superior', series: '3x12', descanso: '60s' },
+                                    { nome: 'Cross Over Alto', alvo: 'Peitoral Inferior', series: '3x15', descanso: '45s' },
+                                    { nome: 'Cross Over Baixo', alvo: 'Peitoral Superior', series: '3x15', descanso: '45s' },
+                                    { nome: 'Pullover', alvo: 'Peitoral + Dorsal', series: '3x12', descanso: '60s' },
+                                    { nome: 'Flexão Diamante', alvo: 'Peitoral Interno', series: '3x MAX', descanso: '60s' }
+                                ],
+                                obs: 'PEITO COMPLETO! Todas as angulações. Drop set no último exercício.'
+                            },
+                            {
+                                dia: 'DIA B - Terça',
+                                musculo: 'Costas Completo',
+                                exercicios: [
+                                    { nome: 'Levantamento Terra', alvo: 'Costas + Posterior', series: '5x5', descanso: '3min' },
+                                    { nome: 'Barra Fixa', alvo: 'Dorsal', series: '4x6-8', descanso: '2min' },
+                                    { nome: 'Remada Curvada', alvo: 'Dorsal + Trapézio', series: '4x8', descanso: '90s' },
+                                    { nome: 'Puxada Frontal', alvo: 'Dorsal', series: '4x10', descanso: '75s' },
+                                    { nome: 'Remada Cavalinho', alvo: 'Dorsal', series: '3x10', descanso: '60s' },
+                                    { nome: 'Remada Unilateral', alvo: 'Dorsal', series: '3x10', descanso: '60s' },
+                                    { nome: 'Pulldown Reto', alvo: 'Dorsal Inferior', series: '3x15', descanso: '45s' },
+                                    { nome: 'Encolhimento Barra', alvo: 'Trapézio', series: '4x12', descanso: '60s' },
+                                    { nome: 'Hiperextensão', alvo: 'Lombar', series: '3x15', descanso: '60s' }
+                                ],
+                                obs: 'TERRA = BASE! Técnica impecável. Cinto lombar recomendado.'
+                            },
+                            {
+                                dia: 'DIA C - Quinta',
+                                musculo: 'Pernas + Glúteos',
+                                exercicios: [
+                                    { nome: 'Agachamento Livre', alvo: 'Quadríceps + Glúteos', series: '5x6-8', descanso: '3min' },
+                                    { nome: 'Agachamento Frontal', alvo: 'Quadríceps', series: '4x8', descanso: '2min' },
+                                    { nome: 'Leg Press 45°', alvo: 'Quadríceps', series: '4x10', descanso: '90s' },
+                                    { nome: 'Hack Squat', alvo: 'Quadríceps', series: '4x10', descanso: '90s' },
+                                    { nome: 'Cadeira Extensora', alvo: 'Quadríceps', series: '4x12', descanso: '60s' },
+                                    { nome: 'Stiff', alvo: 'Posterior + Glúteos', series: '4x10', descanso: '90s' },
+                                    { nome: 'Mesa Flexora', alvo: 'Posterior', series: '4x12', descanso: '60s' },
+                                    { nome: 'Búlgaro', alvo: 'Pernas + Glúteos', series: '3x12', descanso: '60s' },
+                                    { nome: 'Panturrilha em Pé', alvo: 'Gastrocnêmio', series: '5x15', descanso: '60s' },
+                                    { nome: 'Panturrilha Sentado', alvo: 'Sóleo', series: '4x20', descanso: '45s' }
+                                ],
+                                obs: 'TREINO MASSACRANTE! Hidrate muito. Joelheiras recomendadas.'
+                            },
+                            {
+                                dia: 'DIA D - Sexta',
+                                musculo: 'Ombros + Trapézio',
+                                exercicios: [
+                                    { nome: 'Desenvolvimento Barra', alvo: 'Ombro Completo', series: '5x6-8', descanso: '2min' },
+                                    { nome: 'Desenvolvimento Halteres', alvo: 'Ombros', series: '4x8', descanso: '90s' },
+                                    { nome: 'Arnold Press', alvo: 'Ombros 360°', series: '4x10', descanso: '75s' },
+                                    { nome: 'Elevação Lateral', alvo: 'Ombro Lateral', series: '4x12', descanso: '60s' },
+                                    { nome: 'Elevação Frontal', alvo: 'Ombro Frontal', series: '4x12', descanso: '60s' },
+                                    { nome: 'Elevação Posterior', alvo: 'Ombro Posterior', series: '4x12', descanso: '60s' },
+                                    { nome: 'Crucifixo Inverso', alvo: 'Ombro Posterior', series: '3x15', descanso: '45s' },
+                                    { nome: 'Remada Alta', alvo: 'Ombro + Trapézio', series: '4x10', descanso: '60s' },
+                                    { nome: 'Encolhimento Halteres', alvo: 'Trapézio', series: '4x15', descanso: '60s' }
+                                ],
+                                obs: 'OMBROS 3D! Trabalhe todas as cabeças (anterior, lateral, posterior).'
+                            },
+                            {
+                                dia: 'DIA E - Sábado',
+                                musculo: 'Braços + Abdômen',
+                                exercicios: [
+                                    { nome: 'Rosca Direta Barra', alvo: 'Bíceps', series: '4x8', descanso: '75s' },
+                                    { nome: 'Tríceps Testa', alvo: 'Tríceps', series: '4x8', descanso: '75s' },
+                                    { nome: 'Rosca Alternada', alvo: 'Bíceps', series: '4x10', descanso: '60s' },
+                                    { nome: 'Tríceps Corda', alvo: 'Tríceps', series: '4x12', descanso: '60s' },
+                                    { nome: 'Rosca Martelo', alvo: 'Bíceps + Braquial', series: '3x12', descanso: '60s' },
+                                    { nome: 'Tríceps Francês', alvo: 'Tríceps', series: '3x12', descanso: '60s' },
+                                    { nome: 'Rosca Scott', alvo: 'Bíceps', series: '3x12', descanso: '60s' },
+                                    { nome: 'Paralelas', alvo: 'Tríceps', series: '3x MAX', descanso: '90s' },
+                                    { nome: 'Abdominal Supra', alvo: 'Abdômen Superior', series: '4x25', descanso: '45s' },
+                                    { nome: 'Abdominal Infra', alvo: 'Abdômen Inferior', series: '4x20', descanso: '45s' },
+                                    { nome: 'Abdominal Bicicleta', alvo: 'Oblíquos', series: '3x30', descanso: '45s' },
+                                    { nome: 'Prancha', alvo: 'Core', series: '3x90s', descanso: '60s' }
+                                ],
+                                obs: 'FINALIZADOR! Braços bombeados. Drop sets nos últimos exercícios.'
+                            }
+                        ]
+                    }
+                }
             };
 
-            document.getElementById('planoDescricao').textContent = 
-                `Plano ${objetivoNome[objetivo]} para ${biotipo} nível ${nivel} - Personalizado para ${nome}`;
+            // Gerar treino baseado em objetivo e nível
+            const plano = treinos[objetivo][nivel];
+            
+            let html = `
+                <div class="form-wrapper">
+                    <div class="section-title">🎯 ${nome.toUpperCase()} - SEU PLANO DE TREINO</div>
+                    <div style="background: rgba(245, 158, 11, 0.1); padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 2px solid var(--accent);">
+                        <h3 style="color: var(--accent); margin-bottom: 15px;">📋 Divisão: ${plano.divisao}</h3>
+                        <p style="line-height: 1.8;">
+                            <strong>Objetivo:</strong> ${objetivo.charAt(0).toUpperCase() + objetivo.slice(1)}<br>
+                            <strong>Nível:</strong> ${nivel.charAt(0).toUpperCase() + nivel.slice(1)}<br>
+                            <strong>Frequência:</strong> ${plano.dias.length}x por semana<br>
+                            <strong>Duração:</strong> 8-12 semanas
+                        </p>
+                    </div>
+            `;
 
-            // Renderizar exercícios
-            const exerciseList = document.getElementById('exerciseList');
-            exerciseList.innerHTML = '';
-            workout.forEach(ex => {
-                const div = document.createElement('div');
-                div.className = 'exercise-item';
-                div.innerHTML = `
-                    <div class="exercise-name">${ex.nome}</div>
-                    <div class="exercise-details">${ex.detalhes}</div>
+            plano.dias.forEach((treino, index) => {
+                html += `
+                    <div class="treino-day">
+                        <div class="day-header">
+                            <div class="day-title">${treino.dia}</div>
+                            <div class="day-muscle">${treino.musculo}</div>
+                        </div>
+                        
+                        <div style="background: rgba(245, 158, 11, 0.1); border: 2px solid var(--accent); padding: 25px; border-radius: 20px; margin-bottom: 25px;">
+                            <h3 style="color: var(--accent); margin-bottom: 20px; font-size: 1.3rem;">🔥 AQUECIMENTO OBRIGATÓRIO (10-15 minutos)</h3>
+                            <div style="display: grid; gap: 15px;">
+                                ${getAquecimento(treino.musculo)}
+                            </div>
+                        </div>
+                        
+                        <div class="exercise-list">
                 `;
-                exerciseList.appendChild(div);
+
+                treino.exercicios.forEach((ex, i) => {
+                    html += `
+                        <div class="exercise-item">
+                            <div class="exercise-number">${i + 1}</div>
+                            <div>
+                                <div class="exercise-name">${ex.nome}</div>
+                                <div class="exercise-muscle-target">🎯 ${ex.alvo}</div>
+                            </div>
+                            <div class="exercise-sets">${ex.series}</div>
+                            <div class="exercise-rest">⏱️ ${ex.descanso}</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div class="obs-section">
+                            <div class="obs-title">💡 Observações Importantes:</div>
+                            <p>${treino.obs}</p>
+                        </div>
+                        
+                        <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid var(--primary); padding: 25px; border-radius: 20px; margin-top: 20px;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.3rem;">🧘 ALONGAMENTO FINAL (10 minutos)</h3>
+                            <div style="display: grid; gap: 12px;">
+                                ${getAlongamento(treino.musculo)}
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
-            // Descrição da dieta
-            document.getElementById('dietaDescricao').textContent = 
-                `${diet.calorias} - ${diet.macros}`;
+            html += `
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 30px; border-radius: 20px; border: 2px solid var(--primary); margin-top: 30px;">
+                        <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5rem;">📌 DICAS GERAIS</h3>
+                        <ul style="line-height: 2; padding-left: 20px;">
+                            <li><strong>Progressão:</strong> Aumente a carga quando conseguir fazer todas as séries no topo da faixa de repetições</li>
+                            <li><strong>Descanso:</strong> Durma 7-9 horas por noite para recuperação muscular</li>
+                            <li><strong>Alimentação:</strong> Proteína: 1.8-2.2g/kg de peso corporal por dia</li>
+                            <li><strong>Hidratação:</strong> Mínimo 2-3 litros de água por dia</li>
+                            <li><strong>Aquecimento:</strong> 5-10min cardio leve + mobilidade articular</li>
+                            <li><strong>Alongamento:</strong> 10min ao final de cada treino</li>
+                            <li><strong>Evolução:</strong> Anote os pesos utilizados para acompanhar progresso</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
 
-            // Renderizar dieta
-            const dietaList = document.getElementById('dietaList');
-            dietaList.innerHTML = '';
-            diet.refeicoes.forEach(meal => {
-                const div = document.createElement('div');
-                div.className = 'diet-meal';
-                div.innerHTML = `
-                    <div class="meal-time">${meal.hora}</div>
-                    <div class="meal-foods">${meal.alimentos}</div>
-                `;
-                dietaList.appendChild(div);
-            });
-
-            // Mostrar resultados
+            document.getElementById('results').innerHTML = html;
             document.getElementById('results').classList.add('show');
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
