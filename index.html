@@ -3,393 +3,432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VidaSaudável AI - Coach Virtual de Saúde</title>
-    <meta name="description" content="Coach virtual gratuito com IA para saúde, nutrição, dietas e treinos personalizados">
-    
+    <title>VidaSaudável AI - Seu Coach de Saúde Pessoal</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@700;900&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --secondary: #8b5cf6;
-            --accent: #f59e0b;
-            --dark: #0f172a;
-            --light: #f8fafc;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--light);
-            color: var(--dark);
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 5px;
         }
-        
-        /* Header */
-        header {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header-content {
-            max-width: 1400px;
+
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
-        .logo {
-            font-family: 'Playfair Display', serif;
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-size: 2rem;
-            font-weight: 900;
-            color: white;
+            font-weight: bold;
+        }
+
+        /* USER INFO */
+        .user-info {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 15px;
         }
-        
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: white;
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
+            border: 3px solid #667eea;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-logout:hover {
+            transform: scale(1.05);
+        }
+
+        /* LOGIN SCREEN */
+        .login-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            animation: pulse 2s infinite;
+            min-height: 80vh;
         }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 2rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-        }
-        
-        nav a:hover {
-            transform: translateY(-2px);
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        
-        /* Hero Section */
-        .hero {
-            margin-top: 90px;
-            min-height: 90vh;
-            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 30s linear infinite;
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4.5rem;
-            font-weight: 900;
-            color: white;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero-text p {
-            font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 2.5rem;
-            line-height: 1.7;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 1.2rem 3rem;
-            background: white;
-            color: var(--primary);
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-        }
-        
-        .hero-images {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .hero-image {
-            width: 100%;
-            height: 250px;
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
             border-radius: 20px;
-            object-fit: cover;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
-        }
-        
-        .hero-image:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Features Section */
-        .features {
-            padding: 6rem 2rem;
-            background: var(--light);
-        }
-        
-        .section-header {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto 4rem;
+            max-width: 450px;
+            width: 100%;
         }
-        
-        .section-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            color: var(--dark);
-            margin-bottom: 1rem;
+
+        .login-box h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 2rem;
         }
-        
-        .section-header p {
-            font-size: 1.2rem;
-            color: #64748b;
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1rem;
         }
-        
-        .features-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-        }
-        
-        .feature-card {
+
+        .btn-google {
             background: white;
-            padding: 3rem 2.5rem;
-            border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.4s;
-            text-decoration: none;
-            color: inherit;
+            color: #333;
+            border: 2px solid #ddd;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-google:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-color: #667eea;
+        }
+
+        .google-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            display: none;
+        }
+
+        .main-content.active {
             display: block;
         }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.15);
-        }
-        
-        .feature-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.8rem;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-        
-        .feature-card p {
-            color: #64748b;
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 3rem 2rem;
+
+        /* WELCOME SECTION */
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        
-        footer a {
-            color: var(--primary);
+
+        .welcome-section h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
             text-decoration: none;
-            margin: 0 1rem;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
-        
-        footer a:hover {
-            text-decoration: underline;
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
-        
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 100px 20px;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
                 text-align: center;
             }
-            
-            .hero-text h1 {
-                font-size: 3rem;
+
+            .login-box {
+                padding: 30px 20px;
             }
-            
-            .hero-images {
-                max-width: 600px;
-                margin: 0 auto;
-            }
-            
-            .features-grid {
+
+            .cards-grid {
                 grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav {
-                display: flex;
-                gap: 1rem;
-            }
-            
-            nav a {
-                margin-left: 0;
-                font-size: 0.9rem;
-            }
-            
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
-            
-            .section-header h2 {
-                font-size: 2.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">💚</div>
-                <span>VidaSaudável</span>
-            </div>
-            <nav>
-                <a href="#inicio">Início</a>
-                <a href="#recursos">Recursos</a>
-                <a href="#sobre">Sobre</a>
-            </nav>
-        </div>
-    </header>
+    <!-- LOADING INICIAL -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Transforme Sua Vida com Seu Coach Virtual</h1>
-                <p>Dietas personalizadas, treinos sob medida e acompanhamento completo. Tudo grátis, tudo com inteligência artificial.</p>
-                <a href="dieta.html" class="cta-button">Começar Agora - Grátis</a>
-            </div>
-            <div class="hero-images">
-                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500" alt="Alimentação saudável" class="hero-image">
-                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500" alt="Treino" class="hero-image">
-                <img src="https://images.unsplash.com/photo-1483721310020-03333e577078?w=500" alt="Bem-estar" class="hero-image">
-                <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500" alt="Saúde" class="hero-image">
-            </div>
+    <!-- TELA DE LOGIN -->
+    <div id="loginScreen" class="login-container" style="display: none;">
+        <div class="login-box">
+            <h2>🏋️ VidaSaudável AI</h2>
+            <p>Seu coach de saúde pessoal com inteligência artificial</p>
+            <button id="btnGoogleLogin" class="btn-google">
+                <svg class="google-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Entrar com Google
+            </button>
         </div>
-    </section>
+    </div>
 
-    <!-- Features Section -->
-    <section class="features" id="recursos">
-        <div class="section-header">
-            <h2>Recursos Completos</h2>
-            <p>Tudo que você precisa para alcançar seus objetivos de saúde</p>
-        </div>
-        
-        <div class="features-grid">
-            <!-- Card 1: Dietas -->
-            <a href="dieta.html" class="feature-card">
-                <div class="feature-icon">🍎</div>
-                <h3>Dietas Personalizadas</h3>
-                <p>Planos alimentares adaptados ao seu orçamento, objetivos e preferências. Receitas saudáveis e práticas.</p>
-            </a>
-            
-            <!-- Card 2: Treinos -->
-            <a href="treino.html" class="feature-card">
-                <div class="feature-icon">🏋️</div>
-                <h3>Fichas de Treino</h3>
-                <p>Treinos customizados para casa ou academia. Progressão segura e exercícios bem explicados.</p>
-            </a>
-            
-            <!-- Card 3: Acompanhamento -->
-            <a href="acompanhamento.html" class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Acompanhamento</h3>
-                <p>Monitore seu progresso e ajuste o plano conforme evoluir na sua jornada.</p>
-            </a>
-            
-            <!-- Card 4: NOVO - Aprenda a Treinar -->
-            <a href="exercicios.html" class="feature-card">
-                <div class="feature-icon">🎥</div>
-                <h3>Aprenda a Treinar</h3>
-                <p>Vídeos demonstrativos de todos os exercícios. Aprenda a execução correta e evite lesões.</p>
-            </a>
-        </div>
-    </section>
+    <!-- CONTEÚDO PRINCIPAL (após login) -->
+    <div id="mainContent" class="main-content">
+        <div class="container">
+            <!-- HEADER COM INFO DO USUÁRIO -->
+            <header>
+                <h1>🏋️ VidaSaudável AI</h1>
+                <div class="user-info">
+                    <img id="userAvatar" class="user-avatar" src="" alt="Avatar">
+                    <span id="userName" class="user-name"></span>
+                    <button id="btnLogout" class="btn-logout">Sair</button>
+                </div>
+            </header>
 
-    <!-- Footer -->
-    <footer id="sobre">
-        <p>&copy; 2026 VidaSaudável AI - Seu Coach Virtual de Saúde</p>
-        <div style="margin-top: 1rem;">
-            <a href="#">Privacidade</a>
-            <a href="#">Termos</a>
-            <a href="#">Contato</a>
+            <!-- WELCOME SECTION -->
+            <div class="welcome-section">
+                <h2 id="welcomeMessage">Bem-vindo de volta!</h2>
+                <p>Escolha uma das opções abaixo para continuar sua jornada de saúde</p>
+            </div>
+
+            <!-- CARDS -->
+            <div class="cards-grid">
+                <a href="treino.html" class="feature-card">
+                    <div class="card-icon">🏋️</div>
+                    <h3 class="card-title">Meu Treino</h3>
+                    <p class="card-description">Gere sua ficha de treino personalizada com IA</p>
+                </a>
+
+                <a href="dieta.html" class="feature-card">
+                    <div class="card-icon">🍎</div>
+                    <h3 class="card-title">Minha Dieta</h3>
+                    <p class="card-description">Plano alimentar personalizado para seus objetivos</p>
+                </a>
+
+                <a href="acompanhamento.html" class="feature-card">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">Acompanhamento</h3>
+                    <p class="card-description">Monitore sua evolução com gráficos e métricas</p>
+                </a>
+
+                <a href="exercicios.html" class="feature-card">
+                    <div class="card-icon">💪</div>
+                    <h3 class="card-title">Aprenda a Treinar</h3>
+                    <p class="card-description">Biblioteca completa de exercícios com vídeos</p>
+                </a>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- FIREBASE SDK -->
+    <script type="module">
+        // IMPORTAR FIREBASE
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+        // CONFIGURAÇÕES DO FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
+            authDomain: "vidasaudavel-490d6.firebaseapp.com",
+            projectId: "vidasaudavel-490d6",
+            storageBucket: "vidasaudavel-490d6.firebasestorage.app",
+            messagingSenderId: "272083638670",
+            appId: "1:272083638670:web:7200f3e3e29767ceb3ecdf"
+        };
+
+        // INICIALIZAR FIREBASE
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        // ELEMENTOS DO DOM
+        const loading = document.getElementById('loading');
+        const loginScreen = document.getElementById('loginScreen');
+        const mainContent = document.getElementById('mainContent');
+        const btnGoogleLogin = document.getElementById('btnGoogleLogin');
+        const btnLogout = document.getElementById('btnLogout');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        // LOGIN COM GOOGLE
+        btnGoogleLogin.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                // SALVAR DADOS DO USUÁRIO NO FIRESTORE
+                await setDoc(doc(db, 'users', user.uid), {
+                    name: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    createdAt: new Date(),
+                    lastLogin: new Date()
+                }, { merge: true });
+
+                console.log('Login realizado com sucesso!');
+            } catch (error) {
+                console.error('Erro no login:', error);
+                alert('Erro ao fazer login. Tente novamente.');
+            }
+        });
+
+        // LOGOUT
+        btnLogout.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                console.log('Logout realizado!');
+            } catch (error) {
+                console.error('Erro no logout:', error);
+            }
+        });
+
+        // VERIFICAR ESTADO DE AUTENTICAÇÃO
+        onAuthStateChanged(auth, async (user) => {
+            loading.style.display = 'none';
+
+            if (user) {
+                // USUÁRIO LOGADO
+                loginScreen.style.display = 'none';
+                mainContent.classList.add('active');
+
+                // EXIBIR INFORMAÇÕES DO USUÁRIO
+                userAvatar.src = user.photoURL || 'https://via.placeholder.com/45';
+                userName.textContent = user.displayName || 'Usuário';
+                
+                const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Atleta';
+                welcomeMessage.textContent = `Olá, ${firstName}! 💪`;
+
+                // SALVAR NO LOCALSTORAGE (para outras páginas)
+                localStorage.setItem('userData', JSON.stringify({
+                    uid: user.uid,
+                    name: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL
+                }));
+
+                // BUSCAR DADOS DO FIRESTORE
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    console.log('Dados do usuário:', userDoc.data());
+                }
+            } else {
+                // USUÁRIO NÃO LOGADO
+                loginScreen.style.display = 'flex';
+                mainContent.classList.remove('active');
+                localStorage.removeItem('userData');
+            }
+        });
+    </script>
 </body>
 </html>
