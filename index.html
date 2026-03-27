@@ -15,11 +15,11 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 5px;
+            padding: 10px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -27,10 +27,10 @@
         /* HEADER */
         header {
             background: rgba(255, 255, 255, 0.95);
-            padding: 15px 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -40,145 +40,106 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
         }
 
-        /* USER INFO */
-        .user-info {
+        /* USER SECTION */
+        .user-section {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-info.active {
+            display: flex;
+        }
+
         .user-avatar {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: 3px solid #667eea;
+            border: 2px solid #667eea;
         }
 
         .user-name {
             font-weight: 600;
             color: #333;
+            font-size: 0.95rem;
         }
 
         .btn-logout {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: #f5576c;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 18px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            font-size: 0.85rem;
         }
 
         .btn-logout:hover {
-            transform: scale(1.05);
+            background: #e04555;
         }
 
-        /* LOGIN SCREEN */
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-        }
-
-        .login-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        /* HERO SECTION */
+        .hero {
             text-align: center;
-            max-width: 450px;
-            width: 100%;
+            padding: 60px 20px;
+            margin-bottom: 40px;
         }
 
-        .login-box h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 2rem;
+        .hero h2 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        .login-box p {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-
-        .btn-google {
-            background: white;
-            color: #333;
-            border: 2px solid #ddd;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-google:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            border-color: #667eea;
-        }
-
-        .google-icon {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* MAIN CONTENT */
-        .main-content {
-            display: none;
-        }
-
-        .main-content.active {
-            display: block;
-        }
-
-        /* WELCOME SECTION */
-        .welcome-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .welcome-section h2 {
-            color: #333;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .welcome-section p {
-            color: #666;
-            font-size: 1.1rem;
+        .hero p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3rem;
         }
 
         /* CARDS GRID */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
         .feature-card {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 40px 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
@@ -189,85 +150,220 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
         }
 
         .card-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 5rem;
+            margin-bottom: 25px;
         }
 
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .card-description {
             color: #666;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
-        /* LOADING */
-        .loading {
+        /* LOGIN MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             text-align: center;
-            padding: 100px 20px;
-            color: white;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
             font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
         }
 
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+        .close-modal:hover {
+            color: #333;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .login-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .btn-google {
+            background: white;
+            color: #333;
+            border: 2px solid #ddd;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-google:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
         }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
             }
 
             header {
                 flex-direction: column;
                 gap: 15px;
-                text-align: center;
-            }
-
-            .login-box {
-                padding: 30px 20px;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
             }
+
+            .user-name {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            .hero {
+                padding: 40px 10px;
+            }
+
+            .feature-card {
+                padding: 30px 20px;
+            }
+
+            .card-icon {
+                font-size: 4rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- LOADING INICIAL -->
-    <div id="loading" class="loading">
-        <div class="spinner"></div>
-        <p>Carregando...</p>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>🏋️ VidaSaudável AI</h1>
+            <div class="user-section">
+                <button id="btnShowLogin" class="btn-login">Entrar</button>
+                <div id="userInfo" class="user-info">
+                    <img id="userAvatar" class="user-avatar" src="" alt="">
+                    <span id="userName" class="user-name"></span>
+                    <button id="btnLogout" class="btn-logout">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <div class="hero">
+            <h2 id="heroTitle">Seu Coach de Saúde Pessoal com IA 💪</h2>
+            <p>Transforme seu corpo e sua vida com inteligência artificial</p>
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards-grid">
+            <a href="treino.html" class="feature-card">
+                <div class="card-icon">🏋️</div>
+                <h3 class="card-title">Meu Treino</h3>
+                <p class="card-description">Gere sua ficha de treino personalizada adaptada ao seu biotipo e objetivos</p>
+            </a>
+
+            <a href="dieta.html" class="feature-card">
+                <div class="card-icon">🍎</div>
+                <h3 class="card-title">Minha Dieta</h3>
+                <p class="card-description">Plano alimentar completo e personalizado para alcançar suas metas</p>
+            </a>
+
+            <a href="acompanhamento.html" class="feature-card">
+                <div class="card-icon">📊</div>
+                <h3 class="card-title">Acompanhamento</h3>
+                <p class="card-description">Monitore sua evolução com fotos, medidas e gráficos de progresso</p>
+            </a>
+
+            <a href="exercicios.html" class="feature-card">
+                <div class="card-icon">💪</div>
+                <h3 class="card-title">Aprenda a Treinar</h3>
+                <p class="card-description">Biblioteca completa com 58 exercícios e execução correta</p>
+            </a>
+        </div>
     </div>
 
-    <!-- TELA DE LOGIN -->
-    <div id="loginScreen" class="login-container" style="display: none;">
+    <!-- MODAL -->
+    <div id="loginModal" class="modal-overlay">
         <div class="login-box">
-            <h2>🏋️ VidaSaudável AI</h2>
-            <p>Seu coach de saúde pessoal com inteligência artificial</p>
+            <button class="close-modal" id="closeModal">×</button>
+            <h3>🏋️ Entrar</h3>
+            <p>Faça login para salvar seus dados e acompanhar sua evolução</p>
             <button id="btnGoogleLogin" class="btn-google">
                 <svg class="google-icon" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -280,62 +376,11 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL (após login) -->
-    <div id="mainContent" class="main-content">
-        <div class="container">
-            <!-- HEADER COM INFO DO USUÁRIO -->
-            <header>
-                <h1>🏋️ VidaSaudável AI</h1>
-                <div class="user-info">
-                    <img id="userAvatar" class="user-avatar" src="" alt="Avatar">
-                    <span id="userName" class="user-name"></span>
-                    <button id="btnLogout" class="btn-logout">Sair</button>
-                </div>
-            </header>
-
-            <!-- WELCOME SECTION -->
-            <div class="welcome-section">
-                <h2 id="welcomeMessage">Bem-vindo de volta!</h2>
-                <p>Escolha uma das opções abaixo para continuar sua jornada de saúde</p>
-            </div>
-
-            <!-- CARDS -->
-            <div class="cards-grid">
-                <a href="treino.html" class="feature-card">
-                    <div class="card-icon">🏋️</div>
-                    <h3 class="card-title">Meu Treino</h3>
-                    <p class="card-description">Gere sua ficha de treino personalizada com IA</p>
-                </a>
-
-                <a href="dieta.html" class="feature-card">
-                    <div class="card-icon">🍎</div>
-                    <h3 class="card-title">Minha Dieta</h3>
-                    <p class="card-description">Plano alimentar personalizado para seus objetivos</p>
-                </a>
-
-                <a href="acompanhamento.html" class="feature-card">
-                    <div class="card-icon">📊</div>
-                    <h3 class="card-title">Acompanhamento</h3>
-                    <p class="card-description">Monitore sua evolução com gráficos e métricas</p>
-                </a>
-
-                <a href="exercicios.html" class="feature-card">
-                    <div class="card-icon">💪</div>
-                    <h3 class="card-title">Aprenda a Treinar</h3>
-                    <p class="card-description">Biblioteca completa de exercícios com vídeos</p>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- FIREBASE SDK -->
     <script type="module">
-        // IMPORTAR FIREBASE
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-        // CONFIGURAÇÕES DO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
             authDomain: "vidasaudavel-490d6.firebaseapp.com",
@@ -345,87 +390,62 @@
             appId: "1:272083638670:web:7200f3e3e29767ceb3ecdf"
         };
 
-        // INICIALIZAR FIREBASE
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // ELEMENTOS DO DOM
-        const loading = document.getElementById('loading');
-        const loginScreen = document.getElementById('loginScreen');
-        const mainContent = document.getElementById('mainContent');
+        const btnShowLogin = document.getElementById('btnShowLogin');
         const btnGoogleLogin = document.getElementById('btnGoogleLogin');
         const btnLogout = document.getElementById('btnLogout');
+        const closeModal = document.getElementById('closeModal');
+        const loginModal = document.getElementById('loginModal');
+        const userInfo = document.getElementById('userInfo');
         const userAvatar = document.getElementById('userAvatar');
         const userName = document.getElementById('userName');
-        const welcomeMessage = document.getElementById('welcomeMessage');
+        const heroTitle = document.getElementById('heroTitle');
 
-        // LOGIN COM GOOGLE
+        btnShowLogin.addEventListener('click', () => loginModal.classList.add('active'));
+        closeModal.addEventListener('click', () => loginModal.classList.remove('active'));
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) loginModal.classList.remove('active');
+        });
+
         btnGoogleLogin.addEventListener('click', async () => {
             try {
                 const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                
-                // SALVAR DADOS DO USUÁRIO NO FIRESTORE
-                await setDoc(doc(db, 'users', user.uid), {
-                    name: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL,
-                    createdAt: new Date(),
+                await setDoc(doc(db, 'users', result.user.uid), {
+                    name: result.user.displayName,
+                    email: result.user.email,
+                    photoURL: result.user.photoURL,
                     lastLogin: new Date()
                 }, { merge: true });
-
-                console.log('Login realizado com sucesso!');
+                loginModal.classList.remove('active');
             } catch (error) {
-                console.error('Erro no login:', error);
-                alert('Erro ao fazer login. Tente novamente.');
+                console.error('Erro:', error);
+                alert('Erro ao fazer login.');
             }
         });
 
-        // LOGOUT
-        btnLogout.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                console.log('Logout realizado!');
-            } catch (error) {
-                console.error('Erro no logout:', error);
-            }
-        });
+        btnLogout.addEventListener('click', () => signOut(auth));
 
-        // VERIFICAR ESTADO DE AUTENTICAÇÃO
-        onAuthStateChanged(auth, async (user) => {
-            loading.style.display = 'none';
-
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                // USUÁRIO LOGADO
-                loginScreen.style.display = 'none';
-                mainContent.classList.add('active');
-
-                // EXIBIR INFORMAÇÕES DO USUÁRIO
-                userAvatar.src = user.photoURL || 'https://via.placeholder.com/45';
+                btnShowLogin.style.display = 'none';
+                userInfo.classList.add('active');
+                userAvatar.src = user.photoURL || 'https://via.placeholder.com/40';
                 userName.textContent = user.displayName || 'Usuário';
-                
-                const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Atleta';
-                welcomeMessage.textContent = `Olá, ${firstName}! 💪`;
-
-                // SALVAR NO LOCALSTORAGE (para outras páginas)
+                heroTitle.textContent = `Bem-vindo, ${user.displayName?.split(' ')[0]}! 💪`;
                 localStorage.setItem('userData', JSON.stringify({
                     uid: user.uid,
                     name: user.displayName,
                     email: user.email,
                     photoURL: user.photoURL
                 }));
-
-                // BUSCAR DADOS DO FIRESTORE
-                const userDoc = await getDoc(doc(db, 'users', user.uid));
-                if (userDoc.exists()) {
-                    console.log('Dados do usuário:', userDoc.data());
-                }
             } else {
-                // USUÁRIO NÃO LOGADO
-                loginScreen.style.display = 'flex';
-                mainContent.classList.remove('active');
+                btnShowLogin.style.display = 'block';
+                userInfo.classList.remove('active');
+                heroTitle.textContent = 'Seu Coach de Saúde Pessoal com IA 💪';
                 localStorage.removeItem('userData');
             }
         });
