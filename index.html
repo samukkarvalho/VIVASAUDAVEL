@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VidaSaudável AI - Premium Health Coaching</title>
+    <title>VidaSaudável - Seu Coach de Saúde Pessoal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -308,6 +309,10 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .feature-card::before {
@@ -350,6 +355,91 @@
             font-size: 1rem;
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.7;
+        }
+
+        /* FOOTER */
+        footer {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 60px 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item:hover {
+            color: white;
+        }
+
+        .contact-item i {
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
         }
 
         /* LOGIN MODAL */
@@ -499,6 +589,19 @@
             .cta-buttons {
                 flex-direction: column;
             }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .contact-info {
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -515,7 +618,7 @@
     <!-- NAVBAR -->
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo">VidaSaudável AI</div>
+            <div class="logo">VidaSaudável</div>
             <div class="user-section">
                 <button id="btnShowLogin" class="btn-login">Entrar</button>
                 <div id="userInfo" class="user-info">
@@ -530,8 +633,8 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
-            <h1 id="heroTitle">Transforme Seu Corpo com <span class="gradient-text">Inteligência Artificial</span></h1>
-            <p>Seu coach de saúde pessoal premium. Treinos personalizados, dieta inteligente e acompanhamento profissional.</p>
+            <h1 id="heroTitle">Transforme Seu Corpo e <span class="gradient-text">Conquiste Seus Objetivos</span></h1>
+            <p>Seu coach de saúde pessoal. Treinos personalizados, nutrição inteligente e acompanhamento profissional.</p>
             <div class="cta-buttons">
                 <button class="btn-primary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Começar Agora</button>
                 <button class="btn-secondary" onclick="window.location.href='exercicios.html'">Ver Exercícios</button>
@@ -543,37 +646,105 @@
     <section class="features" id="features">
         <div class="container">
             <div class="section-title fade-in">
-                <h2>Suas Ferramentas Premium</h2>
-                <p>Tudo que você precisa para alcançar seus objetivos</p>
+                <h2>Suas Ferramentas Completas</h2>
+                <p>Tudo que você precisa para alcançar o corpo dos seus sonhos</p>
             </div>
 
             <div class="cards-grid">
                 <a href="treino.html" class="feature-card fade-in">
                     <span class="card-icon">🏋️</span>
-                    <h3 class="card-title">Treino Personalizado</h3>
-                    <p class="card-description">Fichas de treino adaptadas ao seu biotipo, objetivos e frequência semanal com IA avançada</p>
+                    <h3 class="card-title">Meu Treino</h3>
+                    <p class="card-description">Fichas de treino personalizadas adaptadas ao seu biotipo, objetivos e frequência semanal</p>
                 </a>
 
                 <a href="dieta.html" class="feature-card fade-in">
                     <span class="card-icon">🍎</span>
-                    <h3 class="card-title">Nutrição Inteligente</h3>
-                    <p class="card-description">Planos alimentares completos e personalizados para maximizar seus resultados</p>
+                    <h3 class="card-title">Minha Dieta</h3>
+                    <p class="card-description">Planos alimentares completos e balanceados para maximizar seus resultados</p>
                 </a>
 
                 <a href="acompanhamento.html" class="feature-card fade-in">
                     <span class="card-icon">📊</span>
-                    <h3 class="card-title">Acompanhamento Pro</h3>
-                    <p class="card-description">Monitore sua evolução com fotos, medidas e gráficos profissionais de progresso</p>
+                    <h3 class="card-title">Acompanhamento</h3>
+                    <p class="card-description">Monitore sua evolução com fotos, medidas e gráficos detalhados de progresso</p>
                 </a>
 
                 <a href="exercicios.html" class="feature-card fade-in">
                     <span class="card-icon">💪</span>
-                    <h3 class="card-title">Biblioteca Premium</h3>
-                    <p class="card-description">58 exercícios com vídeos e execução correta para treinar com segurança</p>
+                    <h3 class="card-title">Aprenda a Treinar</h3>
+                    <p class="card-description">Biblioteca com 58 exercícios detalhados e técnicas corretas de execução</p>
                 </a>
             </div>
         </div>
     </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>VidaSaudável</h3>
+                <p>Transforme seu corpo e sua vida com coaching profissional de saúde e fitness.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="social-link">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://wa.me/351900000000" target="_blank" class="social-link">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ferramentas</h3>
+                <div class="contact-info">
+                    <a href="treino.html" class="contact-item">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Gerador de Treino</span>
+                    </a>
+                    <a href="dieta.html" class="contact-item">
+                        <i class="fas fa-apple-alt"></i>
+                        <span>Plano Alimentar</span>
+                    </a>
+                    <a href="acompanhamento.html" class="contact-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Progresso</span>
+                    </a>
+                    <a href="exercicios.html" class="contact-item">
+                        <i class="fas fa-book"></i>
+                        <span>Exercícios</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <div class="contact-info">
+                    <a href="mailto:contato@vidasaudavel.com" class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@vidasaudavel.com</span>
+                    </a>
+                    <a href="https://wa.me/351900000000" class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>+351 900 000 000</span>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Portugal, Europa</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 VidaSaudável. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
     <!-- LOGIN MODAL -->
     <div id="loginModal" class="modal-overlay">
@@ -699,7 +870,7 @@
             } else {
                 btnShowLogin.style.display = 'block';
                 userInfo.classList.remove('active');
-                heroTitle.innerHTML = 'Transforme Seu Corpo com <span class="gradient-text">Inteligência Artificial</span>';
+                heroTitle.innerHTML = 'Transforme Seu Corpo e <span class="gradient-text">Conquiste Seus Objetivos</span>';
                 localStorage.removeItem('userData');
             }
         });
