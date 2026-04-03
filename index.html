@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VidaSaudável - Seu Coach de Saúde Pessoal</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Seu coach de saúde pessoal. Treinos personalizados, nutrição e acompanhamento.">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="VidaSaudável">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Ícones -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <!-- Fonts e CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -725,9 +742,9 @@
             <div class="footer-section">
                 <h3>Contato</h3>
                 <div class="contact-info">
-                    <a href="mailto:contato@vidasaudavel.com" class="contact-item">
+                    <a href="/cdn-cgi/l/email-protection#0a6965647e6b7e654a7c636e6b796b7f6e6b7c6f6624696567" class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <span>contato@vidasaudavel.com</span>
+                        <span><span class="__cf_email__" data-cfemail="5e3d31302a3f2a311e28373a3f2d3f2b3a3f283b32703d3133">[email&#160;protected]</span></span>
                     </a>
                     <a href="https://wa.me/351900000000" class="contact-item">
                         <i class="fab fa-whatsapp"></i>
@@ -764,7 +781,7 @@
         </div>
     </div>
 
-    <script type="module">
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
         import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
@@ -875,5 +892,8 @@
             }
         });
     </script>
+
+    <!-- PWA Install Script -->
+    <script src="/pwa-install.js"></script>
 </body>
 </html>
