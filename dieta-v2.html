@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Dieta Personalizada - VidaSaudável AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 1; }
+        .header { text-align: center; margin-bottom: 60px; animation: fadeInDown 0.8s ease-out; }
+        .header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #10b981, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .header p { font-size: 1.2rem; color: rgba(255, 255, 255, 0.7); }
+        .form-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .section-title::before {
+            content: '';
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        .form-grid { display: grid; gap: 30px; margin-bottom: 40px; }
+        .form-group { display: flex; flex-direction: column; gap: 12px; }
+        label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        input, select {
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+        select option { background: var(--dark); color: white; }
+        .biotipo-grid, .objetivo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .biotipo-card, .objetivo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .biotipo-card:hover, .objetivo-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+        .biotipo-card.selected {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+        .objetivo-card.selected {
+            border-color: var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+        .biotipo-icon, .objetivo-icon { font-size: 3rem; margin-bottom: 15px; }
+        .biotipo-name, .objetivo-name { font-weight: 800; font-size: 1.3rem; margin-bottom: 8px; }
+        .biotipo-desc { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+        
+        /* ORÇAMENTO CARDS */
+        .orcamento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .orcamento-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .orcamento-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+        .orcamento-card.selected {
+            border-color: var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+        .orcamento-icon { font-size: 3rem; margin-bottom: 15px; }
+        .orcamento-name {
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        .orcamento-valor {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .orcamento-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Bebas Neue', sans-serif;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
+        }
+        .results { display: none; margin-top: 40px; animation: fadeInUp 0.8s ease-out; }
+        .results.show { display: block; }
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        .macros-card {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid var(--accent);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .macros-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 15px; }
+        .macro-item { text-align: center; }
+        .macro-value { font-size: 2rem; font-weight: 800; color: var(--accent); }
+        .macro-label { font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 5px; }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .result-header-icon { font-size: 3rem; }
+        .result-header-text h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+        }
+        .result-header-text p { color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; }
+        .meal-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--accent);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .meal-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .meal-time {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .meal-macros-summary { display: flex; gap: 15px; font-size: 0.85rem; }
+        .meal-macros-summary span {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 5px 12px;
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .food-items { display: grid; gap: 12px; }
+        .food-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            align-items: center;
+        }
+        .food-name { font-weight: 600; color: white; }
+        .food-amount { color: var(--primary); font-weight: 700; text-align: center; }
+        .food-macros { text-align: right; font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .container { padding: 0; max-width: 100%; }
+            .header h1 { font-size: 2rem; margin-bottom: 5px; }
+            .header p { font-size: 0.85rem; }
+            .form-wrapper { 
+                padding: 15px; 
+                border-radius: 15px;
+                margin-bottom: 20px;
+            }
+            .section-title { 
+                font-size: 1.4rem; 
+                margin-bottom: 15px;
+            }
+            .biotipo-grid, .objetivo-grid, .orcamento-grid { 
+                grid-template-columns: 1fr; 
+                gap: 10px;
+            }
+            .biotipo-card, .objetivo-card, .orcamento-card { 
+                padding: 15px;
+                border-radius: 15px;
+            }
+            .biotipo-card .card-icon,
+            .objetivo-card .card-icon,
+            .orcamento-card .card-icon { 
+                font-size: 2rem; 
+                margin-bottom: 8px;
+            }
+            .biotipo-card .card-name,
+            .objetivo-card .card-name,
+            .orcamento-card .card-name { 
+                font-size: 0.95rem;
+            }
+            .biotipo-card p,
+            .objetivo-card p,
+            .orcamento-card p { 
+                font-size: 0.75rem;
+                margin-top: 3px;
+            }
+            .macros-grid { grid-template-columns: 1fr; gap: 10px; }
+            .food-item { 
+                grid-template-columns: 1fr; 
+                text-align: center;
+                padding: 12px;
+            }
+            input, select { 
+                padding: 10px 12px; 
+                font-size: 0.9rem;
+                border-radius: 10px;
+            }
+            label { font-size: 0.8rem; }
+            .submit-btn { 
+                padding: 14px; 
+                font-size: 0.95rem;
+                border-radius: 15px;
+            }
+            .meal-section { 
+                padding: 15px;
+                border-radius: 15px;
+            }
+            /* Botão voltar compacto */
+            a[href="index.html"] { 
+                padding: 8px 16px !important;
+                font-size: 0.85rem !important;
+                margin-bottom: 15px !important;
+                border: none !important;
+            }
+            a[href="index.html"] span { font-size: 1.1rem !important; }
+        }
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.7rem; }
+            .form-wrapper { padding: 12px; }
+            .section-title { font-size: 1.2rem; }
+            input[type="number"], input[type="text"] { font-size: 16px; }
+            .biotipo-card, .objetivo-card, .orcamento-card { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s; border: 2px solid transparent;">
+            <span style="font-size: 1.5rem;">←</span>
+            Voltar para Início
+        </a>
+        
+        <div class="header">
+            <h1>GERADOR DE DIETA</h1>
+            <p>Crie seu plano alimentar com porções pesadas</p>
+        </div>
+
+        <div class="form-wrapper">
+            <form id="dietForm">
+                <div class="section-title">📋 Seus Dados</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" required placeholder="Digite seu nome">
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label for="idade">Idade</label>
+                            <input type="number" id="idade" required placeholder="25" min="15" max="100">
+                        </div>
+                        <div>
+                            <label for="peso">Peso (kg)</label>
+                            <input type="number" id="peso" required placeholder="70" min="30" max="300">
+                        </div>
+                        <div>
+                            <label for="altura">Altura (cm)</label>
+                            <input type="number" id="altura" required placeholder="170" min="100" max="250">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo</label>
+                        <select id="sexo" required>
+                            <option value="">Selecione</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">💪 Seu Biotipo</div>
+                <div class="biotipo-grid">
+                    <div class="biotipo-card" data-biotipo="ectomorfo">
+                        <div class="biotipo-icon">🏃</div>
+                        <div class="biotipo-name">Ectomorfo</div>
+                        <div class="biotipo-desc">Corpo magro, metabolismo rápido</div>
+                    </div>
+                    <div class="biotipo-card" data-biotipo="mesomorfo">
+                        <div class="biotipo-icon">💪</div>
+                        <div class="biotipo-name">Mesomorfo</div>
+                        <div class="biotipo-desc">Corpo atlético, facilita ganhar músculo</div>
+                    </div>
+                    <div class="biotipo-card" data-biotipo="endomorfo">
+                        <div class="biotipo-icon">🏋️</div>
+                        <div class="biotipo-name">Endomorfo</div>
+                        <div class="biotipo-desc">Corpo robusto, metabolismo lento</div>
+                    </div>
+                </div>
+                <input type="hidden" id="biotipo" required>
+
+                <div class="section-title" style="margin-top: 40px;">🎯 Seu Objetivo</div>
+                <div class="objetivo-grid">
+                    <div class="objetivo-card" data-objetivo="emagrecimento">
+                        <div class="objetivo-icon">🔥</div>
+                        <div class="objetivo-name">Emagrecimento</div>
+                    </div>
+                    <div class="objetivo-card" data-objetivo="definicao">
+                        <div class="objetivo-icon">⚡</div>
+                        <div class="objetivo-name">Definição</div>
+                    </div>
+                    <div class="objetivo-card" data-objetivo="hipertrofia">
+                        <div class="objetivo-icon">💎</div>
+                        <div class="objetivo-name">Ganho de Massa</div>
+                    </div>
+                </div>
+                <input type="hidden" id="objetivo" required>
+
+                <!-- ORÇAMENTO -->
+                <div class="section-title" style="margin-top: 40px;">💰 Seu Orçamento Mensal</div>
+                <div class="orcamento-grid">
+                    <div class="orcamento-card" data-orcamento="baixo">
+                        <div class="orcamento-icon">🪙</div>
+                        <div class="orcamento-name">Econômico</div>
+                        <div class="orcamento-valor">R$ 300-500</div>
+                        <div class="orcamento-desc">Alimentos básicos e acessíveis</div>
+                    </div>
+                    <div class="orcamento-card" data-orcamento="medio">
+                        <div class="orcamento-icon">💵</div>
+                        <div class="orcamento-name">Médio</div>
+                        <div class="orcamento-valor">R$ 500-800</div>
+                        <div class="orcamento-desc">Variedade e qualidade equilibradas</div>
+                    </div>
+                    <div class="orcamento-card" data-orcamento="alto">
+                        <div class="orcamento-icon">💎</div>
+                        <div class="orcamento-name">Premium</div>
+                        <div class="orcamento-valor">R$ 800+</div>
+                        <div class="orcamento-desc">Alimentos premium e suplementos</div>
+                    </div>
+                </div>
+                <input type="hidden" id="orcamento" required>
+
+                <button type="submit" class="submit-btn">Gerar Minha Dieta</button>
+            </form>
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="results">
+            <div class="result-card">
+                <div class="macros-card">
+                    <h3 style="color: var(--accent); margin-bottom: 15px; font-size: 1.5rem;">📊 Suas Necessidades Diárias</h3>
+                    <div class="macros-grid">
+                        <div class="macro-item">
+                            <div class="macro-value" id="calorias">--</div>
+                            <div class="macro-label">Calorias</div>
+                        </div>
+                        <div class="macro-item">
+                            <div class="macro-value" id="proteinas">--</div>
+                            <div class="macro-label">Proteínas (g)</div>
+                        </div>
+                        <div class="macro-item">
+                            <div class="macro-value" id="carboidratos">--</div>
+                            <div class="macro-label">Carboidratos (g)</div>
+                        </div>
+                        <div class="macro-item">
+                            <div class="macro-value" id="gorduras">--</div>
+                            <div class="macro-label">Gorduras (g)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-header-icon">🍎</div>
+                    <div class="result-header-text">
+                        <h3>Seu Plano Alimentar Detalhado</h3>
+                        <p id="dietaDescricao"></p>
+                    </div>
+                </div>
+                <div id="dietaList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/samukkarvalho/vidasaudavel-dietas@main/dietas-database.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
+            authDomain: "vidasaudavel-490d6.firebaseapp.com",
+            projectId: "vidasaudavel-490d6"
+        });
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        async function verificarLimite() {
+            // Aguardar autenticação
+            await new Promise(resolve => {
+                const unsubscribe = auth.onAuthStateChanged(user => {
+                    unsubscribe();
+                    resolve();
+                });
+            });
+            
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Faça login primeiro!');
+                window.location.href = '/';
+                return false;
+            }
+
+            // Verificar se é Premium
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            const isPremium = userDoc.data()?.isPremium || false;
+            
+            if (isPremium) {
+                // Premium pode gerar ilimitado
+                return true;
+            }
+
+            // Usuário FREE - Verificar se já gerou dieta este mês
+            const now = new Date();
+            const monthKey = `${user.uid}_dieta_${now.getFullYear()}_${now.getMonth()}`; // ano_mes
+            
+            const dietaDoc = await getDoc(doc(db, 'dietas_mensais', monthKey));
+            
+            if (dietaDoc.exists()) {
+                const dietaData = dietaDoc.data();
+                const createdAt = dietaData.created_at.toDate();
+                const mesAtual = now.getMonth();
+                const mesCriacao = createdAt.getMonth();
+                
+                // Se criou no mês atual, bloqueia
+                if (mesAtual === mesCriacao && now.getFullYear() === createdAt.getFullYear()) {
+                    mostrarPopupUpgrade();
+                    return false;
+                }
+            }
+
+            // Pode gerar - Salvar registro com timestamp
+            await setDoc(doc(db, 'dietas_mensais', monthKey), {
+                user_id: user.uid,
+                user_email: user.email,
+                created_at: now,
+                tipo: 'dieta'
+            });
+            
+            return true;
+        }
+
+        function mostrarPopupUpgrade() {
+            const popup = document.createElement('div');
+            popup.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;';
+            popup.innerHTML = `
+                <div style="background:white;padding:60px;border-radius:30px;text-align:center;max-width:550px;">
+                    <div style="font-size:4rem;margin-bottom:20px;">🚀</div>
+                    <h2 style="font-size:2.5rem;margin-bottom:20px;color:#0f172a;">Limite Atingido!</h2>
+                    <p style="font-size:1.2rem;color:#666;margin-bottom:10px;">
+                        Você já gerou sua <strong>dieta grátis</strong> deste mês.
+                    </p>
+                    <p style="font-size:1rem;color:#999;margin-bottom:30px;">
+                        Assine Premium para dietas ilimitadas!
+                    </p>
+                    <a href="https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00" 
+                       style="background:linear-gradient(135deg,#10b981,#059669);color:white;padding:20px 50px;border-radius:50px;text-decoration:none;font-weight:800;font-size:1.3rem;display:inline-block;margin-bottom:20px;">
+                        Assinar por €20 (Vitalício)
+                    </a>
+                    <br>
+                    <button onclick="window.location.href='/'" 
+                            style="background:none;border:none;color:#999;cursor:pointer;text-decoration:underline;font-size:1rem;">
+                        Voltar
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+        }
+
+        let selectedBiotipo = '';
+        let selectedObjetivo = '';
+        let selectedOrcamento = '';
+
+        // Biotipo
+        document.querySelectorAll('.biotipo-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.biotipo-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedBiotipo = this.dataset.biotipo;
+                document.getElementById('biotipo').value = selectedBiotipo;
+            });
+        });
+
+        // Objetivo
+        document.querySelectorAll('.objetivo-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.objetivo-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedObjetivo = this.dataset.objetivo;
+                document.getElementById('objetivo').value = selectedObjetivo;
+            });
+        });
+
+        // Orçamento
+        document.querySelectorAll('.orcamento-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.orcamento-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedOrcamento = this.dataset.orcamento;
+                document.getElementById('orcamento').value = selectedOrcamento;
+            });
+        });
+
+        // Form Submit
+        document.getElementById('dietForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // VERIFICAR LIMITE
+            const pode = await verificarLimite();
+            if (!pode) return;
+            
+            const nome = document.getElementById('nome').value;
+            const biotipo = document.getElementById('biotipo').value;
+            const objetivo = document.getElementById('objetivo').value;
+            const orcamento = document.getElementById('orcamento').value;
+
+            if (!biotipo || !objetivo || !orcamento) {
+                alert('Por favor, selecione seu biotipo, objetivo e orçamento!');
+                return;
+            }
+
+            generateDietPlan(nome, biotipo, objetivo, orcamento);
+        });
+
+        function generateDietPlan(nome, biotipo, objetivo, orcamento) {
+            // Base das dietas - simplificado para caber no arquivo
+            const dietasBase = {
+                emagrecimento: { calorias: 1800, proteinas: 150, carboidratos: 160, gorduras: 60 },
+                definicao: { calorias: 2200, proteinas: 180, carboidratos: 220, gorduras: 65 },
+                hipertrofia: { calorias: 2800, proteinas: 200, carboidratos: 350, gorduras: 70 }
+            };
+
+            const diet = dietasBase[objetivo];
+            
+            // Ajustar alimentos baseado no orçamento
+            const alimentos = gerarAlimentosPorOrcamento(objetivo, orcamento);
+
+            document.getElementById('dietaDescricao').textContent = 
+                `Plano ${objetivo} para ${biotipo} - ${nome} (Orçamento ${orcamento})`;
+
+            document.getElementById('calorias').textContent = diet.calorias;
+            document.getElementById('proteinas').textContent = diet.proteinas;
+            document.getElementById('carboidratos').textContent = diet.carboidratos;
+            document.getElementById('gorduras').textContent = diet.gorduras;
+
+            renderDieta(alimentos);
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function gerarAlimentosPorOrcamento(objetivo, orcamento) {
+            // Dieta simplificada que muda baseado no orçamento
+            const dietas = {
+                baixo: [
+                    {
+                        hora: 'Café da manhã (7h)',
+                        alimentos: [
+                            { nome: 'Ovos cozidos', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
+                            { nome: 'Pão francês', quantidade: '50g', proteina: 4, carbo: 26, gordura: 1 },
+                            { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Almoço (13h)',
+                        alimentos: [
+                            { nome: 'Frango cozido', quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
+                            { nome: 'Arroz branco', quantidade: '100g', proteina: 3, carbo: 28, gordura: 0 },
+                            { nome: 'Feijão', quantidade: '80g', proteina: 6, carbo: 16, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Jantar (19h)',
+                        alimentos: [
+                            { nome: 'Ovo mexido', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
+                            { nome: 'Batata cozida', quantidade: '150g', proteina: 3, carbo: 26, gordura: 0 }
+                        ]
+                    }
+                ],
+                medio: [
+                    {
+                        hora: 'Café da manhã (7h)',
+                        alimentos: [
+                            { nome: 'Ovos mexidos', quantidade: '150g (3 ovos)', proteina: 19, carbo: 1, gordura: 15 },
+                            { nome: 'Pão integral', quantidade: '50g', proteina: 4, carbo: 24, gordura: 2 },
+                            { nome: 'Whey protein', quantidade: '30g', proteina: 24, carbo: 3, gordura: 1 }
+                        ]
+                    },
+                    {
+                        hora: 'Almoço (13h)',
+                        alimentos: [
+                            { nome: 'Peito de frango', quantidade: '150g', proteina: 39, carbo: 0, gordura: 4 },
+                            { nome: 'Arroz integral', quantidade: '100g', proteina: 3, carbo: 28, gordura: 1 },
+                            { nome: 'Batata doce', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
+                            { nome: 'Brócolis', quantidade: '100g', proteina: 3, carbo: 7, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Jantar (19h)',
+                        alimentos: [
+                            { nome: 'Tilápia grelhada', quantidade: '150g', proteina: 35, carbo: 0, gordura: 2 },
+                            { nome: 'Legumes', quantidade: '200g', proteina: 3, carbo: 15, gordura: 0 }
+                        ]
+                    }
+                ],
+                alto: [
+                    {
+                        hora: 'Café da manhã (7h)',
+                        alimentos: [
+                            { nome: 'Ovos orgânicos', quantidade: '200g (4 ovos)', proteina: 25, carbo: 2, gordura: 20 },
+                            { nome: 'Pão artesanal integral', quantidade: '100g', proteina: 8, carbo: 48, gordura: 4 },
+                            { nome: 'Whey isolado', quantidade: '40g', proteina: 34, carbo: 1, gordura: 0 },
+                            { nome: 'Frutas orgânicas', quantidade: '150g', proteina: 1, carbo: 18, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Almoço (13h)',
+                        alimentos: [
+                            { nome: 'Salmão selvagem', quantidade: '200g', proteina: 42, carbo: 0, gordura: 13 },
+                            { nome: 'Quinoa', quantidade: '100g', proteina: 4, carbo: 21, gordura: 2 },
+                            { nome: 'Aspargos', quantidade: '150g', proteina: 3, carbo: 6, gordura: 0 },
+                            { nome: 'Batata doce roxa', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Jantar (19h)',
+                        alimentos: [
+                            { nome: 'Filé mignon', quantidade: '180g', proteina: 45, carbo: 0, gordura: 9 },
+                            { nome: 'Risoto de funghi', quantidade: '100g', proteina: 3, carbo: 25, gordura: 3 },
+                            { nome: 'Mix de vegetais', quantidade: '150g', proteina: 2, carbo: 10, gordura: 0 }
+                        ]
+                    },
+                    {
+                        hora: 'Ceia (22h)',
+                        alimentos: [
+                            { nome: 'Caseína micelar', quantidade: '40g', proteina: 32, carbo: 3, gordura: 1 },
+                            { nome: 'Amêndoas premium', quantidade: '30g', proteina: 6, carbo: 6, gordura: 15 }
+                        ]
+                    }
+                ]
+            };
+
+            return dietas[orcamento];
+        }
+
+        function renderDieta(refeicoes) {
+            const dietaList = document.getElementById('dietaList');
+            dietaList.innerHTML = '';
+            
+            refeicoes.forEach(refeicao => {
+                const totalP = refeicao.alimentos.reduce((sum, a) => sum + a.proteina, 0);
+                const totalC = refeicao.alimentos.reduce((sum, a) => sum + a.carbo, 0);
+                const totalG = refeicao.alimentos.reduce((sum, a) => sum + a.gordura, 0);
+
+                const div = document.createElement('div');
+                div.className = 'meal-container';
+                div.innerHTML = `
+                    <div class="meal-header">
+                        <div class="meal-time">🕐 ${refeicao.hora}</div>
+                        <div class="meal-macros-summary">
+                            <span>P: ${totalP}g</span>
+                            <span>C: ${totalC}g</span>
+                            <span>G: ${totalG}g</span>
+                        </div>
+                    </div>
+                    <div class="food-items">
+                        ${refeicao.alimentos.map(alimento => `
+                            <div class="food-item">
+                                <div class="food-name">${alimento.nome}</div>
+                                <div class="food-amount">⚖️ ${alimento.quantidade}</div>
+                                <div class="food-macros">P:${alimento.proteina}g | C:${alimento.carbo}g | G:${alimento.gordura}g</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                dietaList.appendChild(div);
+            });
+            
+            // Adicionar botão de gerar outra dieta
+            const btnDiv = document.createElement('div');
+            btnDiv.style.cssText = 'text-align:center;margin-top:40px;';
+            btnDiv.innerHTML = `
+                <button onclick="window.location.reload()" style="padding:18px 50px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 30px rgba(16,185,129,0.4);">
+                    🔄 Gerar Outra Dieta
+                </button>
+            `;
+            dietaList.appendChild(btnDiv);
+        }
+    </script>
+</body>
+</html>
