@@ -539,23 +539,42 @@
                 return false;
             }
 
+            // Verificar se é Premium
             const userDoc = await getDoc(doc(db, 'users', user.uid));
-            if (userDoc.data()?.isPremium) return true;
-
-            const now = new Date();
-            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
-            const weekKey = `${user.uid}_${weekStart.getTime()}`;
+            const isPremium = userDoc.data()?.isPremium || false;
             
-            const usageDoc = await getDoc(doc(db, 'usage', weekKey));
-            const usage = usageDoc.exists() ? usageDoc.data() : { treinos: 0, dietas: 0 };
-
-            if (usage.dietas >= 1) {
-                mostrarPopupUpgrade();
-                return false;
+            if (isPremium) {
+                // Premium pode gerar ilimitado
+                return true;
             }
 
-            usage.dietas += 1;
-            await setDoc(doc(db, 'usage', weekKey), usage);
+            // Usuário FREE - Verificar se já gerou dieta este mês
+            const now = new Date();
+            const monthKey = `${user.uid}_dieta_${now.getFullYear()}_${now.getMonth()}`; // ano_mes
+            
+            const dietaDoc = await getDoc(doc(db, 'dietas_mensais', monthKey));
+            
+            if (dietaDoc.exists()) {
+                const dietaData = dietaDoc.data();
+                const createdAt = dietaData.created_at.toDate();
+                const mesAtual = now.getMonth();
+                const mesCriacao = createdAt.getMonth();
+                
+                // Se criou no mês atual, bloqueia
+                if (mesAtual === mesCriacao && now.getFullYear() === createdAt.getFullYear()) {
+                    mostrarPopupUpgrade();
+                    return false;
+                }
+            }
+
+            // Pode gerar - Salvar registro com timestamp
+            await setDoc(doc(db, 'dietas_mensais', monthKey), {
+                user_id: user.uid,
+                user_email: user.email,
+                created_at: now,
+                tipo: 'dieta'
+            });
+            
             return true;
         }
 
@@ -567,7 +586,7 @@
                     <div style="font-size:4rem;margin-bottom:20px;">🚀</div>
                     <h2 style="font-size:2.5rem;margin-bottom:20px;color:#0f172a;">Limite Atingido!</h2>
                     <p style="font-size:1.2rem;color:#666;margin-bottom:10px;">
-                        Você já gerou sua <strong>dieta grátis</strong> desta semana.
+                        Você já gerou sua <strong>dieta grátis</strong> deste mês.
                     </p>
                     <p style="font-size:1rem;color:#999;margin-bottom:30px;">
                         Assine Premium para dietas ilimitadas!
