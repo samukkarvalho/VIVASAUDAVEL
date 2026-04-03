@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Firebase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #0f172a;
+            color: white;
+        }
+        .status {
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+        .ok { background: #10b981; }
+        .erro { background: #ef4444; }
+        button {
+            padding: 15px 30px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Teste Firebase VidaSaudável</h1>
+    
+    <div id="status1" class="status">⏳ Carregando Firebase...</div>
+    <div id="status2" class="status" style="display:none;">⏳ Verificando autenticação...</div>
+    <div id="status3" class="status" style="display:none;">⏳ Testando Firestore...</div>
+    
+    <button id="btnTestarLimite" style="display:none;">Testar Sistema de Limites</button>
+    
+    <div id="resultado"></div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+        console.log('🔥 Iniciando teste...');
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
+            authDomain: "vidasaudavel-490d6.firebaseapp.com",
+            projectId: "vidasaudavel-490d6"
+        });
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById('status1').innerHTML = '✅ Firebase carregado com sucesso!';
+        document.getElementById('status1').className = 'status ok';
+        document.getElementById('status2').style.display = 'block';
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log('✅ Usuário logado:', user.email);
+                document.getElementById('status2').innerHTML = `✅ Usuário: ${user.displayName} (${user.email})`;
+                document.getElementById('status2').className = 'status ok';
+                document.getElementById('status3').style.display = 'block';
+
+                // Testar Firestore
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    const isPremium = userDoc.data()?.isPremium || false;
+                    
+                    document.getElementById('status3').innerHTML = `✅ Firestore OK! Premium: ${isPremium ? 'SIM ⭐' : 'NÃO'}`;
+                    document.getElementById('status3').className = 'status ok';
+                    
+                    document.getElementById('btnTestarLimite').style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('❌ Erro Firestore:', error);
+                    document.getElementById('status3').innerHTML = `❌ Erro Firestore: ${error.message}`;
+                    document.getElementById('status3').className = 'status erro';
+                }
+            } else {
+                console.log('❌ Nenhum usuário logado');
+                document.getElementById('status2').innerHTML = '❌ Usuário NÃO logado! <a href="/" style="color:white;">Fazer login</a>';
+                document.getElementById('status2').className = 'status erro';
+            }
+        });
+
+        document.getElementById('btnTestarLimite').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = '<div class="status">⏳ Verificando limites...</div>';
+
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            const isPremium = userDoc.data()?.isPremium || false;
+
+            if (isPremium) {
+                resultado.innerHTML = '<div class="status ok">✅ Você é PREMIUM! Sem limites! ⭐</div>';
+                return;
+            }
+
+            const now = new Date();
+            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+            const weekKey = `${user.uid}_${weekStart.getTime()}`;
+            
+            const usageDoc = await getDoc(doc(db, 'usage', weekKey));
+            const usage = usageDoc.exists() ? usageDoc.data() : { treinos: 0, dietas: 0 };
+
+            resultado.innerHTML = `
+                <div class="status ok">
+                    📊 Uso desta semana:<br>
+                    Treinos: ${usage.treinos}/1<br>
+                    Dietas: ${usage.dietas}/1<br>
+                    <br>
+                    ${usage.treinos >= 1 ? '❌ LIMITE DE TREINOS ATINGIDO!' : '✅ Pode gerar treino'}<br>
+                    ${usage.dietas >= 1 ? '❌ LIMITE DE DIETAS ATINGIDO!' : '✅ Pode gerar dieta'}
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
