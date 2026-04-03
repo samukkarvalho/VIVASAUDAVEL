@@ -352,6 +352,14 @@
         const db = getFirestore(app);
 
         async function verificarLimite() {
+            // Aguardar autenticação
+            await new Promise(resolve => {
+                const unsubscribe = auth.onAuthStateChanged(user => {
+                    unsubscribe();
+                    resolve();
+                });
+            });
+            
             const user = auth.currentUser;
             if (!user) {
                 alert('Faça login primeiro!');
