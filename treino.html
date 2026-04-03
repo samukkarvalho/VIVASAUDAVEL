@@ -337,7 +337,75 @@
         <div class="results" id="results"></div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
+            authDomain: "vidasaudavel-490d6.firebaseapp.com",
+            projectId: "vidasaudavel-490d6"
+        });
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        async function verificarLimite() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Faça login primeiro!');
+                window.location.href = '/';
+                return false;
+            }
+
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            if (userDoc.data()?.isPremium) return true;
+
+            const now = new Date();
+            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+            const weekKey = `${user.uid}_${weekStart.getTime()}`;
+            
+            const usageDoc = await getDoc(doc(db, 'usage', weekKey));
+            const usage = usageDoc.exists() ? usageDoc.data() : { treinos: 0, dietas: 0 };
+
+            if (usage.treinos >= 1) {
+                mostrarPopupUpgrade();
+                return false;
+            }
+
+            usage.treinos += 1;
+            await setDoc(doc(db, 'usage', weekKey), usage);
+            return true;
+        }
+
+        function mostrarPopupUpgrade() {
+            const popup = document.createElement('div');
+            popup.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;';
+            popup.innerHTML = `
+                <div style="background:white;padding:60px;border-radius:30px;text-align:center;max-width:550px;">
+                    <div style="font-size:4rem;margin-bottom:20px;">🚀</div>
+                    <h2 style="font-size:2.5rem;margin-bottom:20px;color:#0f172a;">Limite Atingido!</h2>
+                    <p style="font-size:1.2rem;color:#666;margin-bottom:10px;">
+                        Você já gerou seu <strong>treino grátis</strong> desta semana.
+                    </p>
+                    <p style="font-size:1rem;color:#999;margin-bottom:30px;">
+                        Assine Premium para treinos ilimitados!
+                    </p>
+                    <a href="https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00" 
+                       style="background:linear-gradient(135deg,#10b981,#059669);color:white;padding:20px 50px;border-radius:50px;text-decoration:none;font-weight:800;font-size:1.3rem;display:inline-block;margin-bottom:20px;">
+                        Assinar por €20 (Vitalício)
+                    </a>
+                    <br>
+                    <button onclick="window.location.href='/'" 
+                            style="background:none;border:none;color:#999;cursor:pointer;text-decoration:underline;font-size:1rem;">
+                        Voltar
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+        }
+
         let selectedBiotipo = '';
         let selectedObjetivo = '';
         let selectedNivel = '';
@@ -373,8 +441,12 @@
         });
 
         // Form Submit
-        document.getElementById('treinoForm').addEventListener('submit', function(e) {
+        document.getElementById('treinoForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // VERIFICAR LIMITE
+            const pode = await verificarLimite();
+            if (!pode) return;
             
             const nome = document.getElementById('nome').value;
             const biotipo = document.getElementById('biotipo').value;
