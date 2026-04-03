@@ -239,41 +239,47 @@
 </head>
 <body>
     <div class="container">
+        <!-- Botões de idioma -->
+        <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;">
+            <button onclick="setLanguage('pt')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇧🇷 PT</button>
+            <button onclick="setLanguage('en')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇺🇸 EN</button>
+        </div>
+        
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s;">
             <span style="font-size: 1.5rem;">←</span>
-            Voltar para Início
+            <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
         
         <div class="header">
-            <h1>GERADOR DE TREINO</h1>
-            <p>Monte sua ficha profissional completa</p>
+            <h1 data-i18n="treino-title">GERADOR DE TREINO</h1>
+            <p data-i18n="treino-subtitle">Monte sua ficha profissional completa</p>
         </div>
 
         <div class="form-wrapper">
             <form id="treinoForm">
-                <div class="section-title">📋 Seus Dados</div>
+                <div class="section-title" data-i18n="form-dados">📋 Seus Dados</div>
                 <div class="form-grid">
                     <div>
-                        <label>Nome</label>
-                        <input type="text" id="nome" required placeholder="Digite seu nome">
+                        <label data-i18n="label-nome">Nome</label>
+                        <input type="text" id="nome" required placeholder="Digite seu nome" data-i18n-placeholder="placeholder-nome">
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                         <div>
-                            <label>Idade</label>
+                            <label data-i18n="label-idade">Idade</label>
                             <input type="number" id="idade" required placeholder="25">
                         </div>
                         <div>
-                            <label>Peso (kg)</label>
+                            <label data-i18n="label-peso">Peso (kg)</label>
                             <input type="number" id="peso" required placeholder="70">
                         </div>
                         <div>
-                            <label>Altura (cm)</label>
+                            <label data-i18n="label-altura">Altura (cm)</label>
                             <input type="number" id="altura" required placeholder="170">
                         </div>
                     </div>
                 </div>
 
-                <div class="section-title" style="margin-top: 40px;">🧬 Seu Biotipo</div>
+                <div class="section-title" style="margin-top: 40px;" data-i18n="form-biotipo">🧬 Seu Biotipo</div>
                 <div class="card-grid">
                     <div class="card" data-biotipo="ectomorfo">
                         <div class="card-icon">🏃</div>
@@ -499,13 +505,13 @@
                             musculo: 'Peito + Tríceps + Abdômen',
                             aquecimento: '🔥 5min cardio + rotação ombros 20x + flexões leves 2x10',
                             exercicios: [
-                                { nome: 'Supino Reto', alvo: 'Peitoral', series: '3x12', descanso: '60s' },
-                                { nome: 'Supino Inclinado', alvo: 'Peito Superior', series: '3x12', descanso: '60s' },
-                                { nome: 'Crucifixo Máquina', alvo: 'Peitoral', series: '3x15', descanso: '45s' },
-                                { nome: 'Tríceps Polia', alvo: 'Tríceps', series: '3x15', descanso: '45s' },
-                                { nome: 'Tríceps Francês', alvo: 'Tríceps', series: '3x12', descanso: '45s' },
-                                { nome: 'Abdominal Supra', alvo: 'Abdômen', series: '3x20', descanso: '30s' },
-                                { nome: 'Prancha', alvo: 'Core', series: '3x30s', descanso: '30s' }
+                                { nome: t('Supino Reto'), alvo: t('Peitoral'), series: '3x12', descanso: '60s' },
+                                { nome: t('Supino Inclinado'), alvo: t('Peito Superior'), series: '3x12', descanso: '60s' },
+                                { nome: t('Crucifixo Máquina'), alvo: t('Peitoral'), series: '3x15', descanso: '45s' },
+                                { nome: t('Tríceps Polia'), alvo: t('Tríceps'), series: '3x15', descanso: '45s' },
+                                { nome: t('Tríceps Francês'), alvo: t('Tríceps'), series: '3x12', descanso: '45s' },
+                                { nome: t('Abdominal Supra'), alvo: t('Abdômen'), series: '3x20', descanso: '30s' },
+                                { nome: t('Prancha'), alvo: t('Core'), series: '3x30s', descanso: '30s' }
                             ],
                             alongamento: '🧘 Peito na porta 30s + Tríceps overhead 30s + Child pose 45s',
                             obs: 'Aquecimento essencial! Alongamento final obrigatório.'
@@ -515,13 +521,13 @@
                             musculo: 'Costas + Bíceps',
                             aquecimento: '🔥 5min remada + cat-cow 10x + hang barra 20s',
                             exercicios: [
-                                { nome: 'Puxada Frontal', alvo: 'Dorsal', series: '3x12', descanso: '60s' },
-                                { nome: 'Remada Baixa', alvo: 'Dorsal Médio', series: '3x12', descanso: '60s' },
-                                { nome: 'Remada Unilateral', alvo: 'Dorsal', series: '3x12', descanso: '45s' },
-                                { nome: 'Pulldown Reto', alvo: 'Dorsal Inferior', series: '3x15', descanso: '45s' },
-                                { nome: 'Rosca Direta', alvo: 'Bíceps', series: '3x12', descanso: '45s' },
-                                { nome: 'Rosca Martelo', alvo: 'Bíceps', series: '3x15', descanso: '45s' },
-                                { nome: 'Rosca Concentrada', alvo: 'Bíceps', series: '3x12', descanso: '45s' }
+                                { nome: t('Puxada Frontal'), alvo: t('Dorsal'), series: '3x12', descanso: '60s' },
+                                { nome: t('Remada Baixa'), alvo: t('Dorsal Médio'), series: '3x12', descanso: '60s' },
+                                { nome: t('Remada Unilateral'), alvo: t('Dorsal'), series: '3x12', descanso: '45s' },
+                                { nome: t('Pulldown Reto'), alvo: t('Dorsal Inferior'), series: '3x15', descanso: '45s' },
+                                { nome: t('Rosca Direta'), alvo: t('Bíceps'), series: '3x12', descanso: '45s' },
+                                { nome: t('Rosca Martelo'), alvo: t('Bíceps'), series: '3x15', descanso: '45s' },
+                                { nome: t('Rosca Concentrada'), alvo: t('Bíceps'), series: '3x12', descanso: '45s' }
                             ],
                             alongamento: '🧘 Hang 30s + Child pose 60s + Rotação torácica 10x',
                             obs: 'Costas retas sempre! Controle a descida.'
@@ -531,14 +537,14 @@
                             musculo: 'Pernas + Ombros',
                             aquecimento: '🔥 7min bike + leg swings 15x + goblet squat 2x10',
                             exercicios: [
-                                { nome: 'Agachamento Livre', alvo: 'Quadríceps', series: '4x12', descanso: '90s' },
-                                { nome: 'Leg Press 45°', alvo: 'Quadríceps', series: '3x15', descanso: '60s' },
-                                { nome: 'Cadeira Extensora', alvo: 'Quadríceps', series: '3x15', descanso: '45s' },
-                                { nome: 'Mesa Flexora', alvo: 'Posterior', series: '3x15', descanso: '45s' },
-                                { nome: 'Panturrilha em Pé', alvo: 'Panturrilha', series: '4x20', descanso: '45s' },
-                                { nome: 'Desenvolvimento Halteres', alvo: 'Ombros', series: '3x12', descanso: '60s' },
-                                { nome: 'Elevação Lateral', alvo: 'Ombro Lateral', series: '3x15', descanso: '45s' },
-                                { nome: 'Abdominal Infra', alvo: 'Abdômen', series: '3x15', descanso: '30s' }
+                                { nome: t('Agachamento Livre'), alvo: t('Quadríceps'), series: '4x12', descanso: '90s' },
+                                { nome: t('Leg Press 45°'), alvo: t('Quadríceps'), series: '3x15', descanso: '60s' },
+                                { nome: t('Cadeira Extensora'), alvo: t('Quadríceps'), series: '3x15', descanso: '45s' },
+                                { nome: t('Mesa Flexora'), alvo: t('Posterior'), series: '3x15', descanso: '45s' },
+                                { nome: t('Panturrilha em Pé'), alvo: t('Panturrilha'), series: '4x20', descanso: '45s' },
+                                { nome: t('Desenvolvimento Halteres'), alvo: t('Ombros'), series: '3x12', descanso: '60s' },
+                                { nome: t('Elevação Lateral'), alvo: t('Ombro Lateral'), series: '3x15', descanso: '45s' },
+                                { nome: t('Abdominal Infra'), alvo: t('Abdômen'), series: '3x15', descanso: '30s' }
                             ],
                             alongamento: '🧘 Quad stretch 45s + Borboleta 60s + Pigeon 45s',
                             obs: 'Hidrate MUITO! Agachamento é fundamental.'
@@ -553,14 +559,14 @@
                             musculo: 'Peito + Tríceps',
                             aquecimento: '🔥 5min cardio + band pull-aparts 15x + supino vazio 1x15',
                             exercicios: [
-                                { nome: 'Supino Reto', alvo: 'Peitoral', series: '4x10', descanso: '75s' },
-                                { nome: 'Supino Inclinado', alvo: 'Peito Superior', series: '4x10', descanso: '75s' },
-                                { nome: 'Supino Declinado', alvo: 'Peito Inferior', series: '3x12', descanso: '60s' },
-                                { nome: 'Crucifixo Reto', alvo: 'Peitoral', series: '3x12', descanso: '60s' },
-                                { nome: 'Cross Over', alvo: 'Peitoral', series: '3x15', descanso: '45s' },
-                                { nome: 'Tríceps Testa', alvo: 'Tríceps', series: '4x10', descanso: '60s' },
-                                { nome: 'Tríceps Corda', alvo: 'Tríceps', series: '3x15', descanso: '45s' },
-                                { nome: 'Tríceps Coice', alvo: 'Tríceps', series: '3x12', descanso: '45s' }
+                                { nome: t('Supino Reto'), alvo: t('Peitoral'), series: '4x10', descanso: '75s' },
+                                { nome: t('Supino Inclinado'), alvo: t('Peito Superior'), series: '4x10', descanso: '75s' },
+                                { nome: t('Supino Declinado'), alvo: t('Peito Inferior'), series: '3x12', descanso: '60s' },
+                                { nome: 'Crucifixo Reto', alvo: t('Peitoral'), series: '3x12', descanso: '60s' },
+                                { nome: 'Cross Over', alvo: t('Peitoral'), series: '3x15', descanso: '45s' },
+                                { nome: t('Tríceps Testa'), alvo: t('Tríceps'), series: '4x10', descanso: '60s' },
+                                { nome: 'Tríceps Corda', alvo: t('Tríceps'), series: '3x15', descanso: '45s' },
+                                { nome: 'Tríceps Coice', alvo: t('Tríceps'), series: '3x12', descanso: '45s' }
                             ],
                             alongamento: '🧘 Doorway stretch 45s + Tríceps 30s + Cobra pose 45s',
                             obs: 'Volume moderado. Técnica perfeita.'
@@ -570,14 +576,14 @@
                             musculo: 'Costas + Bíceps',
                             aquecimento: '🔥 5min remada + retração escapular 20x + puxada leve 1x15',
                             exercicios: [
-                                { nome: 'Barra Fixa', alvo: 'Dorsal', series: '4x8-10', descanso: '90s' },
-                                { nome: 'Remada Curvada', alvo: 'Dorsal', series: '4x10', descanso: '75s' },
-                                { nome: 'Puxada Triangulo', alvo: 'Dorsal', series: '3x12', descanso: '60s' },
-                                { nome: 'Remada Cavalinho', alvo: 'Dorsal', series: '3x12', descanso: '60s' },
-                                { nome: 'Remada Baixa', alvo: 'Dorsal', series: '3x15', descanso: '45s' },
-                                { nome: 'Rosca Direta Barra', alvo: 'Bíceps', series: '4x10', descanso: '60s' },
-                                { nome: 'Rosca Alternada', alvo: 'Bíceps', series: '3x12', descanso: '45s' },
-                                { nome: 'Rosca Scott', alvo: 'Bíceps', series: '3x12', descanso: '45s' }
+                                { nome: t('Barra Fixa'), alvo: t('Dorsal'), series: '4x8-10', descanso: '90s' },
+                                { nome: t('Remada Curvada'), alvo: t('Dorsal'), series: '4x10', descanso: '75s' },
+                                { nome: 'Puxada Triangulo', alvo: t('Dorsal'), series: '3x12', descanso: '60s' },
+                                { nome: 'Remada Cavalinho', alvo: t('Dorsal'), series: '3x12', descanso: '60s' },
+                                { nome: t('Remada Baixa'), alvo: t('Dorsal'), series: '3x15', descanso: '45s' },
+                                { nome: 'Rosca Direta Barra', alvo: t('Bíceps'), series: '4x10', descanso: '60s' },
+                                { nome: t('Rosca Alternada'), alvo: t('Bíceps'), series: '3x12', descanso: '45s' },
+                                { nome: t('Rosca Scott'), alvo: t('Bíceps'), series: '3x12', descanso: '45s' }
                             ],
                             alongamento: '🧘 Hang 60s + Child pose 60s + Bíceps wall 30s',
                             obs: 'Pegada firme! Descida controlada.'
@@ -587,15 +593,15 @@
                             musculo: 'Pernas Completo',
                             aquecimento: '🔥 7min bike + glute bridge 2x20 + agachamento vazio 1x15',
                             exercicios: [
-                                { nome: 'Agachamento Livre', alvo: 'Quadríceps', series: '4x8-10', descanso: '2min' },
-                                { nome: 'Leg Press 45°', alvo: 'Quadríceps', series: '4x12', descanso: '90s' },
-                                { nome: 'Hack Squat', alvo: 'Quadríceps', series: '3x12', descanso: '75s' },
-                                { nome: 'Cadeira Extensora', alvo: 'Quadríceps', series: '3x15', descanso: '60s' },
-                                { nome: 'Stiff', alvo: 'Posterior', series: '4x10', descanso: '75s' },
-                                { nome: 'Mesa Flexora', alvo: 'Posterior', series: '3x12', descanso: '60s' },
-                                { nome: 'Cadeira Adutora', alvo: 'Adutores', series: '3x15', descanso: '45s' },
-                                { nome: 'Cadeira Abdutora', alvo: 'Abdutores', series: '3x15', descanso: '45s' },
-                                { nome: 'Panturrilha', alvo: 'Panturrilha', series: '4x20', descanso: '60s' }
+                                { nome: t('Agachamento Livre'), alvo: t('Quadríceps'), series: '4x8-10', descanso: '2min' },
+                                { nome: t('Leg Press 45°'), alvo: t('Quadríceps'), series: '4x12', descanso: '90s' },
+                                { nome: 'Hack Squat', alvo: t('Quadríceps'), series: '3x12', descanso: '75s' },
+                                { nome: t('Cadeira Extensora'), alvo: t('Quadríceps'), series: '3x15', descanso: '60s' },
+                                { nome: t('Stiff'), alvo: t('Posterior'), series: '4x10', descanso: '75s' },
+                                { nome: t('Mesa Flexora'), alvo: t('Posterior'), series: '3x12', descanso: '60s' },
+                                { nome: t('Cadeira Adutora'), alvo: 'Adutores', series: '3x15', descanso: '45s' },
+                                { nome: t('Cadeira Abdutora'), alvo: 'Abdutores', series: '3x15', descanso: '45s' },
+                                { nome: 'Panturrilha', alvo: t('Panturrilha'), series: '4x20', descanso: '60s' }
                             ],
                             alongamento: '🧘 Quad 60s + Borboleta 60s + Pigeon 60s + Figure-4 45s',
                             obs: 'BRUTAL! Não pule. Técnica fundamental.'
@@ -605,15 +611,15 @@
                             musculo: 'Ombros + Abdômen',
                             aquecimento: '🔥 5min cardio + face pulls 2x15 + desenvolvimento leve 2x12',
                             exercicios: [
-                                { nome: 'Desenvolvimento Barra', alvo: 'Ombros', series: '4x10', descanso: '90s' },
-                                { nome: 'Desenvolvimento Halteres', alvo: 'Ombros', series: '4x10', descanso: '75s' },
-                                { nome: 'Elevação Lateral', alvo: 'Lateral', series: '4x12', descanso: '60s' },
-                                { nome: 'Elevação Frontal', alvo: 'Frontal', series: '3x12', descanso: '60s' },
-                                { nome: 'Elevação Posterior', alvo: 'Posterior', series: '4x12', descanso: '60s' },
-                                { nome: 'Encolhimento', alvo: 'Trapézio', series: '4x15', descanso: '60s' },
-                                { nome: 'Abdominal Supra', alvo: 'Abdômen', series: '4x20', descanso: '45s' },
-                                { nome: 'Abdominal Infra', alvo: 'Abdômen', series: '4x15', descanso: '45s' },
-                                { nome: 'Prancha', alvo: 'Core', series: '3x60s', descanso: '60s' }
+                                { nome: 'Desenvolvimento Barra', alvo: t('Ombros'), series: '4x10', descanso: '90s' },
+                                { nome: t('Desenvolvimento Halteres'), alvo: t('Ombros'), series: '4x10', descanso: '75s' },
+                                { nome: t('Elevação Lateral'), alvo: 'Lateral', series: '4x12', descanso: '60s' },
+                                { nome: t('Elevação Frontal'), alvo: 'Frontal', series: '3x12', descanso: '60s' },
+                                { nome: 'Elevação Posterior', alvo: t('Posterior'), series: '4x12', descanso: '60s' },
+                                { nome: t('Encolhimento'), alvo: t('Trapézio'), series: '4x15', descanso: '60s' },
+                                { nome: t('Abdominal Supra'), alvo: t('Abdômen'), series: '4x20', descanso: '45s' },
+                                { nome: t('Abdominal Infra'), alvo: t('Abdômen'), series: '4x15', descanso: '45s' },
+                                { nome: t('Prancha'), alvo: t('Core'), series: '3x60s', descanso: '60s' }
                             ],
                             alongamento: '🧘 Cross-body 30s + Behind back 30s + Thread needle 45s',
                             obs: 'Ombros = TÉCNICA! Não force.'
@@ -628,14 +634,14 @@
                             musculo: 'Peito Completo',
                             aquecimento: '🔥 5min cardio + band flyes 2x15 + supino pirâmide (vazio→60%)',
                             exercicios: [
-                                { nome: 'Supino Reto', alvo: 'Peitoral', series: '5x6-8', descanso: '2min' },
-                                { nome: 'Supino Inclinado', alvo: 'Superior', series: '4x8', descanso: '90s' },
-                                { nome: 'Supino Declinado', alvo: 'Inferior', series: '4x10', descanso: '75s' },
-                                { nome: 'Crucifixo Reto', alvo: 'Peitoral', series: '4x10', descanso: '60s' },
+                                { nome: t('Supino Reto'), alvo: t('Peitoral'), series: '5x6-8', descanso: '2min' },
+                                { nome: t('Supino Inclinado'), alvo: 'Superior', series: '4x8', descanso: '90s' },
+                                { nome: t('Supino Declinado'), alvo: 'Inferior', series: '4x10', descanso: '75s' },
+                                { nome: 'Crucifixo Reto', alvo: t('Peitoral'), series: '4x10', descanso: '60s' },
                                 { nome: 'Crucifixo Inclinado', alvo: 'Superior', series: '3x12', descanso: '60s' },
                                 { nome: 'Cross Over Alto', alvo: 'Inferior', series: '3x15', descanso: '45s' },
                                 { nome: 'Cross Over Baixo', alvo: 'Superior', series: '3x15', descanso: '45s' },
-                                { nome: 'Pullover', alvo: 'Peito+Dorsal', series: '3x12', descanso: '60s' },
+                                { nome: t('Pullover'), alvo: 'Peito+Dorsal', series: '3x12', descanso: '60s' },
                                 { nome: 'Flexão Diamante', alvo: 'Interno', series: '3x MAX', descanso: '60s' }
                             ],
                             alongamento: '🧘 Pec corner 60s + Doorway 3 ângulos + Cobra 45s',
@@ -646,14 +652,14 @@
                             musculo: 'Costas Completo',
                             aquecimento: '🔥 7min remada + cat-cow 15x + terra técnico 2x (barra vazia)',
                             exercicios: [
-                                { nome: 'Levantamento Terra', alvo: 'Costas+Post', series: '5x5', descanso: '3min' },
-                                { nome: 'Barra Fixa', alvo: 'Dorsal', series: '4x6-8', descanso: '2min' },
-                                { nome: 'Remada Curvada', alvo: 'Dorsal', series: '4x8', descanso: '90s' },
-                                { nome: 'Puxada Frontal', alvo: 'Dorsal', series: '4x10', descanso: '75s' },
-                                { nome: 'Remada Cavalinho', alvo: 'Dorsal', series: '3x10', descanso: '60s' },
-                                { nome: 'Remada Unilateral', alvo: 'Dorsal', series: '3x10', descanso: '60s' },
-                                { nome: 'Pulldown Reto', alvo: 'Dorsal Inf', series: '3x15', descanso: '45s' },
-                                { nome: 'Encolhimento Barra', alvo: 'Trapézio', series: '4x12', descanso: '60s' },
+                                { nome: t('Levantamento Terra'), alvo: 'Costas+Post', series: '5x5', descanso: '3min' },
+                                { nome: t('Barra Fixa'), alvo: t('Dorsal'), series: '4x6-8', descanso: '2min' },
+                                { nome: t('Remada Curvada'), alvo: t('Dorsal'), series: '4x8', descanso: '90s' },
+                                { nome: t('Puxada Frontal'), alvo: t('Dorsal'), series: '4x10', descanso: '75s' },
+                                { nome: 'Remada Cavalinho', alvo: t('Dorsal'), series: '3x10', descanso: '60s' },
+                                { nome: t('Remada Unilateral'), alvo: t('Dorsal'), series: '3x10', descanso: '60s' },
+                                { nome: t('Pulldown Reto'), alvo: 'Dorsal Inf', series: '3x15', descanso: '45s' },
+                                { nome: 'Encolhimento Barra', alvo: t('Trapézio'), series: '4x12', descanso: '60s' },
                                 { nome: 'Hiperextensão', alvo: 'Lombar', series: '3x15', descanso: '60s' }
                             ],
                             alongamento: '🧘 Hang 90s + Cat-cow 15x + Child pose 90s + Pigeon 45s',
@@ -664,16 +670,16 @@
                             musculo: 'Pernas + Glúteos',
                             aquecimento: '🔥 10min bike + ativação glúteo + agachamento progressivo',
                             exercicios: [
-                                { nome: 'Agachamento Livre', alvo: 'Quadríceps', series: '5x6-8', descanso: '3min' },
-                                { nome: 'Agachamento Frontal', alvo: 'Quadríceps', series: '4x8', descanso: '2min' },
-                                { nome: 'Leg Press 45°', alvo: 'Quadríceps', series: '4x10', descanso: '90s' },
-                                { nome: 'Hack Squat', alvo: 'Quadríceps', series: '4x10', descanso: '90s' },
-                                { nome: 'Cadeira Extensora', alvo: 'Quadríceps', series: '4x12', descanso: '60s' },
-                                { nome: 'Stiff', alvo: 'Posterior', series: '4x10', descanso: '90s' },
-                                { nome: 'Mesa Flexora', alvo: 'Posterior', series: '4x12', descanso: '60s' },
+                                { nome: t('Agachamento Livre'), alvo: t('Quadríceps'), series: '5x6-8', descanso: '3min' },
+                                { nome: 'Agachamento Frontal', alvo: t('Quadríceps'), series: '4x8', descanso: '2min' },
+                                { nome: t('Leg Press 45°'), alvo: t('Quadríceps'), series: '4x10', descanso: '90s' },
+                                { nome: 'Hack Squat', alvo: t('Quadríceps'), series: '4x10', descanso: '90s' },
+                                { nome: t('Cadeira Extensora'), alvo: t('Quadríceps'), series: '4x12', descanso: '60s' },
+                                { nome: t('Stiff'), alvo: t('Posterior'), series: '4x10', descanso: '90s' },
+                                { nome: t('Mesa Flexora'), alvo: t('Posterior'), series: '4x12', descanso: '60s' },
                                 { nome: 'Búlgaro', alvo: 'Pernas', series: '3x12', descanso: '60s' },
                                 { nome: 'Panturrilha Pé', alvo: 'Gastro', series: '5x15', descanso: '60s' },
-                                { nome: 'Panturrilha Sentado', alvo: 'Sóleo', series: '4x20', descanso: '45s' }
+                                { nome: t('Panturrilha Sentado'), alvo: 'Sóleo', series: '4x20', descanso: '45s' }
                             ],
                             alongamento: '🧘 Quad 60s + Posterior 60s + Borboleta 90s + Frog 60s',
                             obs: 'MASSACRANTE! Hidrate muito. Joelheiras recomendadas.'
@@ -683,15 +689,15 @@
                             musculo: 'Ombros + Trapézio',
                             aquecimento: '🔥 5min + rotação externa 2x15 + YTW 10x + desenvolvimento leve',
                             exercicios: [
-                                { nome: 'Desenvolvimento Barra', alvo: 'Ombros', series: '5x6-8', descanso: '2min' },
-                                { nome: 'Desenvolvimento Halteres', alvo: 'Ombros', series: '4x8', descanso: '90s' },
+                                { nome: 'Desenvolvimento Barra', alvo: t('Ombros'), series: '5x6-8', descanso: '2min' },
+                                { nome: t('Desenvolvimento Halteres'), alvo: t('Ombros'), series: '4x8', descanso: '90s' },
                                 { nome: 'Arnold Press', alvo: 'Ombros 360', series: '4x10', descanso: '75s' },
-                                { nome: 'Elevação Lateral', alvo: 'Lateral', series: '4x12', descanso: '60s' },
-                                { nome: 'Elevação Frontal', alvo: 'Frontal', series: '4x12', descanso: '60s' },
-                                { nome: 'Elevação Posterior', alvo: 'Posterior', series: '4x12', descanso: '60s' },
-                                { nome: 'Crucifixo Inverso', alvo: 'Posterior', series: '3x15', descanso: '45s' },
-                                { nome: 'Remada Alta', alvo: 'Ombro+Trap', series: '4x10', descanso: '60s' },
-                                { nome: 'Encolhimento Halteres', alvo: 'Trapézio', series: '4x15', descanso: '60s' }
+                                { nome: t('Elevação Lateral'), alvo: 'Lateral', series: '4x12', descanso: '60s' },
+                                { nome: t('Elevação Frontal'), alvo: 'Frontal', series: '4x12', descanso: '60s' },
+                                { nome: 'Elevação Posterior', alvo: t('Posterior'), series: '4x12', descanso: '60s' },
+                                { nome: t('Crucifixo Inverso'), alvo: t('Posterior'), series: '3x15', descanso: '45s' },
+                                { nome: t('Remada Alta'), alvo: 'Ombro+Trap', series: '4x10', descanso: '60s' },
+                                { nome: 'Encolhimento Halteres', alvo: t('Trapézio'), series: '4x15', descanso: '60s' }
                             ],
                             alongamento: '🧘 Sleeper 45s + Doorway 45s + Upper trap 30s + Child 60s',
                             obs: 'OMBROS 3D! Todas as cabeças (ant/lat/post).'
@@ -701,18 +707,18 @@
                             musculo: 'Braços + Abdômen',
                             aquecimento: '🔥 5min cardio + rotação pulsos + rosca/tríceps 2x15 leve',
                             exercicios: [
-                                { nome: 'Rosca Direta Barra', alvo: 'Bíceps', series: '4x8', descanso: '75s' },
-                                { nome: 'Tríceps Testa', alvo: 'Tríceps', series: '4x8', descanso: '75s' },
-                                { nome: 'Rosca Alternada', alvo: 'Bíceps', series: '4x10', descanso: '60s' },
-                                { nome: 'Tríceps Corda', alvo: 'Tríceps', series: '4x12', descanso: '60s' },
-                                { nome: 'Rosca Martelo', alvo: 'Bíceps', series: '3x12', descanso: '60s' },
-                                { nome: 'Tríceps Francês', alvo: 'Tríceps', series: '3x12', descanso: '60s' },
-                                { nome: 'Rosca Scott', alvo: 'Bíceps', series: '3x12', descanso: '60s' },
-                                { nome: 'Paralelas', alvo: 'Tríceps', series: '3x MAX', descanso: '90s' },
-                                { nome: 'Abdominal Supra', alvo: 'Abdômen', series: '4x25', descanso: '45s' },
-                                { nome: 'Abdominal Infra', alvo: 'Abdômen', series: '4x20', descanso: '45s' },
+                                { nome: 'Rosca Direta Barra', alvo: t('Bíceps'), series: '4x8', descanso: '75s' },
+                                { nome: t('Tríceps Testa'), alvo: t('Tríceps'), series: '4x8', descanso: '75s' },
+                                { nome: t('Rosca Alternada'), alvo: t('Bíceps'), series: '4x10', descanso: '60s' },
+                                { nome: 'Tríceps Corda', alvo: t('Tríceps'), series: '4x12', descanso: '60s' },
+                                { nome: t('Rosca Martelo'), alvo: t('Bíceps'), series: '3x12', descanso: '60s' },
+                                { nome: t('Tríceps Francês'), alvo: t('Tríceps'), series: '3x12', descanso: '60s' },
+                                { nome: t('Rosca Scott'), alvo: t('Bíceps'), series: '3x12', descanso: '60s' },
+                                { nome: 'Paralelas', alvo: t('Tríceps'), series: '3x MAX', descanso: '90s' },
+                                { nome: t('Abdominal Supra'), alvo: t('Abdômen'), series: '4x25', descanso: '45s' },
+                                { nome: t('Abdominal Infra'), alvo: t('Abdômen'), series: '4x20', descanso: '45s' },
                                 { nome: 'Abdominal Bicicleta', alvo: 'Oblíquos', series: '3x30', descanso: '45s' },
-                                { nome: 'Prancha', alvo: 'Core', series: '3x90s', descanso: '60s' }
+                                { nome: t('Prancha'), alvo: t('Core'), series: '3x90s', descanso: '60s' }
                             ],
                             alongamento: '🧘 Bíceps wall 30s + Tríceps overhead 30s + Wrist 20s',
                             obs: 'FINALIZADOR! Drop sets nos últimos.'
@@ -823,5 +829,7 @@
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+    <script src="/translations.js"></script>
+    <script src="/translations.js"></script>
 </body>
 </html>

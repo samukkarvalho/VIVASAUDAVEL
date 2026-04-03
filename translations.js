@@ -1,19 +1,25 @@
-// Sistema de Tradução PT/EN - VidaSaudável
+// Sistema de tradução completo VidaSaudável
+// Idiomas: PT (Português) e EN (English)
+
 const translations = {
     pt: {
-        // Navbar
+        // === NAVEGAÇÃO E BOTÕES GLOBAIS ===
         'logo': 'VidaSaudável',
-        'btn-premium': '⭐ Assine Premium',
+        'btn-pt': '🇧🇷 PT',
+        'btn-en': '🇺🇸 EN',
         'btn-login': 'Entrar',
         'btn-logout': 'Sair',
+        'btn-premium': '⭐ Assine Premium',
+        'btn-voltar': 'Voltar para Início',
+        'btn-gerar': 'Gerar',
         
-        // Hero
+        // === HOME PAGE ===
         'hero-title': 'Transforme Seu Corpo e',
         'hero-title-gradient': 'Conquiste Seus Objetivos',
         'hero-subtitle': 'Seu coach de saúde pessoal. Treinos personalizados, nutrição inteligente e acompanhamento profissional.',
         'btn-start': 'Começar Agora',
         
-        // Cards Home
+        // Cards principais
         'card-treino': 'Meu Treino',
         'card-treino-desc': 'Fichas de treino personalizadas adaptadas ao seu biotipo',
         'card-dieta': 'Minha Dieta',
@@ -23,58 +29,7 @@ const translations = {
         'card-exerc': 'Aprenda a Treinar',
         'card-exerc-desc': '58 exercícios com técnicas corretas',
         
-        // Treino
-        'treino-title': 'GERADOR DE TREINO',
-        'treino-subtitle': 'Monte sua ficha profissional completa',
-        'treino-dados': '📋 Seus Dados',
-        'treino-nome': 'Nome',
-        'treino-idade': 'Idade',
-        'treino-peso': 'Peso (kg)',
-        'treino-altura': 'Altura (cm)',
-        'treino-biotipo-title': '🧬 Seu Biotipo',
-        'treino-ectomorfo': 'Ectomorfo',
-        'treino-ectomorfo-desc': 'Magro, dificuldade ganhar peso',
-        'treino-mesomorfo': 'Mesomorfo',
-        'treino-mesomorfo-desc': 'Atlético, ganha músculo facilmente',
-        'treino-endomorfo': 'Endomorfo',
-        'treino-endomorfo-desc': 'Facilidade ganhar peso',
-        'treino-objetivo-title': '🎯 Seu Objetivo',
-        'treino-emagrecimento': 'Emagrecimento',
-        'treino-definicao': 'Definição',
-        'treino-hipertrofia': 'Ganho de Massa',
-        'treino-nivel-title': '📊 Seu Nível',
-        'treino-iniciante': 'Iniciante',
-        'treino-iniciante-desc': '0-6 meses',
-        'treino-intermediario': 'Intermediário',
-        'treino-intermediario-desc': '6-18 meses',
-        'treino-avancado': 'Avançado',
-        'treino-avancado-desc': '+18 meses',
-        'treino-btn-gerar': 'Gerar Meu Treino',
-        'treino-btn-outro': '🔄 Gerar Outro Treino',
-        'treino-voltar': 'Voltar para Início',
-        
-        // Dieta
-        'dieta-title': 'GERADOR DE DIETA',
-        'dieta-subtitle': 'Seu plano alimentar personalizado',
-        'dieta-orcamento-title': '💰 Perfil Alimentar',
-        'dieta-economico': 'Econômico',
-        'dieta-economico-desc': 'Alimentos básicos e acessíveis',
-        'dieta-medio': 'Médio',
-        'dieta-medio-desc': 'Variedade e qualidade equilibrada',
-        'dieta-premium': 'Premium',
-        'dieta-premium-desc': 'Alimentos premium e suplementação',
-        'dieta-btn-gerar': 'Gerar Minha Dieta',
-        'dieta-btn-outro': '🔄 Gerar Outra Dieta',
-        
-        // Popup Upgrade
-        'popup-title': 'Limite Atingido!',
-        'popup-treino-msg': 'Você já gerou seu <strong>treino grátis</strong> deste mês.',
-        'popup-dieta-msg': 'Você já gerou sua <strong>dieta grátis</strong> deste mês.',
-        'popup-subtitle': 'Assine Premium para acesso ilimitado!',
-        'popup-btn': 'Assinar por €20 (Vitalício)',
-        'popup-voltar': 'Voltar',
-        
-        // Modal Login
+        // Modal
         'modal-title': 'Bem-vindo',
         'modal-subtitle': 'Faça login para acessar',
         'modal-btn': 'Entrar com Google',
@@ -83,84 +38,257 @@ const translations = {
         'footer-links': 'Links',
         'footer-contact': 'Contato',
         'footer-social': 'Redes Sociais',
-        'footer-rights': '© 2026 VidaSaudável. Todos os direitos reservados.'
+        'footer-rights': '© 2026 VidaSaudável. Todos os direitos reservados.',
+        
+        // === TREINO PAGE ===
+        'treino-title': 'GERADOR DE TREINO',
+        'treino-subtitle': 'Monte sua ficha profissional completa',
+        'form-dados': '📋 Seus Dados',
+        'label-nome': 'Nome',
+        'placeholder-nome': 'Digite seu nome',
+        'label-idade': 'Idade',
+        'label-peso': 'Peso (kg)',
+        'label-altura': 'Altura (cm)',
+        'form-biotipo': '🧬 Seu Biotipo',
+        'biotipo-ecto': 'Ectomorfo',
+        'biotipo-ecto-desc': 'Magro, dificuldade ganhar peso',
+        'biotipo-meso': 'Mesomorfo',
+        'biotipo-meso-desc': 'Atlético, ganha músculo facilmente',
+        'biotipo-endo': 'Endomorfo',
+        'biotipo-endo-desc': 'Facilidade ganhar peso',
+        'form-objetivo': '🎯 Seu Objetivo',
+        'obj-massa': 'Ganho de Massa',
+        'obj-massa-desc': 'Hipertrofia muscular',
+        'obj-definicao': 'Definição',
+        'obj-definicao-desc': 'Perder gordura e definir',
+        'obj-forca': 'Ganho de Força',
+        'obj-forca-desc': 'Aumentar potência',
+        'obj-saude': 'Saúde Geral',
+        'obj-saude-desc': 'Bem-estar e condicionamento',
+        'form-nivel': '⚡ Nível de Treino',
+        'nivel-iniciante': 'Iniciante',
+        'nivel-iniciante-desc': '0-6 meses de treino',
+        'nivel-intermediario': 'Intermediário',
+        'nivel-intermediario-desc': '6-24 meses de treino',
+        'nivel-avancado': 'Avançado',
+        'nivel-avancado-desc': '+24 meses de treino',
+        'btn-gerar-treino': '🔥 Gerar Meu Treino',
+        'btn-outro-treino': '🔄 Gerar Outro Treino',
+        
+        // Termos de treino
+        'dia': 'DIA',
+        'aquecimento': 'AQUECIMENTO',
+        'series': 'Séries',
+        'descanso': 'Descanso',
+        'alongamento': 'ALONGAMENTO',
+        'observacoes': 'Observações',
+        'divisao-treino': 'Divisão do Treino',
+        
+        // === DIETA PAGE ===
+        'dieta-title': 'GERADOR DE DIETA',
+        'dieta-subtitle': 'Crie seu plano alimentar com porções pesadas',
+        'form-biotipo-dieta': '🧬 Biotipo',
+        'form-objetivo-dieta': '🎯 Objetivo',
+        'form-orcamento': '💰 Seu Orçamento Mensal',
+        'orcamento-economico': 'Econômico',
+        'orcamento-economico-desc': 'Alimentos básicos e acessíveis',
+        'orcamento-medio': 'Médio',
+        'orcamento-medio-desc': 'Variedade e qualidade equilibradas',
+        'orcamento-premium': 'Premium',
+        'orcamento-premium-desc': 'Alimentos premium e suplementos',
+        'btn-gerar-dieta': '🥗 Gerar Minha Dieta',
+        'btn-outra-dieta': '🔄 Gerar Outra Dieta',
+        
+        // Refeições
+        'cafe-manha': 'Café da Manhã',
+        'lanche-manha': 'Lanche da Manhã',
+        'almoco': 'Almoço',
+        'lanche-tarde': 'Lanche da Tarde',
+        'jantar': 'Jantar',
+        'ceia': 'Ceia',
+        'pre-treino': 'Pré-Treino',
+        'pos-treino': 'Pós-Treino',
+        
+        // Macros
+        'calorias': 'Calorias',
+        'proteinas': 'Proteínas',
+        'carboidratos': 'Carboidratos',
+        'gorduras': 'Gorduras',
+        'total-dia': 'TOTAL DO DIA',
+        
+        // === EXERCÍCIOS (A-Z) ===
+        'Supino Reto': 'Supino Reto',
+        'Supino Inclinado': 'Supino Inclinado',
+        'Supino Declinado': 'Supino Declinado',
+        'Crucifixo Máquina': 'Crucifixo Máquina',
+        'Crucifixo Halteres': 'Crucifixo Halteres',
+        'Pullover': 'Pullover',
+        'Flexão de Braço': 'Flexão de Braço',
+        'Tríceps Polia': 'Tríceps Polia',
+        'Tríceps Francês': 'Tríceps Francês',
+        'Tríceps Testa': 'Tríceps Testa',
+        'Mergulho': 'Mergulho',
+        'Abdominal Supra': 'Abdominal Supra',
+        'Abdominal Infra': 'Abdominal Infra',
+        'Prancha': 'Prancha',
+        'Prancha Lateral': 'Prancha Lateral',
+        'Russian Twist': 'Russian Twist',
+        'Elevação de Pernas': 'Elevação de Pernas',
+        'Puxada Frontal': 'Puxada Frontal',
+        'Puxada Pegada Supinada': 'Puxada Pegada Supinada',
+        'Remada Baixa': 'Remada Baixa',
+        'Remada Curvada': 'Remada Curvada',
+        'Remada Unilateral': 'Remada Unilateral',
+        'Pulldown Reto': 'Pulldown Reto',
+        'Levantamento Terra': 'Levantamento Terra',
+        'Barra Fixa': 'Barra Fixa',
+        'Rosca Direta': 'Rosca Direta',
+        'Rosca Alternada': 'Rosca Alternada',
+        'Rosca Martelo': 'Rosca Martelo',
+        'Rosca Concentrada': 'Rosca Concentrada',
+        'Rosca Scott': 'Rosca Scott',
+        'Rosca Inversa': 'Rosca Inversa',
+        'Agachamento Livre': 'Agachamento Livre',
+        'Agachamento Hack': 'Agachamento Hack',
+        'Agachamento Búlgaro': 'Agachamento Búlgaro',
+        'Leg Press 45°': 'Leg Press 45°',
+        'Cadeira Extensora': 'Cadeira Extensora',
+        'Mesa Flexora': 'Mesa Flexora',
+        'Stiff': 'Stiff',
+        'Afundo': 'Afundo',
+        'Passada': 'Passada',
+        'Cadeira Abdutora': 'Cadeira Abdutora',
+        'Cadeira Adutora': 'Cadeira Adutora',
+        'Panturrilha em Pé': 'Panturrilha em Pé',
+        'Panturrilha Sentado': 'Panturrilha Sentado',
+        'Desenvolvimento Militar': 'Desenvolvimento Militar',
+        'Desenvolvimento Halteres': 'Desenvolvimento Halteres',
+        'Elevação Lateral': 'Elevação Lateral',
+        'Elevação Frontal': 'Elevação Frontal',
+        'Crucifixo Inverso': 'Crucifixo Inverso',
+        'Remada Alta': 'Remada Alta',
+        'Encolhimento': 'Encolhimento',
+        
+        // Músculos alvo
+        'Peitoral': 'Peitoral',
+        'Peito Superior': 'Peito Superior',
+        'Peito Inferior': 'Peito Inferior',
+        'Tríceps': 'Tríceps',
+        'Abdômen': 'Abdômen',
+        'Core': 'Core',
+        'Dorsal': 'Dorsal',
+        'Dorsal Médio': 'Dorsal Médio',
+        'Dorsal Inferior': 'Dorsal Inferior',
+        'Bíceps': 'Bíceps',
+        'Quadríceps': 'Quadríceps',
+        'Posterior': 'Posterior',
+        'Panturrilha': 'Panturrilha',
+        'Ombros': 'Ombros',
+        'Ombro Lateral': 'Ombro Lateral',
+        'Ombro Frontal': 'Ombro Frontal',
+        'Ombro Posterior': 'Ombro Posterior',
+        'Trapézio': 'Trapézio',
+        
+        // === ALIMENTOS ===
+        'Ovos': 'Ovos',
+        'Claras de Ovo': 'Claras de Ovo',
+        'Peito de Frango': 'Peito de Frango',
+        'Filé de Frango': 'Filé de Frango',
+        'Carne Moída': 'Carne Moída',
+        'Patinho': 'Patinho',
+        'Alcatra': 'Alcatra',
+        'Filé Mignon': 'Filé Mignon',
+        'Tilápia': 'Tilápia',
+        'Salmão': 'Salmão',
+        'Atum': 'Atum',
+        'Arroz Integral': 'Arroz Integral',
+        'Arroz Branco': 'Arroz Branco',
+        'Batata Doce': 'Batata Doce',
+        'Batata Inglesa': 'Batata Inglesa',
+        'Macarrão Integral': 'Macarrão Integral',
+        'Pão Integral': 'Pão Integral',
+        'Pão Francês': 'Pão Francês',
+        'Tapioca': 'Tapioca',
+        'Aveia': 'Aveia',
+        'Granola': 'Granola',
+        'Brócolis': 'Brócolis',
+        'Couve': 'Couve',
+        'Alface': 'Alface',
+        'Tomate': 'Tomate',
+        'Cenoura': 'Cenoura',
+        'Banana': 'Banana',
+        'Maçã': 'Maçã',
+        'Morango': 'Morango',
+        'Abacate': 'Abacate',
+        'Whey Protein': 'Whey Protein',
+        'Creatina': 'Creatina',
+        'Pasta de Amendoim': 'Pasta de Amendoim',
+        'Azeite': 'Azeite',
+        'Castanhas': 'Castanhas',
+        'Leite Desnatado': 'Leite Desnatado',
+        'Iogurte Grego': 'Iogurte Grego',
+        'Queijo Cottage': 'Queijo Cottage',
+        
+        // === ACOMPANHAMENTO ===
+        'acomp-title': 'ACOMPANHAMENTO DE PROGRESSO',
+        'acomp-subtitle': 'Monitore sua evolução',
+        'historico': 'Histórico de Medidas',
+        'adicionar-medida': 'Adicionar Nova Medida',
+        'data': 'Data',
+        'peso-atual': 'Peso Atual',
+        'gordura': '% Gordura',
+        'musculo': '% Músculo',
+        'medidas': 'Medidas',
+        'peito': 'Peito',
+        'cintura': 'Cintura',
+        'quadril': 'Quadril',
+        'braco': 'Braço',
+        'coxa': 'Coxa',
+        'salvar': 'Salvar',
+        'cancelar': 'Cancelar',
+        
+        // === POPUP UPGRADE ===
+        'upgrade-title': 'Limite Atingido! 🚀',
+        'upgrade-msg-treino': 'Você já gerou 1 treino este mês (plano FREE).',
+        'upgrade-msg-dieta': 'Você já gerou 1 dieta este mês (plano FREE).',
+        'upgrade-benefits': 'Com o Premium você terá:',
+        'upgrade-benefit-1': '✅ Treinos ilimitados',
+        'upgrade-benefit-2': '✅ Dietas ilimitadas',
+        'upgrade-benefit-3': '✅ Histórico completo',
+        'upgrade-benefit-4': '✅ Acesso vitalício',
+        'upgrade-price': 'Apenas €20 (pagamento único)',
+        'upgrade-btn': 'Assinar Premium Agora',
+        'upgrade-close': 'Fechar'
     },
     
     en: {
-        // Navbar
+        // === NAVIGATION AND GLOBAL BUTTONS ===
         'logo': 'HealthyLife',
-        'btn-premium': '⭐ Subscribe Premium',
+        'btn-pt': '🇧🇷 PT',
+        'btn-en': '🇺🇸 EN',
         'btn-login': 'Sign In',
         'btn-logout': 'Sign Out',
+        'btn-premium': '⭐ Subscribe Premium',
+        'btn-voltar': 'Back to Home',
+        'btn-gerar': 'Generate',
         
-        // Hero
+        // === HOME PAGE ===
         'hero-title': 'Transform Your Body and',
         'hero-title-gradient': 'Achieve Your Goals',
         'hero-subtitle': 'Your personal health coach. Customized workouts, smart nutrition and professional monitoring.',
         'btn-start': 'Get Started',
         
-        // Cards Home
+        // Main cards
         'card-treino': 'My Workout',
         'card-treino-desc': 'Personalized workout plans adapted to your body type',
         'card-dieta': 'My Diet',
         'card-dieta-desc': 'Complete and balanced meal plans',
-        'card-acomp': 'Tracking',
-        'card-acomp-desc': 'Monitor your progress with detailed charts',
+        'card-acomp': 'Progress Tracking',
+        'card-acomp-desc': 'Monitor your evolution with detailed charts',
         'card-exerc': 'Learn to Train',
         'card-exerc-desc': '58 exercises with correct techniques',
         
-        // Treino
-        'treino-title': 'WORKOUT GENERATOR',
-        'treino-subtitle': 'Build your complete professional plan',
-        'treino-dados': '📋 Your Data',
-        'treino-nome': 'Name',
-        'treino-idade': 'Age',
-        'treino-peso': 'Weight (kg)',
-        'treino-altura': 'Height (cm)',
-        'treino-biotipo-title': '🧬 Your Body Type',
-        'treino-ectomorfo': 'Ectomorph',
-        'treino-ectomorfo-desc': 'Lean, hard to gain weight',
-        'treino-mesomorfo': 'Mesomorph',
-        'treino-mesomorfo-desc': 'Athletic, gains muscle easily',
-        'treino-endomorfo': 'Endomorph',
-        'treino-endomorfo-desc': 'Easy to gain weight',
-        'treino-objetivo-title': '🎯 Your Goal',
-        'treino-emagrecimento': 'Weight Loss',
-        'treino-definicao': 'Definition',
-        'treino-hipertrofia': 'Muscle Gain',
-        'treino-nivel-title': '📊 Your Level',
-        'treino-iniciante': 'Beginner',
-        'treino-iniciante-desc': '0-6 months',
-        'treino-intermediario': 'Intermediate',
-        'treino-intermediario-desc': '6-18 months',
-        'treino-avancado': 'Advanced',
-        'treino-avancado-desc': '+18 months',
-        'treino-btn-gerar': 'Generate My Workout',
-        'treino-btn-outro': '🔄 Generate Another Workout',
-        'treino-voltar': 'Back to Home',
-        
-        // Dieta
-        'dieta-title': 'DIET GENERATOR',
-        'dieta-subtitle': 'Your personalized meal plan',
-        'dieta-orcamento-title': '💰 Food Profile',
-        'dieta-economico': 'Budget',
-        'dieta-economico-desc': 'Basic and affordable foods',
-        'dieta-medio': 'Standard',
-        'dieta-medio-desc': 'Balanced variety and quality',
-        'dieta-premium': 'Premium',
-        'dieta-premium-desc': 'Premium foods and supplements',
-        'dieta-btn-gerar': 'Generate My Diet',
-        'dieta-btn-outro': '🔄 Generate Another Diet',
-        
-        // Popup Upgrade
-        'popup-title': 'Limit Reached!',
-        'popup-treino-msg': 'You already generated your <strong>free workout</strong> this month.',
-        'popup-dieta-msg': 'You already generated your <strong>free diet</strong> this month.',
-        'popup-subtitle': 'Subscribe Premium for unlimited access!',
-        'popup-btn': 'Subscribe for €20 (Lifetime)',
-        'popup-voltar': 'Go Back',
-        
-        // Modal Login
+        // Modal
         'modal-title': 'Welcome',
         'modal-subtitle': 'Sign in to access',
         'modal-btn': 'Sign in with Google',
@@ -169,31 +297,261 @@ const translations = {
         'footer-links': 'Links',
         'footer-contact': 'Contact',
         'footer-social': 'Social Media',
-        'footer-rights': '© 2026 HealthyLife. All rights reserved.'
+        'footer-rights': '© 2026 HealthyLife. All rights reserved.',
+        
+        // === WORKOUT PAGE ===
+        'treino-title': 'WORKOUT GENERATOR',
+        'treino-subtitle': 'Create your complete professional plan',
+        'form-dados': '📋 Your Data',
+        'label-nome': 'Name',
+        'placeholder-nome': 'Enter your name',
+        'label-idade': 'Age',
+        'label-peso': 'Weight (kg)',
+        'label-altura': 'Height (cm)',
+        'form-biotipo': '🧬 Your Body Type',
+        'biotipo-ecto': 'Ectomorph',
+        'biotipo-ecto-desc': 'Lean, difficulty gaining weight',
+        'biotipo-meso': 'Mesomorph',
+        'biotipo-meso-desc': 'Athletic, gains muscle easily',
+        'biotipo-endo': 'Endomorph',
+        'biotipo-endo-desc': 'Gains weight easily',
+        'form-objetivo': '🎯 Your Goal',
+        'obj-massa': 'Muscle Gain',
+        'obj-massa-desc': 'Muscle hypertrophy',
+        'obj-definicao': 'Definition',
+        'obj-definicao-desc': 'Lose fat and get lean',
+        'obj-forca': 'Strength Gain',
+        'obj-forca-desc': 'Increase power',
+        'obj-saude': 'General Health',
+        'obj-saude-desc': 'Wellness and conditioning',
+        'form-nivel': '⚡ Training Level',
+        'nivel-iniciante': 'Beginner',
+        'nivel-iniciante-desc': '0-6 months training',
+        'nivel-intermediario': 'Intermediate',
+        'nivel-intermediario-desc': '6-24 months training',
+        'nivel-avancado': 'Advanced',
+        'nivel-avancado-desc': '+24 months training',
+        'btn-gerar-treino': '🔥 Generate My Workout',
+        'btn-outro-treino': '🔄 Generate Another Workout',
+        
+        // Workout terms
+        'dia': 'DAY',
+        'aquecimento': 'WARM-UP',
+        'series': 'Sets',
+        'descanso': 'Rest',
+        'alongamento': 'STRETCHING',
+        'observacoes': 'Notes',
+        'divisao-treino': 'Training Split',
+        
+        // === DIET PAGE ===
+        'dieta-title': 'DIET GENERATOR',
+        'dieta-subtitle': 'Create your meal plan with precise portions',
+        'form-biotipo-dieta': '🧬 Body Type',
+        'form-objetivo-dieta': '🎯 Goal',
+        'form-orcamento': '💰 Your Monthly Budget',
+        'orcamento-economico': 'Budget',
+        'orcamento-economico-desc': 'Basic and affordable foods',
+        'orcamento-medio': 'Standard',
+        'orcamento-medio-desc': 'Balanced variety and quality',
+        'orcamento-premium': 'Premium',
+        'orcamento-premium-desc': 'Premium foods and supplements',
+        'btn-gerar-dieta': '🥗 Generate My Diet',
+        'btn-outra-dieta': '🔄 Generate Another Diet',
+        
+        // Meals
+        'cafe-manha': 'Breakfast',
+        'lanche-manha': 'Morning Snack',
+        'almoco': 'Lunch',
+        'lanche-tarde': 'Afternoon Snack',
+        'jantar': 'Dinner',
+        'ceia': 'Bedtime Snack',
+        'pre-treino': 'Pre-Workout',
+        'pos-treino': 'Post-Workout',
+        
+        // Macros
+        'calorias': 'Calories',
+        'proteinas': 'Protein',
+        'carboidratos': 'Carbs',
+        'gorduras': 'Fats',
+        'total-dia': 'DAILY TOTAL',
+        
+        // === EXERCISES (A-Z) ===
+        'Supino Reto': 'Flat Bench Press',
+        'Supino Inclinado': 'Incline Bench Press',
+        'Supino Declinado': 'Decline Bench Press',
+        'Crucifixo Máquina': 'Machine Fly',
+        'Crucifixo Halteres': 'Dumbbell Fly',
+        'Pullover': 'Pullover',
+        'Flexão de Braço': 'Push-Up',
+        'Tríceps Polia': 'Cable Pushdown',
+        'Tríceps Francês': 'Overhead Extension',
+        'Tríceps Testa': 'Skull Crusher',
+        'Mergulho': 'Dips',
+        'Abdominal Supra': 'Crunches',
+        'Abdominal Infra': 'Leg Raises',
+        'Prancha': 'Plank',
+        'Prancha Lateral': 'Side Plank',
+        'Russian Twist': 'Russian Twist',
+        'Elevação de Pernas': 'Hanging Leg Raise',
+        'Puxada Frontal': 'Lat Pulldown',
+        'Puxada Pegada Supinada': 'Supinated Pulldown',
+        'Remada Baixa': 'Seated Row',
+        'Remada Curvada': 'Bent Over Row',
+        'Remada Unilateral': 'Single-Arm Row',
+        'Pulldown Reto': 'Straight-Arm Pulldown',
+        'Levantamento Terra': 'Deadlift',
+        'Barra Fixa': 'Pull-Up',
+        'Rosca Direta': 'Barbell Curl',
+        'Rosca Alternada': 'Alternating Curl',
+        'Rosca Martelo': 'Hammer Curl',
+        'Rosca Concentrada': 'Concentration Curl',
+        'Rosca Scott': 'Preacher Curl',
+        'Rosca Inversa': 'Reverse Curl',
+        'Agachamento Livre': 'Barbell Squat',
+        'Agachamento Hack': 'Hack Squat',
+        'Agachamento Búlgaro': 'Bulgarian Split Squat',
+        'Leg Press 45°': 'Leg Press 45°',
+        'Cadeira Extensora': 'Leg Extension',
+        'Mesa Flexora': 'Leg Curl',
+        'Stiff': 'Romanian Deadlift',
+        'Afundo': 'Lunge',
+        'Passada': 'Walking Lunge',
+        'Cadeira Abdutora': 'Hip Abduction',
+        'Cadeira Adutora': 'Hip Adduction',
+        'Panturrilha em Pé': 'Standing Calf Raise',
+        'Panturrilha Sentado': 'Seated Calf Raise',
+        'Desenvolvimento Militar': 'Military Press',
+        'Desenvolvimento Halteres': 'Dumbbell Shoulder Press',
+        'Elevação Lateral': 'Lateral Raise',
+        'Elevação Frontal': 'Front Raise',
+        'Crucifixo Inverso': 'Reverse Fly',
+        'Remada Alta': 'Upright Row',
+        'Encolhimento': 'Shrugs',
+        
+        // Target muscles
+        'Peitoral': 'Chest',
+        'Peito Superior': 'Upper Chest',
+        'Peito Inferior': 'Lower Chest',
+        'Tríceps': 'Triceps',
+        'Abdômen': 'Abs',
+        'Core': 'Core',
+        'Dorsal': 'Lats',
+        'Dorsal Médio': 'Mid Back',
+        'Dorsal Inferior': 'Lower Back',
+        'Bíceps': 'Biceps',
+        'Quadríceps': 'Quads',
+        'Posterior': 'Hamstrings',
+        'Panturrilha': 'Calves',
+        'Ombros': 'Shoulders',
+        'Ombro Lateral': 'Side Delts',
+        'Ombro Frontal': 'Front Delts',
+        'Ombro Posterior': 'Rear Delts',
+        'Trapézio': 'Traps',
+        
+        // === FOODS ===
+        'Ovos': 'Eggs',
+        'Claras de Ovo': 'Egg Whites',
+        'Peito de Frango': 'Chicken Breast',
+        'Filé de Frango': 'Chicken Fillet',
+        'Carne Moída': 'Ground Beef',
+        'Patinho': 'Top Round',
+        'Alcatra': 'Top Sirloin',
+        'Filé Mignon': 'Tenderloin',
+        'Tilápia': 'Tilapia',
+        'Salmão': 'Salmon',
+        'Atum': 'Tuna',
+        'Arroz Integral': 'Brown Rice',
+        'Arroz Branco': 'White Rice',
+        'Batata Doce': 'Sweet Potato',
+        'Batata Inglesa': 'Potato',
+        'Macarrão Integral': 'Whole Wheat Pasta',
+        'Pão Integral': 'Whole Wheat Bread',
+        'Pão Francês': 'French Bread',
+        'Tapioca': 'Tapioca',
+        'Aveia': 'Oatmeal',
+        'Granola': 'Granola',
+        'Brócolis': 'Broccoli',
+        'Couve': 'Kale',
+        'Alface': 'Lettuce',
+        'Tomate': 'Tomato',
+        'Cenoura': 'Carrot',
+        'Banana': 'Banana',
+        'Maçã': 'Apple',
+        'Morango': 'Strawberry',
+        'Abacate': 'Avocado',
+        'Whey Protein': 'Whey Protein',
+        'Creatina': 'Creatine',
+        'Pasta de Amendoim': 'Peanut Butter',
+        'Azeite': 'Olive Oil',
+        'Castanhas': 'Nuts',
+        'Leite Desnatado': 'Skim Milk',
+        'Iogurte Grego': 'Greek Yogurt',
+        'Queijo Cottage': 'Cottage Cheese',
+        
+        // === PROGRESS TRACKING ===
+        'acomp-title': 'PROGRESS TRACKING',
+        'acomp-subtitle': 'Monitor your evolution',
+        'historico': 'Measurements History',
+        'adicionar-medida': 'Add New Measurement',
+        'data': 'Date',
+        'peso-atual': 'Current Weight',
+        'gordura': 'Body Fat %',
+        'musculo': 'Muscle %',
+        'medidas': 'Measurements',
+        'peito': 'Chest',
+        'cintura': 'Waist',
+        'quadril': 'Hip',
+        'braco': 'Arm',
+        'coxa': 'Thigh',
+        'salvar': 'Save',
+        'cancelar': 'Cancel',
+        
+        // === UPGRADE POPUP ===
+        'upgrade-title': 'Limit Reached! 🚀',
+        'upgrade-msg-treino': 'You already generated 1 workout this month (FREE plan).',
+        'upgrade-msg-dieta': 'You already generated 1 diet this month (FREE plan).',
+        'upgrade-benefits': 'With Premium you get:',
+        'upgrade-benefit-1': '✅ Unlimited workouts',
+        'upgrade-benefit-2': '✅ Unlimited diets',
+        'upgrade-benefit-3': '✅ Complete history',
+        'upgrade-benefit-4': '✅ Lifetime access',
+        'upgrade-price': 'Only €20 (one-time payment)',
+        'upgrade-btn': 'Subscribe Premium Now',
+        'upgrade-close': 'Close'
     }
 };
 
 // Função de tradução
-function translatePage(lang) {
+let currentLanguage = localStorage.getItem('language') || 'pt';
+
+function setLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('language', lang);
+    translatePage();
+}
+
+function translatePage() {
+    // Traduzir elementos com data-i18n
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        if (translations[lang][key]) {
-            element.innerHTML = translations[lang][key];
+        if (translations[currentLanguage][key]) {
+            element.textContent = translations[currentLanguage][key];
         }
     });
     
-    // Salvar preferência
-    localStorage.setItem('preferredLanguage', lang);
-    
-    // Atualizar botão ativo
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
+    // Traduzir placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        if (translations[currentLanguage][key]) {
+            element.placeholder = translations[currentLanguage][key];
+        }
     });
-    document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
 }
 
-// Carregar idioma salvo ao iniciar
-window.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('preferredLanguage') || 'pt';
-    translatePage(savedLang);
-});
+// Função para traduzir texto dinamicamente
+function t(key) {
+    return translations[currentLanguage][key] || key;
+}
+
+// Inicializar tradução ao carregar página
+document.addEventListener('DOMContentLoaded', translatePage);

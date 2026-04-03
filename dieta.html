@@ -362,31 +362,37 @@
 </head>
 <body>
     <div class="container">
+        <!-- Botões de idioma -->
+        <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;">
+            <button onclick="setLanguage('pt')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇧🇷 PT</button>
+            <button onclick="setLanguage('en')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇺🇸 EN</button>
+        </div>
+        
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s; border: 2px solid transparent;">
             <span style="font-size: 1.5rem;">←</span>
-            Voltar para Início
+            <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
         
         <div class="header">
-            <h1>GERADOR DE DIETA</h1>
-            <p>Crie seu plano alimentar com porções pesadas</p>
+            <h1 data-i18n="dieta-title">GERADOR DE DIETA</h1>
+            <p data-i18n="dieta-subtitle">Crie seu plano alimentar com porções pesadas</p>
         </div>
 
         <div class="form-wrapper">
             <form id="dietForm">
-                <div class="section-title">📋 Seus Dados</div>
+                <div class="section-title" data-i18n="form-dados">📋 Seus Dados</div>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" id="nome" required placeholder="Digite seu nome">
+                        <label for="nome" data-i18n="label-nome">Nome</label>
+                        <input type="text" id="nome" required placeholder="Digite seu nome" data-i18n-placeholder="placeholder-nome">
                     </div>
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                         <div>
-                            <label for="idade">Idade</label>
+                            <label for="idade" data-i18n="label-idade">Idade</label>
                             <input type="number" id="idade" required placeholder="25" min="15" max="100">
                         </div>
                         <div>
-                            <label for="peso">Peso (kg)</label>
+                            <label for="peso" data-i18n="label-peso">Peso (kg)</label>
                             <input type="number" id="peso" required placeholder="70" min="30" max="300">
                         </div>
                         <div>
@@ -690,16 +696,16 @@
                     {
                         hora: 'Café da manhã (7h)',
                         alimentos: [
-                            { nome: 'Ovos cozidos', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
-                            { nome: 'Pão francês', quantidade: '50g', proteina: 4, carbo: 26, gordura: 1 },
-                            { nome: 'Banana', quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
+                            { nome: t('Ovos cozidos'), quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
+                            { nome: t('Pão francês'), quantidade: '50g', proteina: 4, carbo: 26, gordura: 1 },
+                            { nome: t('Banana'), quantidade: '100g', proteina: 1, carbo: 23, gordura: 0 }
                         ]
                     },
                     {
                         hora: 'Almoço (13h)',
                         alimentos: [
-                            { nome: 'Frango cozido', quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
-                            { nome: 'Arroz branco', quantidade: '100g', proteina: 3, carbo: 28, gordura: 0 },
+                            { nome: t('Frango cozido'), quantidade: '120g', proteina: 31, carbo: 0, gordura: 3 },
+                            { nome: t('Arroz branco'), quantidade: '100g', proteina: 3, carbo: 28, gordura: 0 },
                             { nome: 'Feijão', quantidade: '80g', proteina: 6, carbo: 16, gordura: 0 }
                         ]
                     },
@@ -707,7 +713,7 @@
                         hora: 'Jantar (19h)',
                         alimentos: [
                             { nome: 'Ovo mexido', quantidade: '100g (2 ovos)', proteina: 13, carbo: 1, gordura: 10 },
-                            { nome: 'Batata cozida', quantidade: '150g', proteina: 3, carbo: 26, gordura: 0 }
+                            { nome: t('Batata cozida'), quantidade: '150g', proteina: 3, carbo: 26, gordura: 0 }
                         ]
                     }
                 ],
@@ -715,18 +721,18 @@
                     {
                         hora: 'Café da manhã (7h)',
                         alimentos: [
-                            { nome: 'Ovos mexidos', quantidade: '150g (3 ovos)', proteina: 19, carbo: 1, gordura: 15 },
-                            { nome: 'Pão integral', quantidade: '50g', proteina: 4, carbo: 24, gordura: 2 },
-                            { nome: 'Whey protein', quantidade: '30g', proteina: 24, carbo: 3, gordura: 1 }
+                            { nome: t('Ovos mexidos'), quantidade: '150g (3 ovos)', proteina: 19, carbo: 1, gordura: 15 },
+                            { nome: t('Pão integral'), quantidade: '50g', proteina: 4, carbo: 24, gordura: 2 },
+                            { nome: t('Whey protein'), quantidade: '30g', proteina: 24, carbo: 3, gordura: 1 }
                         ]
                     },
                     {
                         hora: 'Almoço (13h)',
                         alimentos: [
-                            { nome: 'Peito de frango', quantidade: '150g', proteina: 39, carbo: 0, gordura: 4 },
-                            { nome: 'Arroz integral', quantidade: '100g', proteina: 3, carbo: 28, gordura: 1 },
-                            { nome: 'Batata doce', quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
-                            { nome: 'Brócolis', quantidade: '100g', proteina: 3, carbo: 7, gordura: 0 }
+                            { nome: t('Peito de frango'), quantidade: '150g', proteina: 39, carbo: 0, gordura: 4 },
+                            { nome: t('Arroz integral'), quantidade: '100g', proteina: 3, carbo: 28, gordura: 1 },
+                            { nome: t('Batata doce'), quantidade: '100g', proteina: 1, carbo: 20, gordura: 0 },
+                            { nome: t('Brócolis'), quantidade: '100g', proteina: 3, carbo: 7, gordura: 0 }
                         ]
                     },
                     {
@@ -759,7 +765,7 @@
                     {
                         hora: 'Jantar (19h)',
                         alimentos: [
-                            { nome: 'Filé mignon', quantidade: '180g', proteina: 45, carbo: 0, gordura: 9 },
+                            { nome: t('Filé mignon'), quantidade: '180g', proteina: 45, carbo: 0, gordura: 9 },
                             { nome: 'Risoto de funghi', quantidade: '100g', proteina: 3, carbo: 25, gordura: 3 },
                             { nome: 'Mix de vegetais', quantidade: '150g', proteina: 2, carbo: 10, gordura: 0 }
                         ]
@@ -821,5 +827,6 @@
             dietaList.appendChild(btnDiv);
         }
     </script>
+    <script src="/translations.js"></script>
 </body>
 </html>
