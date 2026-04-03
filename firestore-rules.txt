@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Dados do usuário
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Treinos mensais (1 por mês para FREE)
+    match /treinos_mensais/{treinoId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                      request.resource.data.user_id == request.auth.uid;
+    }
+    
+    // Dietas mensais (1 por mês para FREE)
+    match /dietas_mensais/{dietaId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                      request.resource.data.user_id == request.auth.uid;
+    }
+    
+    // Licenças (somente leitura)
+    match /licenses/{licenseId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+  }
+}
