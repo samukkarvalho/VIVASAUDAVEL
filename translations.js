@@ -77,7 +77,13 @@ const translations = {
         // Modal Login
         'modal-title': 'Bem-vindo',
         'modal-subtitle': 'Faça login para acessar',
-        'modal-btn': 'Entrar com Google'
+        'modal-btn': 'Entrar com Google',
+        
+        // Footer
+        'footer-links': 'Links',
+        'footer-contact': 'Contato',
+        'footer-social': 'Redes Sociais',
+        'footer-rights': '© 2026 VidaSaudável. Todos os direitos reservados.'
     },
     
     en: {
@@ -157,7 +163,13 @@ const translations = {
         // Modal Login
         'modal-title': 'Welcome',
         'modal-subtitle': 'Sign in to access',
-        'modal-btn': 'Sign in with Google'
+        'modal-btn': 'Sign in with Google',
+        
+        // Footer
+        'footer-links': 'Links',
+        'footer-contact': 'Contact',
+        'footer-social': 'Social Media',
+        'footer-rights': '© 2026 HealthyLife. All rights reserved.'
     }
 };
 
