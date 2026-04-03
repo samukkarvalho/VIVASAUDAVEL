@@ -11,25 +11,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="VidaSaudável">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
-    
-    <!-- Ícones -->
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="apple-touch-icon" href="/icon-192.png">
     
-    <!-- Fonts e CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
@@ -45,7 +34,6 @@
             height: 100%;
             z-index: -1;
         }
-
         .bg-slide {
             position: absolute;
             top: 0;
@@ -55,29 +43,13 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            transition: opacity 2s ease-in-out;
+            transition: opacity 2s;
         }
-
-        .bg-slide.active {
-            opacity: 0.4;
-        }
-
-        .bg-slide:nth-child(1) {
-            background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920');
-        }
-
-        .bg-slide:nth-child(2) {
-            background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1920');
-        }
-
-        .bg-slide:nth-child(3) {
-            background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1920');
-        }
-
-        .bg-slide:nth-child(4) {
-            background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920');
-        }
-
+        .bg-slide.active { opacity: 0.4; }
+        .bg-slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920'); }
+        .bg-slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1920'); }
+        .bg-slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1920'); }
+        .bg-slide:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920'); }
         .bg-overlay {
             position: fixed;
             top: 0;
@@ -101,12 +73,6 @@
             z-index: 1000;
             transition: all 0.3s;
         }
-
-        nav.scrolled {
-            padding: 15px 50px;
-            background: rgba(26, 26, 46, 0.95);
-        }
-
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -114,23 +80,19 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
         }
-
         .user-section {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-
-        .btn-login {
+        .btn-login, .btn-premium {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
@@ -142,36 +104,23 @@
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        .btn-premium {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: pulse 2s infinite;
         }
-
-        .user-info {
-            display: none;
-            align-items: center;
-            gap: 15px;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
-
-        .user-info.active {
-            display: flex;
-        }
-
+        .user-info { display: none; align-items: center; gap: 15px; }
+        .user-info.active { display: flex; }
         .user-avatar {
             width: 45px;
             height: 45px;
             border-radius: 50%;
             border: 2px solid #667eea;
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.4);
         }
-
-        .user-name {
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
+        .user-name { color: white; font-weight: 600; }
         .btn-logout {
             background: rgba(245, 87, 108, 0.2);
             color: #f5576c;
@@ -180,13 +129,7 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
             transition: all 0.3s;
-        }
-
-        .btn-logout:hover {
-            background: #f5576c;
-            color: white;
         }
 
         /* HERO */
@@ -198,52 +141,25 @@
             text-align: center;
             padding: 150px 20px 80px;
         }
-
-        .hero-content {
-            max-width: 900px;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        .hero-content { max-width: 900px; }
         .hero h1 {
             font-size: 4.5rem;
             font-weight: 800;
             color: white;
             margin-bottom: 25px;
             line-height: 1.1;
-            letter-spacing: -2px;
         }
-
         .gradient-text {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .hero p {
             font-size: 1.4rem;
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 40px;
-            font-weight: 300;
         }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
+        .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -254,66 +170,16 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 18px 45px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
         }
 
         /* FEATURES */
-        .features {
-            padding: 100px 20px;
-            background: rgba(26, 26, 46, 0.5);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 70px;
-        }
-
-        .section-title h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        .section-title p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
+        .features { padding: 100px 20px; background: rgba(26, 26, 46, 0.5); }
+        .container { max-width: 1400px; margin: 0 auto; }
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 35px;
         }
-
         .feature-card {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
             backdrop-filter: blur(20px);
@@ -322,308 +188,81 @@
             padding: 50px 35px;
             text-decoration: none;
             color: inherit;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.4s;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
         }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
         .feature-card:hover {
             transform: translateY(-10px);
             border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
         }
-
-        .card-icon {
-            font-size: 4.5rem;
-            margin-bottom: 30px;
-            display: block;
-            filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.3));
-        }
-
+        .card-icon { font-size: 4.5rem; margin-bottom: 30px; }
         .card-title {
             font-size: 1.8rem;
             font-weight: 700;
             color: white;
             margin-bottom: 15px;
         }
+        .card-description { color: rgba(255, 255, 255, 0.7); }
 
-        .card-description {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.7;
-        }
-
-        /* FOOTER */
-        footer {
-            background: rgba(26, 26, 46, 0.95);
-            padding: 60px 20px 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h3 {
-            color: white;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .footer-section p {
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-link {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .contact-item:hover {
-            color: white;
-        }
-
-        .contact-item i {
-            color: #667eea;
-            font-size: 1.1rem;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-
-        /* LOGIN MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .login-box {
+        /* MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-box {
             background: linear-gradient(145deg, rgba(26, 26, 46, 0.95) 0%, rgba(72, 52, 117, 0.95) 100%);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 50px;
             border-radius: 30px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-            text-align: center;
             max-width: 450px;
             width: 90%;
-            position: relative;
-            animation: slideUp 0.4s ease-out;
+            text-align: center;
         }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.5);
-            transition: all 0.3s;
-        }
-
-        .close-modal:hover {
-            color: white;
-            transform: rotate(90deg);
-        }
-
-        .login-box h3 {
-            color: white;
-            font-size: 2rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .login-box p {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 35px;
-            font-size: 1rem;
-        }
-
+        .modal-box h3 { color: white; font-size: 2rem; margin-bottom: 15px; }
+        .modal-box p { color: rgba(255, 255, 255, 0.7); margin-bottom: 35px; }
         .btn-google {
             background: white;
             color: #333;
             border: none;
             padding: 16px 35px;
             border-radius: 50px;
-            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
         }
 
-        .btn-google:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+        /* LIMIT BANNER */
+        .limit-banner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
+            z-index: 999;
+            display: none;
+            max-width: 350px;
         }
-
-        .google-icon {
-            width: 22px;
-            height: 22px;
-        }
-
-        /* SCROLL ANIMATIONS */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            nav {
-                padding: 15px 20px;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .user-name {
-                display: none;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .social-links {
-                justify-content: center;
-            }
-
-            .contact-info {
-                align-items: center;
-            }
+        .limit-banner.active { display: block; }
+        .limit-banner h4 { margin-bottom: 10px; font-size: 1.2rem; }
+        .limit-banner p { margin-bottom: 15px; font-size: 0.9rem; }
+        .limit-banner button {
+            background: white;
+            color: #f5576c;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <!-- BACKGROUND SLIDER -->
     <div class="bg-slider">
         <div class="bg-slide active"></div>
         <div class="bg-slide"></div>
@@ -632,11 +271,11 @@
     </div>
     <div class="bg-overlay"></div>
 
-    <!-- NAVBAR -->
-    <nav id="navbar">
+    <nav>
         <div class="nav-container">
             <div class="logo">VidaSaudável</div>
             <div class="user-section">
+                <button id="btnPremium" class="btn-premium" style="display:none;">⭐ Assine Premium</button>
                 <button id="btnShowLogin" class="btn-login">Entrar</button>
                 <div id="userInfo" class="user-info">
                     <img id="userAvatar" class="user-avatar" src="" alt="">
@@ -647,253 +286,142 @@
         </div>
     </nav>
 
-    <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
             <h1 id="heroTitle">Transforme Seu Corpo e <span class="gradient-text">Conquiste Seus Objetivos</span></h1>
             <p>Seu coach de saúde pessoal. Treinos personalizados, nutrição inteligente e acompanhamento profissional.</p>
             <div class="cta-buttons">
                 <button class="btn-primary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Começar Agora</button>
-                <button class="btn-secondary" onclick="window.location.href='exercicios.html'">Ver Exercícios</button>
             </div>
         </div>
     </section>
 
-    <!-- FEATURES -->
     <section class="features" id="features">
         <div class="container">
-            <div class="section-title fade-in">
-                <h2>Suas Ferramentas Completas</h2>
-                <p>Tudo que você precisa para alcançar o corpo dos seus sonhos</p>
-            </div>
-
             <div class="cards-grid">
-                <a href="treino.html" class="feature-card fade-in">
+                <a href="treino.html" class="feature-card">
                     <span class="card-icon">🏋️</span>
                     <h3 class="card-title">Meu Treino</h3>
-                    <p class="card-description">Fichas de treino personalizadas adaptadas ao seu biotipo, objetivos e frequência semanal</p>
+                    <p class="card-description">Fichas de treino personalizadas adaptadas ao seu biotipo</p>
                 </a>
-
-                <a href="dieta.html" class="feature-card fade-in">
+                <a href="dieta.html" class="feature-card">
                     <span class="card-icon">🍎</span>
                     <h3 class="card-title">Minha Dieta</h3>
-                    <p class="card-description">Planos alimentares completos e balanceados para maximizar seus resultados</p>
+                    <p class="card-description">Planos alimentares completos e balanceados</p>
                 </a>
-
-                <a href="acompanhamento.html" class="feature-card fade-in">
+                <a href="acompanhamento.html" class="feature-card">
                     <span class="card-icon">📊</span>
                     <h3 class="card-title">Acompanhamento</h3>
-                    <p class="card-description">Monitore sua evolução com fotos, medidas e gráficos detalhados de progresso</p>
+                    <p class="card-description">Monitore sua evolução com gráficos detalhados</p>
                 </a>
-
-                <a href="exercicios.html" class="feature-card fade-in">
+                <a href="exercicios.html" class="feature-card">
                     <span class="card-icon">💪</span>
                     <h3 class="card-title">Aprenda a Treinar</h3>
-                    <p class="card-description">Biblioteca com 58 exercícios detalhados e técnicas corretas de execução</p>
+                    <p class="card-description">58 exercícios com técnicas corretas</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>VidaSaudável</h3>
-                <p>Transforme seu corpo e sua vida com coaching profissional de saúde e fitness.</p>
-                <div class="social-links">
-                    <a href="https://instagram.com" target="_blank" class="social-link">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://facebook.com" target="_blank" class="social-link">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://youtube.com" target="_blank" class="social-link">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="https://wa.me/351900000000" target="_blank" class="social-link">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="footer-section">
-                <h3>Ferramentas</h3>
-                <div class="contact-info">
-                    <a href="treino.html" class="contact-item">
-                        <i class="fas fa-dumbbell"></i>
-                        <span>Gerador de Treino</span>
-                    </a>
-                    <a href="dieta.html" class="contact-item">
-                        <i class="fas fa-apple-alt"></i>
-                        <span>Plano Alimentar</span>
-                    </a>
-                    <a href="acompanhamento.html" class="contact-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Progresso</span>
-                    </a>
-                    <a href="exercicios.html" class="contact-item">
-                        <i class="fas fa-book"></i>
-                        <span>Exercícios</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="footer-section">
-                <h3>Contato</h3>
-                <div class="contact-info">
-                    <a href="/cdn-cgi/l/email-protection#0a6965647e6b7e654a7c636e6b796b7f6e6b7c6f6624696567" class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span><span class="__cf_email__" data-cfemail="5e3d31302a3f2a311e28373a3f2d3f2b3a3f283b32703d3133">[email&#160;protected]</span></span>
-                    </a>
-                    <a href="https://wa.me/351900000000" class="contact-item">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>+351 900 000 000</span>
-                    </a>
-                    <a href="#" class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Portugal, Europa</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2026 VidaSaudável. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <!-- LOGIN MODAL -->
-    <div id="loginModal" class="modal-overlay">
-        <div class="login-box">
-            <button class="close-modal" id="closeModal">×</button>
-            <h3>Bem-vindo de Volta</h3>
-            <p>Faça login para acessar suas ferramentas personalizadas</p>
+    <div id="loginModal" class="modal">
+        <div class="modal-box">
+            <h3>Bem-vindo</h3>
+            <p>Faça login para acessar</p>
             <button id="btnGoogleLogin" class="btn-google">
-                <svg class="google-icon" viewBox="0 0 24 24">
+                <svg width="22" height="22" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Continuar com Google
+                Entrar com Google
             </button>
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+    <div id="limitBanner" class="limit-banner">
+        <h4>🚀 Limite Atingido!</h4>
+        <p>Você usou seu treino/dieta grátis desta semana. Assine Premium para acesso ilimitado!</p>
+        <button onclick="window.location.href='https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00'">Assinar por €20</button>
+    </div>
+
+    <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-        const firebaseConfig = {
+        const app = initializeApp({
             apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
             authDomain: "vidasaudavel-490d6.firebaseapp.com",
-            projectId: "vidasaudavel-490d6",
-            storageBucket: "vidasaudavel-490d6.firebasestorage.app",
-            messagingSenderId: "272083638670",
-            appId: "1:272083638670:web:7200f3e3e29767ceb3ecdf"
-        };
+            projectId: "vidasaudavel-490d6"
+        });
 
-        const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // BACKGROUND SLIDER
+        // Background slider
         let currentSlide = 0;
         const slides = document.querySelectorAll('.bg-slide');
-        
         setInterval(() => {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }, 5000);
 
-        // SCROLL ANIMATIONS
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // NAVBAR SCROLL
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+        // Auth
+        document.getElementById('btnShowLogin').addEventListener('click', () => {
+            document.getElementById('loginModal').classList.add('active');
         });
 
-        // FIREBASE AUTH
-        const btnShowLogin = document.getElementById('btnShowLogin');
-        const btnGoogleLogin = document.getElementById('btnGoogleLogin');
-        const btnLogout = document.getElementById('btnLogout');
-        const closeModal = document.getElementById('closeModal');
-        const loginModal = document.getElementById('loginModal');
-        const userInfo = document.getElementById('userInfo');
-        const userAvatar = document.getElementById('userAvatar');
-        const userName = document.getElementById('userName');
-        const heroTitle = document.getElementById('heroTitle');
-
-        btnShowLogin.addEventListener('click', () => loginModal.classList.add('active'));
-        closeModal.addEventListener('click', () => loginModal.classList.remove('active'));
-        loginModal.addEventListener('click', (e) => {
-            if (e.target === loginModal) loginModal.classList.remove('active');
-        });
-
-        btnGoogleLogin.addEventListener('click', async () => {
+        document.getElementById('btnGoogleLogin').addEventListener('click', async () => {
             try {
                 const result = await signInWithPopup(auth, provider);
                 await setDoc(doc(db, 'users', result.user.uid), {
                     name: result.user.displayName,
                     email: result.user.email,
                     photoURL: result.user.photoURL,
+                    isPremium: false,
                     lastLogin: new Date()
                 }, { merge: true });
-                loginModal.classList.remove('active');
+                document.getElementById('loginModal').classList.remove('active');
             } catch (error) {
-                console.error('Erro:', error);
-                alert('Erro ao fazer login: ' + error.message);
+                alert('Erro: ' + error.message);
             }
         });
 
-        btnLogout.addEventListener('click', () => signOut(auth));
+        document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
-        onAuthStateChanged(auth, (user) => {
+        document.getElementById('btnPremium').addEventListener('click', () => {
+            window.location.href = 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00';
+        });
+
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                btnShowLogin.style.display = 'none';
-                userInfo.classList.add('active');
-                userAvatar.src = user.photoURL || 'https://via.placeholder.com/45';
-                userName.textContent = user.displayName || 'Usuário';
-                heroTitle.innerHTML = `Bem-vindo, ${user.displayName?.split(' ')[0]}! <span class="gradient-text">Continue Sua Jornada</span>`;
-                localStorage.setItem('userData', JSON.stringify({
-                    uid: user.uid,
-                    name: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL
-                }));
+                document.getElementById('btnShowLogin').style.display = 'none';
+                document.getElementById('userInfo').classList.add('active');
+                document.getElementById('userAvatar').src = user.photoURL;
+                document.getElementById('userName').textContent = user.displayName;
+
+                // Verificar se é premium
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const isPremium = userDoc.data()?.isPremium || false;
+                
+                if (!isPremium) {
+                    document.getElementById('btnPremium').style.display = 'block';
+                }
             } else {
-                btnShowLogin.style.display = 'block';
-                userInfo.classList.remove('active');
-                heroTitle.innerHTML = 'Transforme Seu Corpo e <span class="gradient-text">Conquiste Seus Objetivos</span>';
-                localStorage.removeItem('userData');
+                document.getElementById('btnShowLogin').style.display = 'block';
+                document.getElementById('userInfo').classList.remove('active');
+                document.getElementById('btnPremium').style.display = 'none';
             }
         });
-    </script>
 
-    <!-- PWA Install Script -->
+        // Mostrar banner de limite (exemplo)
+        window.showLimitBanner = () => {
+            document.getElementById('limitBanner').classList.add('active');
+        };
+    </script>
     <script src="/pwa-install.js"></script>
 </body>
 </html>

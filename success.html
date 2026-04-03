@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Confirmado! - VidaSaudável</title>
+    <title>Bem-vindo ao Premium! - VidaSaudável</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,9 +23,20 @@
             max-width: 600px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease-out;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .success-icon {
-            font-size: 5rem;
+            font-size: 6rem;
             margin-bottom: 20px;
             animation: bounce 1s;
         }
@@ -34,8 +45,10 @@
             50% { transform: translateY(-20px); }
         }
         h1 {
-            font-size: 2.5rem;
-            color: #4caf50;
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
         }
         p {
@@ -44,29 +57,89 @@
             margin: 15px 0;
             line-height: 1.8;
         }
+        .features {
+            margin: 30px 0;
+            text-align: left;
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            font-size: 1rem;
+            color: #333;
+        }
         .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 18px 40px;
+            padding: 18px 45px;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
             margin-top: 30px;
             text-decoration: none;
             display: inline-block;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="success-icon">🎉</div>
-        <h1>Pagamento Confirmado!</h1>
-        <p><strong>Bem-vindo ao Premium!</strong></p>
-        <p>Sua conta foi atualizada com sucesso.</p>
-        <p>Você agora tem acesso vitalício a todos os recursos!</p>
+        <h1>Bem-vindo ao Premium!</h1>
+        <p><strong>Pagamento confirmado com sucesso!</strong></p>
+        <p>Sua conta foi atualizada para Premium vitalício.</p>
+        
+        <div class="features">
+            <div class="feature">✅ Treinos e dietas ilimitados</div>
+            <div class="feature">✅ Histórico completo de evolução</div>
+            <div class="feature">✅ Gráficos detalhados</div>
+            <div class="feature">✅ Exportar PDF</div>
+            <div class="feature">✅ Funciona offline</div>
+            <div class="feature">✅ Suporte prioritário</div>
+        </div>
+
+        <p style="margin-top: 20px;">Aproveite todos os recursos agora mesmo!</p>
         <a href="/" class="btn">Começar Agora →</a>
     </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
+            authDomain: "vidasaudavel-490d6.firebaseapp.com",
+            projectId: "vidasaudavel-490d6"
+        });
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Ativar premium automaticamente
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    await updateDoc(doc(db, 'users', user.uid), {
+                        isPremium: true,
+                        upgradedAt: new Date()
+                    });
+                    console.log('Premium ativado!');
+                } catch (error) {
+                    console.error('Erro:', error);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
