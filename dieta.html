@@ -785,6 +785,16 @@
                 `;
                 dietaList.appendChild(div);
             });
+            
+            // Adicionar botão de gerar outra dieta
+            const btnDiv = document.createElement('div');
+            btnDiv.style.cssText = 'text-align:center;margin-top:40px;';
+            btnDiv.innerHTML = `
+                <button onclick="window.location.reload()" style="padding:18px 50px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 30px rgba(16,185,129,0.4);">
+                    🔄 Gerar Outra Dieta
+                </button>
+            `;
+            dietaList.appendChild(btnDiv);
         }
     </script>
 </body>
