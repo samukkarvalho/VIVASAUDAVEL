@@ -273,8 +273,8 @@
             <div class="logo" data-i18n="logo">VidaSaudável</div>
             <div class="user-section">
                 <div class="lang-switcher">
-                    <button class="lang-btn active" data-lang="pt" onclick="translatePage('pt')">🇧🇷 PT</button>
-                    <button class="lang-btn" data-lang="en" onclick="translatePage('en')">🇺🇸 EN</button>
+                    <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 PT</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
                 </div>
                 <button id="btnPremium" class="btn-premium" style="display:none;" data-i18n="btn-premium">⭐ Assine Premium</button>
                 <button id="btnShowLogin" class="btn-login" data-i18n="btn-login">Entrar</button>
@@ -386,6 +386,32 @@
         </div>
     </div>
 
+    <!-- MODAL DE SELEÇÃO DE PAÍS/MOEDA -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-box">
+            <h3 style="margin-bottom: 10px;" data-i18n="payment-title">Escolha seu País e Moeda</h3>
+            <p style="margin-bottom: 30px; font-size: 0.9rem;" data-i18n="payment-subtitle">Selecione a opção de pagamento</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button onclick="selectPayment('BR')" style="background: linear-gradient(135deg, #009739 0%, #FFD700 100%); color: white; border: none; padding: 20px; border-radius: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🇧🇷 <span data-i18n="payment-brazil">BRASIL</span><br>
+                    <span style="font-size: 1.4rem;">R$ 120</span><br>
+                    <span style="font-size: 0.8rem; opacity: 0.9;" data-i18n="payment-onetime">Pagamento único vitalício</span>
+                </button>
+                
+                <button onclick="selectPayment('PT')" style="background: linear-gradient(135deg, #006600 0%, #FF0000 100%); color: white; border: none; padding: 20px; border-radius: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🇵🇹 <span data-i18n="payment-portugal">PORTUGAL</span> / EUROPA<br>
+                    <span style="font-size: 1.4rem;">€20</span><br>
+                    <span style="font-size: 0.8rem; opacity: 0.9;" data-i18n="payment-onetime">Pagamento único vitalício</span>
+                </button>
+            </div>
+            
+            <button onclick="document.getElementById('paymentModal').classList.remove('active')" style="margin-top: 20px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; border-radius: 25px; cursor: pointer;" data-i18n="payment-close">
+                Fechar
+            </button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
@@ -433,16 +459,21 @@
 
         document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
-        // Detectar país Brasil
-        const isBrasil = navigator.language === 'pt-BR' || 
-                        Intl.DateTimeFormat().resolvedOptions().timeZone.includes('America/Sao_Paulo');
-        
-        const paymentLink = isBrasil 
-            ? 'https://buy.stripe.com/test_4gM00bajQaOC1F53Sm3gk01' // Brasil R$ 120
-            : 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00'; // Europa €20
+        // Links de pagamento
+        const paymentLinks = {
+            BR: 'https://buy.stripe.com/test_4gM00bajQaOC1F53Sm3gk01', // Brasil R$ 120
+            PT: 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00'  // Portugal €20
+        };
 
+        // Função para selecionar pagamento
+        window.selectPayment = function(country) {
+            document.getElementById('paymentModal').classList.remove('active');
+            window.location.href = paymentLinks[country];
+        };
+
+        // Botão Premium abre modal de seleção
         document.getElementById('btnPremium').addEventListener('click', () => {
-            window.location.href = paymentLink;
+            document.getElementById('paymentModal').classList.add('active');
         });
 
         onAuthStateChanged(auth, async (user) => {
@@ -466,6 +497,34 @@
         });
     </script>
     <script src="/translations.js"></script>
+    <script>
+        // Garantir que inicia em português
+        document.addEventListener('DOMContentLoaded', () => {
+            // Definir idioma padrão se não existir
+            if (!localStorage.getItem('language')) {
+                localStorage.setItem('language', 'pt');
+            }
+            
+            // Aguardar translations.js carregar
+            const checkTranslations = setInterval(() => {
+                if (typeof setLanguage === 'function') {
+                    clearInterval(checkTranslations);
+                    
+                    // Carregar idioma salvo ou PT por padrão
+                    const savedLang = localStorage.getItem('language') || 'pt';
+                    setLanguage(savedLang);
+                    
+                    // Ativar botão correto visualmente
+                    document.querySelectorAll('.lang-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.getAttribute('data-lang') === savedLang) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+            }, 50);
+        });
+    </script>
     <script src="/pwa-install.js"></script>
 </body>
 </html>
