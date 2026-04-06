@@ -88,6 +88,20 @@ const translations = {
         'dieta-title': 'GERADOR DE DIETA',
         'dieta-subtitle': 'Crie seu plano alimentar com porções pesadas',
         'form-biotipo-dieta': '🧬 Biotipo',
+        'biotipo-ectomorfo-desc-dieta': 'Corpo magro, metabolismo rápido',
+        'biotipo-mesomorfo-desc-dieta': 'Corpo atlético, facilita ganhar músculo',
+        'biotipo-endomorfo-desc-dieta': 'Corpo robusto, metabolismo lento',
+        'form-objetivo-dieta': '🎯 Seu Objetivo',
+        'form-orcamento': '💰 Perfil Alimentar',
+        'orcamento-economico': 'Econômico',
+        'orcamento-economico-desc': 'Alimentos básicos e acessíveis',
+        'orcamento-medio': 'Médio',
+        'orcamento-medio-desc': 'Variedade e qualidade equilibradas',
+        'orcamento-premium': 'Premium',
+        'orcamento-premium-desc': 'Alimentos premium e suplementos',
+        'btn-gerar-dieta': '🥗 Gerar Minha Dieta',
+        'btn-outra-dieta': '🔄 Gerar Outra Dieta',
+        
         
         // === PAYMENT SYSTEM ===
         'payment-title': 'Escolha seu País e Moeda',
@@ -395,6 +409,20 @@ const translations = {
         'dieta-title': 'DIET GENERATOR',
         'dieta-subtitle': 'Create your meal plan with precise portions',
         'form-biotipo-dieta': '🧬 Body Type',
+        'biotipo-ectomorfo-desc-dieta': 'Lean body, fast metabolism',
+        'biotipo-mesomorfo-desc-dieta': 'Athletic body, builds muscle easily',
+        'biotipo-endomorfo-desc-dieta': 'Robust body, slow metabolism',
+        'form-objetivo-dieta': '🎯 Goal',
+        'form-orcamento': '💰 Your Monthly Budget',
+        'orcamento-economico': 'Budget',
+        'orcamento-economico-desc': 'Basic and affordable foods',
+        'orcamento-medio': 'Standard',
+        'orcamento-medio-desc': 'Balanced variety and quality',
+        'orcamento-premium': 'Premium',
+        'orcamento-premium-desc': 'Premium foods and supplements',
+        'btn-gerar-dieta': '🥗 Generate My Diet',
+        'btn-outra-dieta': '🔄 Generate Another Diet',
+        
         
         // === PAYMENT SYSTEM ===
         'payment-title': 'Choose Your Country and Currency',
