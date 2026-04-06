@@ -325,7 +325,7 @@
         </div>
     </section>
 
-    <footer style="background: rgba(26, 26, 46, 0.9); padding: 60px 20px 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+    <footer style="background: rgba(26, 26, 46, 0.9); padding: 60px 20px 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 80px;">
         <div class="container" style="max-width: 1200px; margin: 0 auto;">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
                 <div>
@@ -336,7 +336,7 @@
                 </div>
                 
                 <div>
-                    <h4 style="color: white; margin-bottom: 20px; font-size: 1.1rem;">Links</h4>
+                    <h4 style="color: white; margin-bottom: 20px; font-size: 1.1rem;" data-i18n="footer-links">Links</h4>
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         <a href="treino.html" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#667eea'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'" data-i18n="card-treino">Meu Treino</a>
                         <a href="dieta.html" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#667eea'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'" data-i18n="card-dieta">Minha Dieta</a>
@@ -346,14 +346,14 @@
                 </div>
                 
                 <div>
-                    <h4 style="color: white; margin-bottom: 20px; font-size: 1.1rem;">Contato</h4>
+                    <h4 style="color: white; margin-bottom: 20px; font-size: 1.1rem;" data-i18n="footer-contact">Contato</h4>
                     <div style="display: flex; flex-direction: column; gap: 12px; color: rgba(255, 255, 255, 0.7);">
-                        <a href="mailto:contato@vidasaudavel.app" style="color: rgba(255, 255, 255, 0.7); text-decoration: none;">📧 contato@vidasaudavel.app</a>
+                        <a href="/cdn-cgi/l/email-protection#761519180217021936001f1217051703121700131a58170606" style="color: rgba(255, 255, 255, 0.7); text-decoration: none;">📧 <span class="__cf_email__" data-cfemail="177478796376637857617e7376647662737661727b39766767">[email&#160;protected]</span></a>
                         <a href="https://wa.me/5511999999999" target="_blank" style="color: rgba(255, 255, 255, 0.7); text-decoration: none;">📱 WhatsApp</a>
                     </div>
                     
                     <div style="margin-top: 25px;">
-                        <h4 style="color: white; margin-bottom: 15px; font-size: 1.1rem;">Redes Sociais</h4>
+                        <h4 style="color: white; margin-bottom: 15px; font-size: 1.1rem;" data-i18n="footer-social">Redes Sociais</h4>
                         <div style="display: flex; gap: 15px;">
                             <a href="https://instagram.com/vidasaudavel" target="_blank" style="color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='#E4405F'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'">📷</a>
                             <a href="https://facebook.com/vidasaudavel" target="_blank" style="color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='#1877F2'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'">📘</a>
@@ -365,7 +365,7 @@
             </div>
             
             <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 30px; text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.9rem;">
-                <p>© 2026 VidaSaudável. Todos os direitos reservados.</p>
+                <p data-i18n="footer-rights">© 2026 VidaSaudável. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -386,7 +386,7 @@
         </div>
     </div>
 
-    <script type="module">
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
         import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
@@ -433,8 +433,57 @@
 
         document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
+        // Sistema de detecção de país e moeda
+        let userCountry = 'PT'; // Default Portugal
+        let paymentLink = 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00'; // €20 Europa
+
+        // Detectar país do usuário via timezone e locale
+        async function detectCountry() {
+            try {
+                // Detectar pelo timezone
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                
+                // Se timezone for America/Sao_Paulo ou similar, é Brasil
+                if (timezone.includes('America/Sao_Paulo') || timezone.includes('America/Recife') || 
+                    timezone.includes('America/Fortaleza') || timezone.includes('America/Manaus') ||
+                    timezone.includes('America/Bahia') || navigator.language.includes('pt-BR')) {
+                    userCountry = 'BR';
+                    paymentLink = 'https://buy.stripe.com/test_4gM00bajQaOC1F53Sm3gk01'; // R$ 120 Brasil (precisa criar no Stripe)
+                    
+                    // Atualizar texto do botão para mostrar R$ 120
+                    const btnPremium = document.getElementById('btnPremium');
+                    if (currentLanguage === 'pt') {
+                        btnPremium.textContent = '⭐ Assine Premium - R$ 120';
+                    } else {
+                        btnPremium.textContent = '⭐ Subscribe Premium - R$ 120';
+                    }
+                } else {
+                    // Europa/Resto do mundo - €20
+                    const btnPremium = document.getElementById('btnPremium');
+                    if (currentLanguage === 'pt') {
+                        btnPremium.textContent = '⭐ Assine Premium - €20';
+                    } else {
+                        btnPremium.textContent = '⭐ Subscribe Premium - €20';
+                    }
+                }
+            } catch (error) {
+                console.log('Erro ao detectar país:', error);
+            }
+        }
+
+        // Chamar detecção ao carregar
+        detectCountry();
+
         document.getElementById('btnPremium').addEventListener('click', () => {
-            window.location.href = 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00';
+            // Mostrar modal de confirmação com país e preço
+            const preco = userCountry === 'BR' ? 'R$ 120' : '€20';
+            const confirmMsg = userCountry === 'BR' 
+                ? `Você será redirecionado para pagamento de ${preco} (Brasil). Continuar?`
+                : `Você será redirecionado para pagamento de ${preco} (Europa). Continuar?`;
+            
+            if (confirm(confirmMsg)) {
+                window.location.href = paymentLink;
+            }
         });
 
         onAuthStateChanged(auth, async (user) => {
@@ -452,12 +501,4 @@
                 }
             } else {
                 document.getElementById('btnShowLogin').style.display = 'block';
-                document.getElementById('userInfo').classList.remove('active');
-                document.getElementById('btnPremium').style.display = 'none';
-            }
-        });
-    </script>
-    <script src="/translations.js"></script>
-    <script src="/pwa-install.js"></script>
-</body>
-</html>
+                document.getElementById('userInfo'
