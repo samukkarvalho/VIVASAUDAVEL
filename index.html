@@ -348,7 +348,7 @@
                 <div>
                     <h4 style="color: white; margin-bottom: 20px; font-size: 1.1rem;" data-i18n="footer-contact">Contato</h4>
                     <div style="display: flex; flex-direction: column; gap: 12px; color: rgba(255, 255, 255, 0.7);">
-                        <a href="/cdn-cgi/l/email-protection#761519180217021936001f1217051703121700131a58170606" style="color: rgba(255, 255, 255, 0.7); text-decoration: none;">📧 <span class="__cf_email__" data-cfemail="177478796376637857617e7376647662737661727b39766767">[email&#160;protected]</span></a>
+                        <a href="/cdn-cgi/l/email-protection#4e2d21203a2f3a210e38272a2f3d2f3b2a2f382b22602f3e3e" style="color: rgba(255, 255, 255, 0.7); text-decoration: none;">📧 <span class="__cf_email__" data-cfemail="84e7ebeaf0e5f0ebc4f2ede0e5f7e5f1e0e5f2e1e8aae5f4f4">[email&#160;protected]</span></a>
                         <a href="https://wa.me/5511999999999" target="_blank" style="color: rgba(255, 255, 255, 0.7); text-decoration: none;">📱 WhatsApp</a>
                     </div>
                     
@@ -358,7 +358,7 @@
                             <a href="https://instagram.com/vidasaudavel" target="_blank" style="color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='#E4405F'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'">📷</a>
                             <a href="https://facebook.com/vidasaudavel" target="_blank" style="color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='#1877F2'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'">📘</a>
                             <a href="https://youtube.com/vidasaudavel" target="_blank" style="color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='#FF0000'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'">📹</a>
-                            <a href="https://tiktok.com/@vidasaudavel" target="_blank" style="color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='#00f2ea'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'">🎵</a>
+                            <a href="https://tiktok.com/@vidasaudavel" target="_blank" style="color: rgba(255,  255, 0.7)'">🎵</a>
                         </div>
                     </div>
                 </div>
@@ -386,7 +386,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+    <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
         import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
@@ -433,57 +433,16 @@
 
         document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
-        // Sistema de detecção de país e moeda
-        let userCountry = 'PT'; // Default Portugal
-        let paymentLink = 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00'; // €20 Europa
-
-        // Detectar país do usuário via timezone e locale
-        async function detectCountry() {
-            try {
-                // Detectar pelo timezone
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                
-                // Se timezone for America/Sao_Paulo ou similar, é Brasil
-                if (timezone.includes('America/Sao_Paulo') || timezone.includes('America/Recife') || 
-                    timezone.includes('America/Fortaleza') || timezone.includes('America/Manaus') ||
-                    timezone.includes('America/Bahia') || navigator.language.includes('pt-BR')) {
-                    userCountry = 'BR';
-                    paymentLink = 'https://buy.stripe.com/test_4gM00bajQaOC1F53Sm3gk01'; // R$ 120 Brasil (precisa criar no Stripe)
-                    
-                    // Atualizar texto do botão para mostrar R$ 120
-                    const btnPremium = document.getElementById('btnPremium');
-                    if (currentLanguage === 'pt') {
-                        btnPremium.textContent = '⭐ Assine Premium - R$ 120';
-                    } else {
-                        btnPremium.textContent = '⭐ Subscribe Premium - R$ 120';
-                    }
-                } else {
-                    // Europa/Resto do mundo - €20
-                    const btnPremium = document.getElementById('btnPremium');
-                    if (currentLanguage === 'pt') {
-                        btnPremium.textContent = '⭐ Assine Premium - €20';
-                    } else {
-                        btnPremium.textContent = '⭐ Subscribe Premium - €20';
-                    }
-                }
-            } catch (error) {
-                console.log('Erro ao detectar país:', error);
-            }
-        }
-
-        // Chamar detecção ao carregar
-        detectCountry();
+        // Detectar país Brasil
+        const isBrasil = navigator.language === 'pt-BR' || 
+                        Intl.DateTimeFormat().resolvedOptions().timeZone.includes('America/Sao_Paulo');
+        
+        const paymentLink = isBrasil 
+            ? 'https://buy.stripe.com/test_4gM00bajQaOC1F53Sm3gk01' // Brasil R$ 120
+            : 'https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00'; // Europa €20
 
         document.getElementById('btnPremium').addEventListener('click', () => {
-            // Mostrar modal de confirmação com país e preço
-            const preco = userCountry === 'BR' ? 'R$ 120' : '€20';
-            const confirmMsg = userCountry === 'BR' 
-                ? `Você será redirecionado para pagamento de ${preco} (Brasil). Continuar?`
-                : `Você será redirecionado para pagamento de ${preco} (Europa). Continuar?`;
-            
-            if (confirm(confirmMsg)) {
-                window.location.href = paymentLink;
-            }
+            window.location.href = paymentLink;
         });
 
         onAuthStateChanged(auth, async (user) => {
@@ -501,4 +460,12 @@
                 }
             } else {
                 document.getElementById('btnShowLogin').style.display = 'block';
-                document.getElementById('userInfo'
+                document.getElementById('userInfo').classList.remove('active');
+                document.getElementById('btnPremium').style.display = 'none';
+            }
+        });
+    </script>
+    <script src="/translations.js"></script>
+    <script src="/pwa-install.js"></script>
+</body>
+</html>
