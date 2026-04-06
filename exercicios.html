@@ -271,7 +271,7 @@
 
         <!-- Search -->
         <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar exercício...">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar exercício..." data-i18n-placeholder="exerc-buscar">
         </div>
 
         <!-- Categories -->
@@ -564,20 +564,24 @@
     </script>
     <script src="/translations.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('language')) localStorage.setItem('language', 'pt');
-            const checkTranslations = setInterval(() => {
+        (function() {
+            function initTranslation() {
+                if (!localStorage.getItem('language')) localStorage.setItem('language', 'pt');
+                const savedLang = localStorage.getItem('language') || 'pt';
                 if (typeof setLanguage === 'function') {
-                    clearInterval(checkTranslations);
-                    const savedLang = localStorage.getItem('language') || 'pt';
                     setLanguage(savedLang);
                     document.querySelectorAll('.lang-btn').forEach(btn => {
                         btn.classList.remove('active');
                         if (btn.getAttribute('data-lang') === savedLang) btn.classList.add('active');
                     });
                 }
-            }, 50);
-        });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
+            } else {
+                setTimeout(initTranslation, 100);
+            }
+        })();
     </script>
 </body>
 </html>

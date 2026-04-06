@@ -836,32 +836,52 @@
     </script>
     <script src="/translations.js"></script>
     <script>
-        // Garantir que inicia em português
-        document.addEventListener('DOMContentLoaded', () => {
-            // Definir idioma padrão se não existir
-            if (!localStorage.getItem('language')) {
-                localStorage.setItem('language', 'pt');
+        // Sistema robusto de inicialização
+        (function() {
+            console.log('[TREINO] Iniciando...');
+            
+            function initTranslation() {
+                // Definir idioma padrão
+                if (!localStorage.getItem('language')) {
+                    localStorage.setItem('language', 'pt');
+                }
+                
+                const savedLang = localStorage.getItem('language') || 'pt';
+                console.log('[TREINO] Idioma detectado:', savedLang);
+                
+                // Verificar se setLanguage existe
+                if (typeof setLanguage !== 'function') {
+                    console.error('[TREINO] setLanguage não encontrado!');
+                    return false;
+                }
+                
+                // Aplicar tradução
+                setLanguage(savedLang);
+                console.log('[TREINO] Tradução aplicada');
+                
+                // Atualizar botões
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-lang') === savedLang) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                return true;
             }
             
-            // Aguardar translations.js carregar
-            const checkTranslations = setInterval(() => {
-                if (typeof setLanguage === 'function') {
-                    clearInterval(checkTranslations);
-                    
-                    // Carregar idioma salvo ou PT por padrão
-                    const savedLang = localStorage.getItem('language') || 'pt';
-                    setLanguage(savedLang);
-                    
-                    // Ativar botão correto visualmente
-                    document.querySelectorAll('.lang-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                        if (btn.getAttribute('data-lang') === savedLang) {
-                            btn.classList.add('active');
-                        }
-                    });
-                }
-            }, 50);
-        });
+            // Tentar inicializar quando DOM estiver pronto
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    console.log('[TREINO] DOM pronto, tentando inicializar...');
+                    setTimeout(initTranslation, 100);
+                });
+            } else {
+                // DOM já está pronto
+                console.log('[TREINO] DOM já pronto, inicializando...');
+                setTimeout(initTranslation, 100);
+            }
+        })();
     </script>
 </body>
 </html>
