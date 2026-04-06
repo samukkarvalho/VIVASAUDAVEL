@@ -253,6 +253,11 @@
     </style>
 </head>
 <body>
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px; border-radius: 25px; backdrop-filter: blur(10px);">
+        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
+    </div>
+    <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s; border: 2px solid transparent;">
             <span style="font-size: 1.5rem;">←</span>
@@ -260,7 +265,7 @@
         </a>
         
         <div class="header">
-            <h1>APRENDA A TREINAR</h1>
+            <h1 data-i18n="exerc-title">APRENDA A TREINAR</h1>
             <p>Biblioteca completa com todos os exercícios de academia</p>
         </div>
 
@@ -557,5 +562,6 @@
         // Initial render
         renderExercises();
     </script>
+    <script src="/translations.js"></script>
 </body>
 </html>

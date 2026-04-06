@@ -272,8 +272,14 @@ const translations = {
         'Queijo Cottage': 'Queijo Cottage',
         
         // === ACOMPANHAMENTO ===
-        'acomp-title': 'ACOMPANHAMENTO DE PROGRESSO',
+        'acomp-title': 'MEU PROGRESSO',
         'acomp-subtitle': 'Monitore sua evolução',
+        
+        // === EXERCÍCIOS ===
+        'exerc-title': 'APRENDA A TREINAR',
+        'exerc-subtitle': '58 exercícios com técnicas corretas',
+        
+        // === PROGRESS TRACKING ===
         'historico': 'Histórico de Medidas',
         'adicionar-medida': 'Adicionar Nova Medida',
         'data': 'Data',
@@ -573,8 +579,13 @@ const translations = {
         'Queijo Cottage': 'Cottage Cheese',
         
         // === PROGRESS TRACKING ===
-        'acomp-title': 'PROGRESS TRACKING',
+        'acomp-title': 'MY PROGRESS',
         'acomp-subtitle': 'Monitor your evolution',
+        
+        // === EXERCISES ===
+        'exerc-title': 'LEARN TO TRAIN',
+        'exerc-subtitle': '58 exercises with correct techniques',
+        
         'historico': 'Measurements History',
         'adicionar-medida': 'Add New Measurement',
         'data': 'Date',
