@@ -612,6 +612,14 @@ function setLanguage(lang) {
     currentLanguage = lang;
     localStorage.setItem('language', lang);
     translatePage();
+    
+    // Atualizar botões visualmente
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        }
+    });
 }
 
 function translatePage() {
