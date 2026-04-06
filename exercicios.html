@@ -563,5 +563,21 @@
         renderExercises();
     </script>
     <script src="/translations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('language')) localStorage.setItem('language', 'pt');
+            const checkTranslations = setInterval(() => {
+                if (typeof setLanguage === 'function') {
+                    clearInterval(checkTranslations);
+                    const savedLang = localStorage.getItem('language') || 'pt';
+                    setLanguage(savedLang);
+                    document.querySelectorAll('.lang-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.getAttribute('data-lang') === savedLang) btn.classList.add('active');
+                    });
+                }
+            }, 50);
+        });
+    </script>
 </body>
 </html>
