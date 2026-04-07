@@ -90,6 +90,11 @@
             gap: 20px;
             margin-bottom: 30px;
         }
+        .form-group { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
         label {
             display: block;
             margin-bottom: 8px;
@@ -104,6 +109,10 @@
             border-radius: 12px;
             color: white;
             font-size: 1rem;
+        }
+        select option {
+            background: #1e293b;
+            color: white;
         }
         
         .biotipo-grid, .objetivo-grid, .orcamento-grid {
@@ -250,28 +259,30 @@
         <div class="form-wrapper">
             <form id="dietaForm">
                 <div class="form-grid">
-                    <div>
-                        <label>Nome</label>
-                        <input type="text" id="nome" required placeholder="Digite seu nome">
+                    <div class="form-group">
+                        <label for="nome" data-i18n="label-nome">Nome</label>
+                        <input type="text" id="nome" required placeholder="Digite seu nome" data-i18n-placeholder="placeholder-nome">
                     </div>
-                    <div>
-                        <label>Idade</label>
-                        <input type="number" id="idade" required placeholder="25">
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label for="idade" data-i18n="label-idade">Idade</label>
+                            <input type="number" id="idade" required placeholder="25" min="15" max="100">
+                        </div>
+                        <div>
+                            <label for="peso" data-i18n="label-peso">Peso (kg)</label>
+                            <input type="number" id="peso" required placeholder="70" min="30" max="300">
+                        </div>
+                        <div>
+                            <label for="altura">Altura (cm)</label>
+                            <input type="number" id="altura" required placeholder="170" min="100" max="250">
+                        </div>
                     </div>
-                    <div>
-                        <label>Peso (kg)</label>
-                        <input type="number" id="peso" required placeholder="70">
-                    </div>
-                    <div>
-                        <label>Altura (cm)</label>
-                        <input type="number" id="altura" required placeholder="170">
-                    </div>
-                    <div>
-                        <label>Sexo</label>
+                    <div class="form-group">
+                        <label data-i18n="label-sexo">Sexo</label>
                         <select id="sexo" required>
                             <option value="">Selecione</option>
-                            <option value="M">Masculino</option>
-                            <option value="F">Feminino</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
                         </select>
                     </div>
                 </div>
@@ -441,13 +452,18 @@
             const item = dietaAtual[refIndex].alimentos[aliIndex];
             const novoAlimento = escolherAlimento(item.tipo);
             
+            // Extrair número da quantidade (remove 'g' se existir)
+            const qtdNumero = typeof item.quantidade === 'number' 
+                ? item.quantidade 
+                : parseInt(item.quantidade.toString().replace(/g/g, ''));
+            
             dietaAtual[refIndex].alimentos[aliIndex] = {
                 nome: novoAlimento.nome,
-                quantidade: item.quantidade + 'g',
+                quantidade: qtdNumero,
                 tipo: item.tipo,
-                proteina: Math.round((novoAlimento.p * item.quantidade) / 100),
-                carbo: Math.round((novoAlimento.c * item.quantidade) / 100),
-                gordura: Math.round((novoAlimento.g * item.quantidade) / 100)
+                proteina: Math.round((novoAlimento.p * qtdNumero) / 100),
+                carbo: Math.round((novoAlimento.c * qtdNumero) / 100),
+                gordura: Math.round((novoAlimento.g * qtdNumero) / 100)
             };
             
             renderDieta(dietaAtual);
