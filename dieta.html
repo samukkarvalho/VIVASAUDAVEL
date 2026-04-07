@@ -565,8 +565,15 @@
         }
 
         // Escolher alimento aleatório
-        function escolherAlimento(tipo) {
-            const lista = ALIMENTOS[tipo];
+        // Escolher alimento respeitando o CONTEXTO (ex: café da manhã só ovos/pão, não carne)
+        function escolherAlimento(tipo, contextoPermitido = null) {
+            let lista = ALIMENTOS[tipo];
+            
+            // Se tem contexto, filtrar apenas alimentos permitidos
+            if (contextoPermitido && contextoPermitido.length > 0) {
+                lista = lista.filter(a => contextoPermitido.includes(a.nome));
+            }
+            
             if (!alimentosUsados[tipo]) alimentosUsados[tipo] = [];
             
             let disponiveis = lista.filter(a => !alimentosUsados[tipo].includes(a.nome));
@@ -585,7 +592,7 @@
         // Trocar alimento
         window.swapFood = function(refIndex, aliIndex) {
             const item = dietaAtual[refIndex].alimentos[aliIndex];
-            const novoAlimento = escolherAlimento(item.tipo);
+            const novoAlimento = escolherAlimento(item.tipo, item.contexto);
             
             // Extrair número da quantidade (remove 'g' se existir)
             const qtdNumero = typeof item.quantidade === 'number' 
@@ -596,6 +603,7 @@
                 nome: novoAlimento.nome,
                 quantidade: qtdNumero,
                 tipo: item.tipo,
+                contexto: item.contexto, // Manter contexto
                 proteina: Math.round((novoAlimento.p * qtdNumero) / 100),
                 carbo: Math.round((novoAlimento.c * qtdNumero) / 100),
                 gordura: Math.round((novoAlimento.g * qtdNumero) / 100)
@@ -604,8 +612,260 @@
             renderDieta(dietaAtual);
         };
 
-        // TEMPLATES DE DIETA POR OBJETIVO
+        // TEMPLATES DE DIETA POR OBJETIVO - REALISTAS E CONTEXTUAIS
         const DIETAS = {
+            hipertrofia: {
+                baixo: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo cozido', 'Ovo mexido'] },
+                        { tipo: 'carboidrato', quantidade: 50, contexto: ['Pão francês', 'Tapioca'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana', 'Mamão'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana', 'Maçã'] },
+                        { tipo: 'carboidrato', quantidade: 30, contexto: ['Pão francês'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Frango grelhado', 'Ovo cozido'] },
+                        { tipo: 'carboidrato', quantidade: 150, contexto: ['Arroz branco', 'Batata inglesa'] },
+                        { tipo: 'vegetal', quantidade: 100, contexto: ['Feijão', 'Alface', 'Tomate'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo cozido'] },
+                        { tipo: 'carboidrato', quantidade: 50, contexto: ['Pão francês'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Frango grelhado', 'Ovo mexido'] },
+                        { tipo: 'carboidrato', quantidade: 100, contexto: ['Arroz branco', 'Batata inglesa'] },
+                        { tipo: 'vegetal', quantidade: 100, contexto: ['Feijão', 'Cenoura'] }
+                    ]},
+                    { hora: 'Ceia (23h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo cozido'] }
+                    ]}
+                ],
+                medio: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo mexido', 'Peito de peru'] },
+                        { tipo: 'carboidrato', quantidade: 80, contexto: ['Pão integral', 'Aveia'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana', 'Morango'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 30, contexto: ['Whey protein'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana', 'Maçã'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 180, contexto: ['Peito de frango', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 150, contexto: ['Arroz integral', 'Batata doce'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Brócolis', 'Feijão'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 30, contexto: ['Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 60, contexto: ['Aveia', 'Pão integral'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 180, contexto: ['Peito de frango', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 120, contexto: ['Arroz integral', 'Batata doce'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Brócolis', 'Couve'] }
+                    ]},
+                    { hora: 'Ceia (23h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo cozido', 'Peito de peru'] }
+                    ]}
+                ],
+                alto: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo mexido', 'Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 100, contexto: ['Pão integral', 'Aveia'] },
+                        { tipo: 'fruta', quantidade: 150, contexto: ['Banana', 'Morango', 'Abacaxi'] },
+                        { tipo: 'gordura', quantidade: 15, contexto: ['Amendoim', 'Amêndoas'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 80, contexto: ['Aveia'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 200, contexto: ['Salmão', 'Filé mignon', 'Peito de frango'] },
+                        { tipo: 'carboidrato', quantidade: 180, contexto: ['Arroz integral', 'Quinoa', 'Batata doce'] },
+                        { tipo: 'vegetal', quantidade: 200, contexto: ['Brócolis', 'Aspargos'] },
+                        { tipo: 'gordura', quantidade: 10, contexto: ['Azeite', 'Abacate'] }
+                    ]},
+                    { hora: 'Pré-treino (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 100, contexto: ['Batata doce', 'Aveia'] }
+                    ]},
+                    { hora: 'Pós-treino (18h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] },
+                        { tipo: 'fruta', quantidade: 150, contexto: ['Banana'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 200, contexto: ['Salmão', 'Filé mignon', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 150, contexto: ['Arroz integral', 'Quinoa'] },
+                        { tipo: 'vegetal', quantidade: 200, contexto: ['Brócolis', 'Aspargos'] }
+                    ]},
+                    { hora: 'Ceia (23h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo cozido', 'Peito de peru'] },
+                        { tipo: 'gordura', quantidade: 20, contexto: ['Castanha', 'Amêndoas'] }
+                    ]}
+                ]
+            },
+            emagrecimento: {
+                baixo: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo mexido', 'Ovo cozido'] },
+                        { tipo: 'carboidrato', quantidade: 40, contexto: ['Pão francês', 'Tapioca'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Maçã', 'Morango'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Frango grelhado', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 80, contexto: ['Arroz branco'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Feijão', 'Alface', 'Tomate'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo cozido'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Frango grelhado', 'Ovo mexido'] },
+                        { tipo: 'vegetal', quantidade: 200, contexto: ['Brócolis', 'Alface', 'Cenoura'] }
+                    ]}
+                ],
+                medio: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo mexido', 'Peito de peru'] },
+                        { tipo: 'carboidrato', quantidade: 50, contexto: ['Pão integral', 'Tapioca'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 30, contexto: ['Whey protein'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Maçã', 'Morango'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 180, contexto: ['Peito de frango', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 100, contexto: ['Arroz integral', 'Batata doce'] },
+                        { tipo: 'vegetal', quantidade: 200, contexto: ['Brócolis', 'Couve'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 30, contexto: ['Whey protein'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 180, contexto: ['Peito de frango', 'Tilápia grelhada'] },
+                        { tipo: 'vegetal', quantidade: 250, contexto: ['Brócolis', 'Alface', 'Couve'] }
+                    ]}
+                ],
+                alto: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo mexido', 'Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 60, contexto: ['Pão integral', 'Aveia'] },
+                        { tipo: 'gordura', quantidade: 10, contexto: ['Azeite', 'Amendoim'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Morango', 'Maçã'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 200, contexto: ['Salmão', 'Peito de frango'] },
+                        { tipo: 'carboidrato', quantidade: 120, contexto: ['Arroz integral', 'Quinoa'] },
+                        { tipo: 'vegetal', quantidade: 250, contexto: ['Brócolis', 'Aspargos'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 200, contexto: ['Salmão', 'Tilápia grelhada'] },
+                        { tipo: 'vegetal', quantidade: 300, contexto: ['Brócolis', 'Couve', 'Aspargos'] },
+                        { tipo: 'gordura', quantidade: 10, contexto: ['Azeite', 'Abacate'] }
+                    ]},
+                    { hora: 'Ceia (23h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo cozido'] }
+                    ]}
+                ]
+            },
+            definicao: {
+                baixo: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo mexido', 'Ovo cozido'] },
+                        { tipo: 'carboidrato', quantidade: 50, contexto: ['Pão francês', 'Tapioca'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana', 'Mamão'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Maçã', 'Banana'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Frango grelhado', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 100, contexto: ['Arroz branco', 'Batata inglesa'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Feijão', 'Brócolis'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo cozido'] },
+                        { tipo: 'carboidrato', quantidade: 50, contexto: ['Pão francês'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Frango grelhado', 'Ovo mexido'] },
+                        { tipo: 'carboidrato', quantidade: 80, contexto: ['Arroz branco'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Brócolis', 'Alface'] }
+                    ]}
+                ],
+                medio: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo mexido', 'Peito de peru'] },
+                        { tipo: 'carboidrato', quantidade: 70, contexto: ['Pão integral', 'Aveia'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana', 'Morango'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 30, contexto: ['Whey protein'] },
+                        { tipo: 'fruta', quantidade: 100, contexto: ['Banana'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 180, contexto: ['Peito de frango', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 120, contexto: ['Arroz integral', 'Batata doce'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Brócolis', 'Feijão'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 30, contexto: ['Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 60, contexto: ['Aveia'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 180, contexto: ['Peito de frango', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 100, contexto: ['Arroz integral'] },
+                        { tipo: 'vegetal', quantidade: 150, contexto: ['Brócolis', 'Couve'] }
+                    ]},
+                    { hora: 'Ceia (23h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 100, contexto: ['Ovo cozido'] }
+                    ]}
+                ],
+                alto: [
+                    { hora: 'Café da manhã (7h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo mexido', 'Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 80, contexto: ['Pão integral', 'Aveia'] },
+                        { tipo: 'fruta', quantidade: 150, contexto: ['Banana', 'Morango'] },
+                        { tipo: 'gordura', quantidade: 10, contexto: ['Amendoim', 'Amêndoas'] }
+                    ]},
+                    { hora: 'Lanche da manhã (10h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 60, contexto: ['Aveia'] }
+                    ]},
+                    { hora: 'Almoço (13h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 200, contexto: ['Salmão', 'Filé mignon', 'Peito de frango'] },
+                        { tipo: 'carboidrato', quantidade: 150, contexto: ['Arroz integral', 'Quinoa'] },
+                        { tipo: 'vegetal', quantidade: 200, contexto: ['Brócolis', 'Aspargos'] },
+                        { tipo: 'gordura', quantidade: 10, contexto: ['Azeite'] }
+                    ]},
+                    { hora: 'Lanche da tarde (16h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 40, contexto: ['Whey protein'] },
+                        { tipo: 'carboidrato', quantidade: 80, contexto: ['Batata doce'] }
+                    ]},
+                    { hora: 'Jantar (20h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 200, contexto: ['Salmão', 'Tilápia grelhada'] },
+                        { tipo: 'carboidrato', quantidade: 120, contexto: ['Arroz integral', 'Quinoa'] },
+                        { tipo: 'vegetal', quantidade: 200, contexto: ['Brócolis', 'Couve'] }
+                    ]},
+                    { hora: 'Ceia (23h)', alimentos: [
+                        { tipo: 'proteina', quantidade: 150, contexto: ['Ovo cozido', 'Peito de peru'] },
+                        { tipo: 'gordura', quantidade: 15, contexto: ['Castanha', 'Amêndoas'] }
+                    ]}
+                ]
+            }
+        };
             hipertrofia: {
                 baixo: [
                     { hora: 'Café da manhã (7h)', alimentos: [
@@ -876,13 +1136,14 @@
             return template.map(refeicao => ({
                 hora: refeicao.hora,
                 alimentos: refeicao.alimentos.map(item => {
-                    const alimento = escolherAlimento(item.tipo);
+                    const alimento = escolherAlimento(item.tipo, item.contexto);
                     const qtd = item.quantidade;
                     
                     return {
                         nome: alimento.nome,
                         quantidade: qtd,
                         tipo: item.tipo,
+                        contexto: item.contexto, // Guardar contexto para troca
                         proteina: Math.round((alimento.p * qtd) / 100),
                         carbo: Math.round((alimento.c * qtd) / 100),
                         gordura: Math.round((alimento.g * qtd) / 100)
