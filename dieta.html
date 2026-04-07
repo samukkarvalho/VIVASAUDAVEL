@@ -914,17 +914,21 @@
                 dietaList.appendChild(div);
             });
             
-            const btnDiv = document.createElement('div');
-            btnDiv.style.cssText = 'text-align:center;margin-top:40px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;';
-            btnDiv.innerHTML = `
-                <button onclick="window.location.href='/'" style="padding:18px 50px;background:linear-gradient(135deg,#64748b,#475569);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 30px rgba(100,116,139,0.4);">
-                    🏠 <span data-i18n="btn-voltar">Voltar ao Início</span>
-                </button>
-                <button onclick="window.location.reload()" style="padding:18px 50px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 30px rgba(16,185,129,0.4);">
-                    🔄 <span data-i18n="btn-gerar-outra">Gerar Outra Dieta</span>
-                </button>
+            // Adicionar botões (mesmo método do treino.html)
+            const botoesHTML = `
+                <div style="text-align:center;margin-top:40px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+                    <a href="/" style="text-decoration:none;">
+                        <button style="padding:18px 50px;background:linear-gradient(135deg,#64748b,#475569);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 30px rgba(100,116,139,0.4);transition:all 0.3s;">
+                            🏠 <span data-i18n="btn-voltar">Voltar ao Início</span>
+                        </button>
+                    </a>
+                    <button onclick="window.location.reload()" style="padding:18px 50px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 30px rgba(16,185,129,0.4);transition:all 0.3s;">
+                        🔄 <span data-i18n="btn-gerar-outra">Gerar Outra Dieta</span>
+                    </button>
+                </div>
             `;
-            dietaList.appendChild(btnDiv);
+            
+            dietaList.insertAdjacentHTML('beforeend', botoesHTML);
             
             // Re-aplicar traduções aos botões
             if (typeof setLanguage === 'function') {
