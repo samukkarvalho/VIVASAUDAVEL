@@ -263,7 +263,7 @@
         .food-items { display: grid; gap: 12px; }
         .food-item {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr auto;
             gap: 15px;
             padding: 12px 15px;
             background: rgba(255, 255, 255, 0.05);
@@ -273,6 +273,24 @@
         .food-name { font-weight: 600; color: white; }
         .food-amount { color: var(--primary); font-weight: 700; text-align: center; }
         .food-macros { text-align: right; font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
+        .btn-swap {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-swap:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
         
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
@@ -616,6 +634,75 @@
         let selectedBiotipo = '';
         let selectedObjetivo = '';
         let selectedOrcamento = '';
+        let dietaAtual = []; // Armazena dieta atual para substituições
+
+        // Banco de substituições por categoria
+        const foodSubstitutions = {
+            proteina: [
+                'Frango cozido', 'Peito de frango', 'Frango grelhado',
+                'Ovos cozidos', 'Ovos mexidos', 'Ovo mexido', 'Ovos orgânicos',
+                'Tilápia grelhada', 'Salmão selvagem', 'Atum', 'Sardinha',
+                'Carne moída', 'Filé mignon', 'Patinho moído',
+                'Whey protein', 'Whey isolado', 'Caseína micelar'
+            ],
+            carboidrato: [
+                'Arroz branco', 'Arroz integral',
+                'Batata cozida', 'Batata doce', 'Batata doce roxa',
+                'Macarrão integral', 'Quinoa', 'Risoto de funghi',
+                'Pão francês', 'Pão integral', 'Pão artesanal integral',
+                'Aveia', 'Tapioca'
+            ],
+            vegetal: [
+                'Brócolis', 'Alface', 'Tomate', 'Cenoura', 'Couve',
+                'Abobrinha', 'Aspargos', 'Legumes', 'Mix de vegetais',
+                'Feijão'
+            ],
+            fruta: [
+                'Banana', 'Maçã', 'Morango', 'Frutas orgânicas',
+                'Abacaxi', 'Mamão', 'Melancia'
+            ],
+            gordura: [
+                'Amêndoas premium', 'Castanhas', 'Nozes',
+                'Azeite', 'Abacate', 'Pasta de amendoim'
+            ]
+        };
+
+        // Identificar categoria do alimento
+        function getCategoriaAlimento(nomeAlimento) {
+            const nome = nomeAlimento.toLowerCase();
+            
+            if (foodSubstitutions.proteina.some(p => nome.includes(p.toLowerCase()))) return 'proteina';
+            if (foodSubstitutions.carboidrato.some(c => nome.includes(c.toLowerCase()))) return 'carboidrato';
+            if (foodSubstitutions.vegetal.some(v => nome.includes(v.toLowerCase()))) return 'vegetal';
+            if (foodSubstitutions.fruta.some(f => nome.includes(f.toLowerCase()))) return 'fruta';
+            if (foodSubstitutions.gordura.some(g => nome.includes(g.toLowerCase()))) return 'gordura';
+            
+            return 'proteina'; // default
+        }
+
+        // Função para trocar alimento
+        function swapFood(refeicaoIndex, alimentoIndex) {
+            const alimento = dietaAtual[refeicaoIndex].alimentos[alimentoIndex];
+            const categoria = getCategoriaAlimento(alimento.nome);
+            const opcoes = foodSubstitutions[categoria];
+            
+            // Remover alimento atual das opções
+            const disponiveis = opcoes.filter(opt => !alimento.nome.toLowerCase().includes(opt.toLowerCase()));
+            
+            if (disponiveis.length === 0) {
+                alert('Não há substituições disponíveis para este alimento.');
+                return;
+            }
+            
+            // Escolher aleatório
+            const novoNome = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+            
+            // Manter macros similares
+            dietaAtual[refeicaoIndex].alimentos[alimentoIndex].nome = novoNome;
+            
+            // Re-renderizar
+            renderDieta(dietaAtual);
+        }
 
         // Biotipo
         document.querySelectorAll('.biotipo-card').forEach(card => {
@@ -792,7 +879,9 @@
             const dietaList = document.getElementById('dietaList');
             dietaList.innerHTML = '';
             
-            refeicoes.forEach(refeicao => {
+            dietaAtual = refeicoes; // Salvar para substituições
+            
+            refeicoes.forEach((refeicao, refIndex) => {
                 const totalP = refeicao.alimentos.reduce((sum, a) => sum + a.proteina, 0);
                 const totalC = refeicao.alimentos.reduce((sum, a) => sum + a.carbo, 0);
                 const totalG = refeicao.alimentos.reduce((sum, a) => sum + a.gordura, 0);
@@ -809,11 +898,14 @@
                         </div>
                     </div>
                     <div class="food-items">
-                        ${refeicao.alimentos.map(alimento => `
+                        ${refeicao.alimentos.map((alimento, aliIndex) => `
                             <div class="food-item">
                                 <div class="food-name">${alimento.nome}</div>
                                 <div class="food-amount">⚖️ ${alimento.quantidade}</div>
                                 <div class="food-macros">P:${alimento.proteina}g | C:${alimento.carbo}g | G:${alimento.gordura}g</div>
+                                <button class="btn-swap" onclick="swapFood(${refIndex}, ${aliIndex})" title="Trocar alimento">
+                                    🔄
+                                </button>
                             </div>
                         `).join('')}
                     </div>
