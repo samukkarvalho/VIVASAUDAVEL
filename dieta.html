@@ -271,16 +271,16 @@
                             <input type="number" id="peso" required placeholder="70" min="30" max="300">
                         </div>
                         <div>
-                            <label for="altura">Altura (cm)</label>
+                            <label for="altura" data-i18n="label-altura">Altura (cm)</label>
                             <input type="number" id="altura" required placeholder="170" min="100" max="250">
                         </div>
                     </div>
                     <div class="form-group">
                         <label data-i18n="label-sexo">Sexo</label>
                         <select id="sexo" required>
-                            <option value="">Selecione</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="feminino">Feminino</option>
+                            <option value="" data-i18n="placeholder-sexo">Selecione</option>
+                            <option value="masculino" data-i18n="sexo-masculino">Masculino</option>
+                            <option value="feminino" data-i18n="sexo-feminino">Feminino</option>
                         </select>
                     </div>
                 </div>
@@ -426,6 +426,129 @@
 
         let dietaAtual = [];
         let alimentosUsados = {};
+
+        // Dicionário de tradução de alimentos
+        const foodTranslations = {
+            pt: {
+                // Proteínas
+                'Frango grelhado': 'Frango grelhado',
+                'Peito de frango': 'Peito de frango',
+                'Ovo cozido': 'Ovo cozido',
+                'Ovo mexido': 'Ovo mexido',
+                'Tilápia grelhada': 'Tilápia grelhada',
+                'Salmão': 'Salmão',
+                'Atum': 'Atum',
+                'Sardinha': 'Sardinha',
+                'Carne moída': 'Carne moída',
+                'Filé mignon': 'Filé mignon',
+                'Patinho': 'Patinho',
+                'Peito de peru': 'Peito de peru',
+                'Whey protein': 'Whey protein',
+                // Carboidratos
+                'Arroz branco': 'Arroz branco',
+                'Arroz integral': 'Arroz integral',
+                'Batata doce': 'Batata doce',
+                'Batata inglesa': 'Batata inglesa',
+                'Macarrão integral': 'Macarrão integral',
+                'Pão integral': 'Pão integral',
+                'Pão francês': 'Pão francês',
+                'Aveia': 'Aveia',
+                'Tapioca': 'Tapioca',
+                'Quinoa': 'Quinoa',
+                // Vegetais
+                'Brócolis': 'Brócolis',
+                'Alface': 'Alface',
+                'Tomate': 'Tomate',
+                'Cenoura': 'Cenoura',
+                'Couve': 'Couve',
+                'Abobrinha': 'Abobrinha',
+                'Aspargos': 'Aspargos',
+                'Feijão': 'Feijão',
+                // Frutas
+                'Banana': 'Banana',
+                'Maçã': 'Maçã',
+                'Morango': 'Morango',
+                'Abacaxi': 'Abacaxi',
+                'Mamão': 'Mamão',
+                // Gorduras
+                'Azeite': 'Azeite',
+                'Abacate': 'Abacate',
+                'Castanha': 'Castanha',
+                'Amêndoas': 'Amêndoas',
+                'Amendoim': 'Amendoim'
+            },
+            en: {
+                // Proteins
+                'Frango grelhado': 'Grilled Chicken',
+                'Peito de frango': 'Chicken Breast',
+                'Ovo cozido': 'Boiled Egg',
+                'Ovo mexido': 'Scrambled Egg',
+                'Tilápia grelhada': 'Grilled Tilapia',
+                'Salmão': 'Salmon',
+                'Atum': 'Tuna',
+                'Sardinha': 'Sardine',
+                'Carne moída': 'Ground Beef',
+                'Filé mignon': 'Filet Mignon',
+                'Patinho': 'Top Round',
+                'Peito de peru': 'Turkey Breast',
+                'Whey protein': 'Whey Protein',
+                // Carbs
+                'Arroz branco': 'White Rice',
+                'Arroz integral': 'Brown Rice',
+                'Batata doce': 'Sweet Potato',
+                'Batata inglesa': 'Potato',
+                'Macarrão integral': 'Whole Wheat Pasta',
+                'Pão integral': 'Whole Wheat Bread',
+                'Pão francês': 'French Bread',
+                'Aveia': 'Oats',
+                'Tapioca': 'Tapioca',
+                'Quinoa': 'Quinoa',
+                // Vegetables
+                'Brócolis': 'Broccoli',
+                'Alface': 'Lettuce',
+                'Tomate': 'Tomato',
+                'Cenoura': 'Carrot',
+                'Couve': 'Kale',
+                'Abobrinha': 'Zucchini',
+                'Aspargos': 'Asparagus',
+                'Feijão': 'Beans',
+                // Fruits
+                'Banana': 'Banana',
+                'Maçã': 'Apple',
+                'Morango': 'Strawberry',
+                'Abacaxi': 'Pineapple',
+                'Mamão': 'Papaya',
+                // Fats
+                'Azeite': 'Olive Oil',
+                'Abacate': 'Avocado',
+                'Castanha': 'Cashew',
+                'Amêndoas': 'Almonds',
+                'Amendoim': 'Peanut'
+            }
+        };
+
+        // Traduzir nome do alimento
+        function translateFood(foodName) {
+            const lang = localStorage.getItem('language') || 'pt';
+            return foodTranslations[lang][foodName] || foodName;
+        }
+
+        // Traduzir horário da refeição
+        function translateMealTime(mealTime) {
+            const lang = localStorage.getItem('language') || 'pt';
+            if (lang === 'en') {
+                return mealTime
+                    .replace('Café da manhã', 'Breakfast')
+                    .replace('Lanche da manhã', 'Morning Snack')
+                    .replace('Almoço', 'Lunch')
+                    .replace('Lanche da tarde', 'Afternoon Snack')
+                    .replace('Pré-treino', 'Pre-Workout')
+                    .replace('Pós-treino', 'Post-Workout')
+                    .replace('Jantar', 'Dinner')
+                    .replace('Ceia', 'Evening Snack');
+            }
+            return mealTime;
+        }
 
         // Escolher alimento aleatório
         function escolherAlimento(tipo) {
@@ -770,7 +893,7 @@
                 div.className = 'meal-container';
                 div.innerHTML = `
                     <div class="meal-header">
-                        <div class="meal-time">🕐 ${refeicao.hora}</div>
+                        <div class="meal-time">🕐 ${translateMealTime(refeicao.hora)}</div>
                         <div class="meal-macros-summary">
                             <span>P: ${totalP}g</span>
                             <span>C: ${totalC}g</span>
@@ -780,7 +903,7 @@
                     <div class="food-items">
                         ${refeicao.alimentos.map((alimento, aliIndex) => `
                             <div class="food-item">
-                                <div class="food-name">${alimento.nome}</div>
+                                <div class="food-name">${translateFood(alimento.nome)}</div>
                                 <div class="food-amount">⚖️ ${alimento.quantidade}g</div>
                                 <div class="food-macros">P:${alimento.proteina}g | C:${alimento.carbo}g | G:${alimento.gordura}g</div>
                                 <button class="btn-swap" onclick="swapFood(${refIndex}, ${aliIndex})" title="Trocar alimento">🔄</button>
@@ -792,13 +915,22 @@
             });
             
             const btnDiv = document.createElement('div');
-            btnDiv.style.cssText = 'text-align:center;margin-top:40px;';
+            btnDiv.style.cssText = 'text-align:center;margin-top:40px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;';
             btnDiv.innerHTML = `
-                <button onclick="window.location.reload()" style="padding:18px 50px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;">
-                    🔄 Gerar Outra Dieta
+                <button onclick="window.location.href='/'" style="padding:18px 50px;background:linear-gradient(135deg,#64748b,#475569);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 30px rgba(100,116,139,0.4);">
+                    🏠 <span data-i18n="btn-voltar">Voltar ao Início</span>
+                </button>
+                <button onclick="window.location.reload()" style="padding:18px 50px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 30px rgba(16,185,129,0.4);">
+                    🔄 <span data-i18n="btn-gerar-outra">Gerar Outra Dieta</span>
                 </button>
             `;
             dietaList.appendChild(btnDiv);
+            
+            // Re-aplicar traduções aos botões
+            if (typeof setLanguage === 'function') {
+                const currentLang = localStorage.getItem('language') || 'pt';
+                setLanguage(currentLang);
+            }
         }
 
         // Seleção de cards
