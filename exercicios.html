@@ -261,12 +261,12 @@
     <div class="container">
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s; border: 2px solid transparent;">
             <span style="font-size: 1.5rem;">←</span>
-            Voltar para Início
+            <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
         
         <div class="header">
             <h1 data-i18n="exerc-title">APRENDA A TREINAR</h1>
-            <p>Biblioteca completa com todos os exercícios de academia</p>
+            <p data-i18n="exerc-subtitle">Biblioteca completa com todos os exercícios de academia</p>
         </div>
 
         <!-- Search -->
@@ -276,13 +276,13 @@
 
         <!-- Categories -->
         <div class="categories">
-            <button class="category-btn active" data-category="todos">Todos</button>
-            <button class="category-btn" data-category="peito">Peito</button>
-            <button class="category-btn" data-category="costas">Costas</button>
-            <button class="category-btn" data-category="ombros">Ombros</button>
-            <button class="category-btn" data-category="bracos">Braços</button>
-            <button class="category-btn" data-category="pernas">Pernas</button>
-            <button class="category-btn" data-category="abdomen">Abdômen</button>
+            <button class="category-btn active" data-category="todos" data-i18n="exerc-todos">Todos</button>
+            <button class="category-btn" data-category="peito" data-i18n="exerc-peito">Peito</button>
+            <button class="category-btn" data-category="costas" data-i18n="exerc-costas">Costas</button>
+            <button class="category-btn" data-category="ombros" data-i18n="exerc-ombros">Ombros</button>
+            <button class="category-btn" data-category="bracos" data-i18n="exerc-bracos">Braços</button>
+            <button class="category-btn" data-category="pernas" data-i18n="exerc-pernas">Pernas</button>
+            <button class="category-btn" data-category="abdomen" data-i18n="exerc-abdomen">Abdômen</button>
         </div>
 
         <!-- Exercises Grid -->
@@ -301,15 +301,15 @@
                 <p id="modalDescription"></p>
                 <div class="exercise-details">
                     <div class="detail-item">
-                        <div class="detail-label">🎯 Músculo Principal</div>
+                        <div class="detail-label" data-i18n="modal-musculo">🎯 Músculo Principal</div>
                         <div id="modalMuscle"></div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">💡 Dica de Execução</div>
+                        <div class="detail-label" data-i18n="modal-dica">💡 Dica de Execução</div>
                         <div id="modalTip"></div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">⚠️ Cuidados</div>
+                        <div class="detail-label" data-i18n="modal-cuidados">⚠️ Cuidados</div>
                         <div id="modalWarning"></div>
                     </div>
                 </div>
@@ -398,19 +398,26 @@
         function renderExercises() {
             const grid = document.getElementById('exercisesGrid');
             const filtered = exercises.filter(ex => {
+                const exName = (typeof t === 'function') ? t(ex.name) : ex.name;
+                const exMuscle = (typeof t === 'function') ? t(ex.muscle) : ex.muscle;
                 const matchCategory = currentCategory === 'todos' || ex.category === currentCategory;
                 const matchSearch = ex.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                                  ex.muscle.toLowerCase().includes(currentSearch.toLowerCase());
+                                  exName.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                  ex.muscle.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                  exMuscle.toLowerCase().includes(currentSearch.toLowerCase());
                 return matchCategory && matchSearch;
             });
 
-            grid.innerHTML = filtered.map(ex => `
+            grid.innerHTML = filtered.map(ex => {
+                const exName = (typeof t === 'function') ? t(ex.name) : ex.name;
+                const exMuscle = (typeof t === 'function') ? t(ex.muscle) : ex.muscle;
+                return `
                 <div class="exercise-card" onclick='openVideo(${JSON.stringify(ex)})'>
                     <div class="exercise-icon">${ex.icon}</div>
-                    <div class="exercise-name">${ex.name}</div>
-                    <div class="exercise-muscle">${ex.muscle}</div>
-                </div>
-            `).join('');
+                    <div class="exercise-name">${exName}</div>
+                    <div class="exercise-muscle">${exMuscle}</div>
+                </div>`;
+            }).join('');
         }
 
         // Category buttons
@@ -429,13 +436,79 @@
             renderExercises();
         });
 
+
+        const exerciseTranslations = {
+            'Supino Reto': ['Exercício fundamental para desenvolvimento do peitoral maior','Fundamental exercise for chest development','Mantenha os pés firmes no chão e a lombar apoiada','Keep feet flat on floor and lower back supported','Não arqueie excessivamente a coluna','Do not excessively arch your spine'],
+            'Supino Inclinado': ['Foca na porção superior do peitoral','Focuses on the upper chest','Inclinação de 30-45 graus é ideal','30-45 degree incline is ideal','Evite inclinar demais, vira ombro','Avoid excessive incline, hurts shoulder'],
+            'Supino Declinado': ['Trabalha a porção inferior do peitoral','Works the lower chest','Controle a descida da barra','Control the bar descent','Prenda bem os pés','Secure your feet well'],
+            'Crucifixo Reto': ['Alongamento e trabalho de fibras profundas','Stretches and works deep chest fibers','Cotovelos levemente flexionados','Elbows slightly bent','Não desça demais para evitar lesão','Don\'t go too deep to avoid injury'],
+            'Crucifixo Inclinado': ['Crucifixo para parte superior','Incline fly for upper chest','Movimento controlado','Controlled movement','Não use peso excessivo','Don\'t use excessive weight'],
+            'Flexão de Braço': ['Exercício com peso corporal','Bodyweight exercise','Corpo reto, desça até 90 graus','Keep body straight, lower to 90 degrees','Não deixe quadril cair','Don\'t let hips sag'],
+            'Paralelas': ['Exercício composto para peito e tríceps','Compound exercise for chest and triceps','Incline o tronco para frente','Lean torso forward','Desça controladamente','Descend in a controlled way'],
+            'Peck Deck': ['Isolamento do peitoral','Chest isolation','Contraia no final do movimento','Contract at end of movement','Não use impulso','Don\'t use momentum'],
+            'Cross Over': ['Trabalha com cabos para isolamento','Cable crossover for isolation','Cruze as mãos no final','Cross hands at the end','Mantenha postura ereta','Maintain upright posture'],
+            'Pullover': ['Expande caixa torácica','Expands the rib cage','Cotovelos levemente flexionados','Elbows slightly bent','Não force ombros','Don\'t strain shoulders'],
+            'Barra Fixa': ['Rei dos exercícios para costas','King of back exercises','Pegada pronada, largura dos ombros','Pronated grip, shoulder-width','Não balance o corpo','Don\'t swing your body'],
+            'Puxada Frontal': ['Alternativa à barra fixa','Alternative to pull-ups','Puxe até o queixo','Pull down to chin level','Não use impulso','Don\'t use momentum'],
+            'Puxada Triangulo': ['Pegada neutra para variação','Neutral grip variation','Contraia no final','Contract at the end','Postura ereta','Keep upright posture'],
+            'Remada Curvada': ['Exercício composto fundamental','Fundamental compound exercise','Joelhos levemente flexionados','Knees slightly bent','Proteja a lombar','Protect your lower back'],
+            'Remada Cavalinho': ['Remada com apoio no peito','Chest-supported row','Puxe até as costelas','Pull to the ribs','Não arqueie a coluna','Don\'t arch your spine'],
+            'Remada Unilateral': ['Foco em cada lado','Focus on each side','Apoie joelho e mão no banco','Support knee and hand on bench','Não gire o tronco','Don\'t rotate the torso'],
+            'Remada Baixa': ['Cabo sentado','Seated cable row','Costas retas, puxe até o abdômen','Straight back, pull to abdomen','Não balance o corpo','Don\'t swing your body'],
+            'Levantamento Terra': ['Exercício completo de força','Complete strength exercise','Costas retas SEMPRE','Keep back STRAIGHT ALWAYS','TÉCNICA é FUNDAMENTAL','TECHNIQUE is FUNDAMENTAL'],
+            'Encolhimento': ['Isolamento do trapézio','Trapezius isolation','Eleve os ombros verticalmente','Raise shoulders vertically','Não gire os ombros','Don\'t rotate the shoulders'],
+            'Pulldown': ['Variação com braço reto','Straight arm variation','Braços esticados','Keep arms straight','Controle o peso','Control the weight'],
+            'Desenvolvimento Barra': ['Exercício base para ombros','Base shoulder exercise','Barra na frente ou atrás','Bar in front or behind','Não arqueie a lombar','Don\'t arch your lower back'],
+            'Desenvolvimento Halteres': ['Maior amplitude de movimento','Greater range of motion','Cotovelos a 90 graus na base','Elbows at 90 degrees at bottom','Controle a descida','Control the descent'],
+            'Elevação Lateral': ['Isolamento do deltoide lateral','Lateral deltoid isolation','Cotovelos levemente flexionados','Elbows slightly bent','Não use impulso','Don\'t use momentum'],
+            'Elevação Frontal': ['Trabalha a porção anterior','Works the front delt','Eleve até altura dos olhos','Raise to eye level','Alterne os braços','Alternate arms'],
+            'Elevação Posterior': ['Foca na parte traseira','Focuses on the rear delt','Incline o tronco ou use banco','Lean forward or use bench','Movimento controlado','Controlled movement'],
+            'Remada Alta': ['Trabalha lateral e trapézio','Works lateral delts and traps','Cotovelos sempre acima das mãos','Elbows always above hands','Não force demais','Don\'t overdo it'],
+            'Arnold Press': ['Variação do desenvolvimento','Development variation','Gire as palmas durante o movimento','Rotate palms during movement','Peso moderado','Moderate weight'],
+            'Crucifixo Inverso': ['Isolamento posterior','Rear delt isolation','Peck deck inverso ou halteres','Reverse pec deck or dumbbells','Foco na contração','Focus on contraction'],
+            'Rosca Direta Barra': ['Clássico para bíceps','Classic bicep exercise','Cotovelos fixos','Keep elbows fixed','Não balance o corpo','Don\'t swing your body'],
+            'Rosca Alternada': ['Halteres alternados','Alternating dumbbells','Supine o pulso no topo','Supinate wrist at top','Controle total','Full control'],
+            'Rosca Martelo': ['Pegada neutra','Neutral grip','Trabalha braquial e antebraço','Works brachialis and forearm','Pegada firme','Firm grip'],
+            'Rosca Scott': ['Isolamento no banco','Bench isolation','Cotovelos no apoio','Elbows on support','Não estenda totalmente','Don\'t fully extend'],
+            'Rosca Concentrada': ['Foco e concentração','Focus and concentration','Cotovelo apoiado na coxa','Elbow resting on thigh','Movimento lento','Slow movement'],
+            'Tríceps Testa': ['Deitado, barra na testa','Lying, bar to forehead','Cotovelos fixos','Keep elbows fixed','Cuidado com o nariz!','Be careful with your nose!'],
+            'Tríceps Corda': ['Cabo com corda','Cable with rope','Abra a corda no final','Spread the rope at the end','Cotovelos colados','Keep elbows tucked'],
+            'Tríceps Francês': ['Halter acima da cabeça','Dumbbell overhead','Cotovelos apontando para cima','Elbows pointing up','Não force demais','Don\'t overdo it'],
+            'Mergulho Banco': ['Peso corporal entre bancos','Bodyweight between benches','Desça até 90 graus','Lower to 90 degrees','Não afunde ombros','Don\'t sink shoulders'],
+            'Tríceps Coice': ['Halter, braço para trás','Dumbbell, arm back','Estenda completamente','Fully extend','Cotovelo fixo','Keep elbow fixed'],
+            'Agachamento Livre': ['Rei dos exercícios','King of exercises','Joelhos alinhados com os pés','Knees aligned with feet','NUNCA arredonde a coluna','NEVER round your spine'],
+            'Agachamento Hack': ['Máquina de agachamento','Squat machine','Costas apoiadas','Back supported','Desça controladamente','Descend in a controlled way'],
+            'Leg Press 45°': ['Press inclinado','Incline press','Pés na largura dos ombros','Feet shoulder-width apart','Não trave os joelhos','Don\'t lock knees'],
+            'Cadeira Extensora': ['Isolamento do quadríceps','Quad isolation','Estenda completamente','Fully extend','Não use muito peso','Don\'t use too much weight'],
+            'Mesa Flexora': ['Isolamento posterior','Hamstring isolation','Contraia no topo','Contract at the top','Quadril no banco','Keep hips on bench'],
+            'Stiff': ['Pernas semi-estendidas','Semi-extended legs','Sinta o alongamento','Feel the stretch','Costas retas','Keep back straight'],
+            'Afundo': ['Passadas alternadas','Alternating lunges','Joelho a 90 graus','Knee at 90 degrees','Não deixe joelho ultrapassar pé','Don\'t let knee go past foot'],
+            'Búlgaro': ['Perna traseira elevada','Rear foot elevated','Foco na perna da frente','Focus on front leg','Equilíbrio!','Balance!'],
+            'Panturrilha em Pé': ['Gastrocnêmio','Gastrocnemius','Amplitude completa','Full range of motion','Não balance','Don\'t swing'],
+            'Panturrilha Sentado': ['Sóleo','Soleus','Joelhos a 90 graus','Knees at 90 degrees','Movimento controlado','Controlled movement'],
+            'Cadeira Adutora': ['Parte interna','Inner thigh','Contraia no final','Contract at the end','Não force demais','Don\'t overdo it'],
+            'Cadeira Abdutora': ['Parte externa','Outer thigh','Abra ao máximo','Open as wide as possible','Movimento controlado','Controlled movement'],
+            'Abdominal Supra': ['Básico e eficiente','Basic and effective','Suba só até as escápulas','Only raise to shoulder blade level','Não puxe o pescoço','Don\'t pull your neck'],
+            'Abdominal Infra': ['Elevação de pernas','Leg raise','Eleve o quadril','Elevate the hips','Lombar no chão','Keep lower back on floor'],
+            'Prancha': ['Isométrico','Isometric hold','Corpo reto como prancha','Body straight like a board','Não deixe quadril cair','Don\'t let hips sag'],
+            'Prancha Lateral': ['Lateral isométrico','Lateral isometric','Corpo alinhado','Body aligned','Mantenha o equilíbrio','Maintain balance'],
+            'Abdominal Bicicleta': ['Rotação do tronco','Trunk rotation','Cotovelo no joelho oposto','Elbow to opposite knee','Movimento controlado','Controlled movement'],
+            'Elevação de Pernas Barra': ['Pendurado na barra','Hanging from bar','Eleve até 90 graus','Raise to 90 degrees','Não balance','Don\'t swing'],
+            'Abdominal Canivete': ['Simultâneo superior e inferior','Simultaneous upper and lower','Toque as mãos nos pés','Touch hands to feet','Movimento explosivo','Explosive movement'],
+            'Roda Abdominal': ['Com roda','With ab wheel','Estenda ao máximo','Extend as far as possible','Muito difícil!','Very difficult!'],
+        };
         // Open video modal
         function openVideo(exercise) {
-            document.getElementById('modalTitle').textContent = exercise.name;
-            document.getElementById('modalDescription').textContent = exercise.description;
-            document.getElementById('modalMuscle').textContent = exercise.muscle;
-            document.getElementById('modalTip').textContent = exercise.tip;
-            document.getElementById('modalWarning').textContent = exercise.warning;
+            const lang = localStorage.getItem('language') || 'pt';
+            const isEN = lang === 'en';
+            const trans = exerciseTranslations[exercise.name];
+            const exName = (typeof t === 'function') ? t(exercise.name) : exercise.name;
+            const exMuscle = (typeof t === 'function') ? t(exercise.muscle) : exercise.muscle;
+            document.getElementById('modalTitle').textContent = exName;
+            document.getElementById('modalDescription').textContent = trans ? (isEN ? trans[1] : trans[0]) : exercise.description;
+            document.getElementById('modalMuscle').textContent = exMuscle;
+            document.getElementById('modalTip').textContent = trans ? (isEN ? trans[3] : trans[2]) : exercise.tip;
+            document.getElementById('modalWarning').textContent = trans ? (isEN ? trans[5] : trans[4]) : exercise.warning;
             
             // Biblioteca de vídeos do YouTube - Demonstrações profissionais
             const mediaLibrary = {
@@ -575,12 +648,23 @@
                         if (btn.getAttribute('data-lang') === savedLang) btn.classList.add('active');
                     });
                 }
+                if (typeof renderExercises === 'function') renderExercises();
             }
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
+                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 150));
             } else {
-                setTimeout(initTranslation, 100);
+                setTimeout(initTranslation, 150);
             }
+            // Re-render on language change
+            setTimeout(() => {
+                const origSL = window.setLanguage;
+                if (origSL) {
+                    window.setLanguage = function(lang) {
+                        origSL(lang);
+                        if (typeof renderExercises === 'function') renderExercises();
+                    };
+                }
+            }, 300);
         })();
     </script>
 </body>

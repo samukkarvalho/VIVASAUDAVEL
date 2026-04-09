@@ -243,20 +243,19 @@
     </style>
 </head>
 <body>
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px; border-radius: 25px; backdrop-filter: blur(10px);">
-        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
-        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
-    </div>
-    <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
-        <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s;">
-            <span style="font-size: 1.5rem;">←</span>
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 10px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 20px; margin-top: 16px; transition: all 0.3s; font-size: 0.9rem;">
+            <span style="font-size: 1.2rem;">←</span>
             <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
         
         <div class="header">
-            <h1 data-i18n="dieta-title">GERADOR DE DIETA</h1>
-            <p data-i18n="dieta-subtitle">Crie seu plano alimentar personalizado</p>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 PT</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+            </div>
+            <h1 data-i18n="dieta-title">DIETA PERSONALIZADA</h1>
+            <p data-i18n="dieta-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
         </div>
 
         <div class="form-wrapper">
@@ -360,6 +359,7 @@
         </div>
     </div>
 
+    <script src="/translations.js"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
@@ -534,14 +534,17 @@
 
         // Traduzir nome do alimento
         function translateFood(foodName) {
-            if (typeof t === 'function') return t(foodName) || foodName;
+            if (typeof t === 'function') {
+                const translated = t(foodName);
+                if (translated && translated !== foodName) return translated;
+            }
             const lang = localStorage.getItem('language') || 'pt';
             return (foodTranslations[lang] && foodTranslations[lang][foodName]) || foodName;
         }
 
         // Traduzir horário da refeição
         function translateMealTime(mealTime) {
-            const lang = (typeof currentLanguage !== 'undefined' ? currentLanguage : null) || localStorage.getItem('language') || 'pt';
+            const lang = localStorage.getItem('language') || 'pt';
             if (lang === 'en') {
                 return mealTime
                     .replace('Café da manhã', 'Breakfast')
@@ -1012,7 +1015,6 @@
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
-    <script src="/translations.js"></script>
     <script>
         (function() {
             function initTranslation() {
@@ -1031,16 +1033,18 @@
             } else {
                 setTimeout(initTranslation, 100);
             }
-
-            // Re-render diet when language changes
-            const _origSetLang = window.setLanguage;
-            window.setLanguage = function(lang) {
-                if (typeof _origSetLang === 'function') _origSetLang(lang);
-                // Re-render if diet is visible
-                if (typeof dietaAtual !== 'undefined' && dietaAtual.length > 0 && typeof renderDieta === 'function') {
-                    renderDieta(dietaAtual);
+            // Override setLanguage to re-render diet
+            setTimeout(() => {
+                const origSL = window.setLanguage;
+                if (origSL) {
+                    window.setLanguage = function(lang) {
+                        origSL(lang);
+                        if (typeof dietaAtual !== 'undefined' && Array.isArray(dietaAtual) && dietaAtual.length > 0 && typeof renderDieta === 'function') {
+                            renderDieta(dietaAtual);
+                        }
+                    };
                 }
-            };
+            }, 200);
         })();
     </script>
 </body>
