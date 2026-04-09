@@ -423,21 +423,21 @@
             popup.innerHTML = `
                 <div style="background:white;padding:60px;border-radius:30px;text-align:center;max-width:550px;">
                     <div style="font-size:4rem;margin-bottom:20px;">🚀</div>
-                    <h2 style="font-size:2.5rem;margin-bottom:20px;color:#0f172a;">Limite Atingido!</h2>
+                    <h2 style="font-size:2.5rem;margin-bottom:20px;color:#0f172a;">${t('limite-atingido')}</h2>
                     <p style="font-size:1.2rem;color:#666;margin-bottom:10px;">
-                        Você já gerou seu <strong>treino grátis</strong> deste mês.
+                        ${t('treino-gratis-msg')}
                     </p>
                     <p style="font-size:1rem;color:#999;margin-bottom:30px;">
-                        Assine Premium para treinos ilimitados!
+                        ${t('premium-ilimitado')}
                     </p>
                     <a href="https://buy.stripe.com/test_9B65kv63A4qe0B174y3gk00" 
                        style="background:linear-gradient(135deg,#10b981,#059669);color:white;padding:20px 50px;border-radius:50px;text-decoration:none;font-weight:800;font-size:1.3rem;display:inline-block;margin-bottom:20px;">
-                        Assinar por €20 (Vitalício)
+                        ${t('assinar-premium')}
                     </a>
                     <br>
                     <button onclick="window.location.href='/'" 
                             style="background:none;border:none;color:#999;cursor:pointer;text-decoration:underline;font-size:1rem;">
-                        Voltar
+                        ${t('voltar')}
                     </button>
                 </div>
             `;
@@ -736,14 +736,14 @@
             
             let html = `
                 <div class="form-wrapper">
-                    <div class="section-title">🎯 ${nome.toUpperCase()} - SEU PLANO</div>
+                    <div class="section-title">🎯 ${nome.toUpperCase()} - ${t('seu-plano')}</div>
                     <div class="warn-box">
                         <h3 style="color: var(--accent); margin-bottom: 15px;">📋 ${plano.divisao}</h3>
                         <p style="line-height: 1.8;">
-                            <strong>Biotipo:</strong> ${biotipo.charAt(0).toUpperCase() + biotipo.slice(1)}<br>
-                            <strong>Objetivo:</strong> ${objetivo.charAt(0).toUpperCase() + objetivo.slice(1)}<br>
-                            <strong>Nível:</strong> ${nivel.charAt(0).toUpperCase() + nivel.slice(1)}<br>
-                            <strong>Frequência:</strong> ${plano.dias.length}x por semana
+                            <strong>${t('biotipo-label')}</strong> ${biotipo.charAt(0).toUpperCase() + biotipo.slice(1)}<br>
+                            <strong>${t('objetivo-label')}</strong> ${objetivo.charAt(0).toUpperCase() + objetivo.slice(1)}<br>
+                            <strong>${t('nivel-label')}</strong> ${nivel.charAt(0).toUpperCase() + nivel.slice(1)}<br>
+                            <strong>${t('frequencia-label')}</strong> ${plano.dias.length}x ${t('frequencia-semana')}
                         </p>
                     </div>
             `;
@@ -759,7 +759,7 @@
                         </div>
                         
                         <div class="warn-box">
-                            <strong>AQUECIMENTO (10-15min):</strong><br>
+                            <strong>${t('aquecimento-label')}</strong><br>
                             ${treino.aquecimento}
                         </div>
                         
@@ -784,12 +784,12 @@
                         </div>
                         
                         <div class="info-box">
-                            <strong>ALONGAMENTO (10min):</strong><br>
+                            <strong>${t('alongamento-label')}</strong><br>
                             ${treino.alongamento}
                         </div>
                         
                         <div class="info-box">
-                            <strong>💡 OBS:</strong> ${treino.obs}
+                            <strong>${t('obs-label')}</strong> ${treino.obs}
                         </div>
                     </div>
                 `;
@@ -797,33 +797,33 @@
 
             html += `
                     <div class="info-box">
-                        <h3 style="color: var(--primary); margin-bottom: 15px;">📌 DICAS IMPORTANTES</h3>
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">${t('dicas-title')}</h3>
                         <ul style="line-height: 2; padding-left: 20px;">
-                            <li><strong>Progressão:</strong> Aumente carga quando completar todas séries</li>
-                            <li><strong>Descanso:</strong> 7-9 horas de sono por noite</li>
-                            <li><strong>Proteína:</strong> 1.8-2.2g/kg peso corporal</li>
-                            <li><strong>Hidratação:</strong> 2-3 litros água/dia</li>
-                            <li><strong>Aquecimento:</strong> NUNCA pule!</li>
-                            <li><strong>Alongamento:</strong> Essencial para recuperação</li>
+                            <li><strong>${t('dica-progressao')}</strong> ${t('dica-progressao-desc')}</li>
+                            <li><strong>${t('dica-descanso')}</strong> ${t('dica-descanso-desc')}</li>
+                            <li><strong>${t('dica-proteina')}</strong> ${t('dica-proteina-desc')}</li>
+                            <li><strong>${t('dica-hidratacao')}</strong> ${t('dica-hidratacao-desc')}</li>
+                            <li><strong>${t('dica-aquecimento')}</strong> ${t('dica-aquecimento-desc')}</li>
+                            <li><strong>${t('dica-alongamento')}</strong> ${t('dica-alongamento-desc')}</li>
                         </ul>
                     </div>
                     
                     <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(245, 158, 11, 0.2)); border: 3px solid var(--accent); padding: 40px; border-radius: 25px; text-align: center; margin-top: 30px;">
                         <div style="font-size: 3rem; margin-bottom: 15px;">🎥</div>
                         <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent); margin-bottom: 15px;">
-                            Ficou com dúvida em algum exercício?
+                            ${t('duvida-exercicio')}
                         </h2>
                         <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9;">
-                            Bora aprender a execução correta!
+                            ${t('aprender-execucao')}
                         </p>
                         <a href="exercicios.html" style="display: inline-block; padding: 18px 50px; background: linear-gradient(135deg, var(--accent), #d97706); border-radius: 50px; color: white; text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4); transition: all 0.3s;">
-                            Ver Exercícios
+                            ${t('ver-exercicios')}
                         </a>
                     </div>
                     
                     <div style="text-align: center; margin-top: 40px;">
                         <button onclick="window.location.reload()" style="padding: 18px 50px; background: linear-gradient(135deg, var(--primary), #059669); border: none; border-radius: 50px; color: white; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); transition: all 0.3s;">
-                            🔄 Gerar Outro Treino
+                            ${t('btn-gerar-outra')}
                         </button>
                     </div>
                 </div>

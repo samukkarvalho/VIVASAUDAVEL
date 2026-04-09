@@ -261,12 +261,12 @@
     <div class="container">
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s; border: 2px solid transparent;">
             <span style="font-size: 1.5rem;">←</span>
-            Voltar para Início
+            <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
         
         <div class="header">
             <h1 data-i18n="exerc-title">APRENDA A TREINAR</h1>
-            <p>Biblioteca completa com todos os exercícios de academia</p>
+            <p data-i18n="exerc-subtitle">Biblioteca completa com todos os exercícios de academia</p>
         </div>
 
         <!-- Search -->
@@ -276,13 +276,13 @@
 
         <!-- Categories -->
         <div class="categories">
-            <button class="category-btn active" data-category="todos">Todos</button>
-            <button class="category-btn" data-category="peito">Peito</button>
-            <button class="category-btn" data-category="costas">Costas</button>
-            <button class="category-btn" data-category="ombros">Ombros</button>
-            <button class="category-btn" data-category="bracos">Braços</button>
-            <button class="category-btn" data-category="pernas">Pernas</button>
-            <button class="category-btn" data-category="abdomen">Abdômen</button>
+            <button class="category-btn active" data-category="todos" data-i18n="exerc-todos">Todos</button>
+            <button class="category-btn" data-category="peito" data-i18n="exerc-peito">Peito</button>
+            <button class="category-btn" data-category="costas" data-i18n="exerc-costas">Costas</button>
+            <button class="category-btn" data-category="ombros" data-i18n="exerc-ombros">Ombros</button>
+            <button class="category-btn" data-category="bracos" data-i18n="exerc-bracos">Braços</button>
+            <button class="category-btn" data-category="pernas" data-i18n="exerc-pernas">Pernas</button>
+            <button class="category-btn" data-category="abdomen" data-i18n="exerc-abdomen">Abdômen</button>
         </div>
 
         <!-- Exercises Grid -->
@@ -294,22 +294,22 @@
         <div class="video-content">
             <button class="close-btn" onclick="closeVideo()">×</button>
             <div class="video-player" id="videoPlayer">
-                📹 Vídeo do exercício
+                <span data-i18n="video-placeholder">📹 Vídeo do exercício</span>
             </div>
             <div class="exercise-info">
                 <h2 id="modalTitle">Nome do Exercício</h2>
                 <p id="modalDescription"></p>
                 <div class="exercise-details">
                     <div class="detail-item">
-                        <div class="detail-label">🎯 Músculo Principal</div>
+                        <div class="detail-label" data-i18n="modal-musculo">🎯 Músculo Principal</div>
                         <div id="modalMuscle"></div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">💡 Dica de Execução</div>
+                        <div class="detail-label" data-i18n="modal-dica">💡 Dica de Execução</div>
                         <div id="modalTip"></div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">⚠️ Cuidados</div>
+                        <div class="detail-label" data-i18n="modal-cuidados">⚠️ Cuidados</div>
                         <div id="modalWarning"></div>
                     </div>
                 </div>
@@ -398,8 +398,12 @@
         function renderExercises() {
             const grid = document.getElementById('exercisesGrid');
             const filtered = exercises.filter(ex => {
+                const translatedName = t(ex.name).toLowerCase();
+                const translatedMuscle = t(ex.muscle).toLowerCase();
                 const matchCategory = currentCategory === 'todos' || ex.category === currentCategory;
-                const matchSearch = ex.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                const matchSearch = translatedName.includes(currentSearch.toLowerCase()) ||
+                                  ex.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                  translatedMuscle.includes(currentSearch.toLowerCase()) ||
                                   ex.muscle.toLowerCase().includes(currentSearch.toLowerCase());
                 return matchCategory && matchSearch;
             });
@@ -407,8 +411,8 @@
             grid.innerHTML = filtered.map(ex => `
                 <div class="exercise-card" onclick='openVideo(${JSON.stringify(ex)})'>
                     <div class="exercise-icon">${ex.icon}</div>
-                    <div class="exercise-name">${ex.name}</div>
-                    <div class="exercise-muscle">${ex.muscle}</div>
+                    <div class="exercise-name">${t(ex.name)}</div>
+                    <div class="exercise-muscle">${t(ex.muscle)}</div>
                 </div>
             `).join('');
         }
@@ -431,9 +435,9 @@
 
         // Open video modal
         function openVideo(exercise) {
-            document.getElementById('modalTitle').textContent = exercise.name;
+            document.getElementById('modalTitle').textContent = t(exercise.name);
             document.getElementById('modalDescription').textContent = exercise.description;
-            document.getElementById('modalMuscle').textContent = exercise.muscle;
+            document.getElementById('modalMuscle').textContent = t(exercise.muscle);
             document.getElementById('modalTip').textContent = exercise.tip;
             document.getElementById('modalWarning').textContent = exercise.warning;
             
@@ -574,6 +578,8 @@
                         btn.classList.remove('active');
                         if (btn.getAttribute('data-lang') === savedLang) btn.classList.add('active');
                     });
+                    // Re-render exercises with correct language
+                    if (typeof renderExercises === 'function') renderExercises();
                 }
             }
             if (document.readyState === 'loading') {
@@ -581,6 +587,13 @@
             } else {
                 setTimeout(initTranslation, 100);
             }
+
+            // Override setLanguage to also re-render exercises
+            const _origSetLang = window.setLanguage;
+            window.setLanguage = function(lang) {
+                if (typeof _origSetLang === 'function') _origSetLang(lang);
+                if (typeof renderExercises === 'function') renderExercises();
+            };
         })();
     </script>
 </body>

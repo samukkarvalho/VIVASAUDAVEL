@@ -449,7 +449,7 @@
     <div class="container">
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s; border: 2px solid transparent;">
             <span style="font-size: 1.5rem;">←</span>
-            Voltar para Início
+            <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
         
         <!-- Header -->
@@ -466,7 +466,7 @@
                 <div class="photo-container" onclick="document.getElementById('photoInput').click()">
                     <div class="photo-placeholder" id="photoPlaceholder">
                         📷
-                        <p>Adicionar Foto</p>
+                        <p data-i18n="acomp-adicionar-foto">Adicionar Foto</p>
                     </div>
                     <img id="profilePhoto" style="display: none;" alt="Foto de perfil">
                 </div>
@@ -484,17 +484,17 @@
                     <div class="stat-card">
                         <div class="stat-icon">⚖️</div>
                         <div class="stat-value" id="statPeso">--</div>
-                        <div class="stat-label">Peso Atual (kg)</div>
+                        <div class="stat-label" data-i18n="acomp-peso-atual">Peso Atual (kg)</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">📉</div>
                         <div class="stat-value" id="statPerda">--</div>
-                        <div class="stat-label">Variação (kg)</div>
+                        <div class="stat-label" data-i18n="acomp-variacao">Variação (kg)</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">🎯</div>
                         <div class="stat-value" id="statRegistros">0</div>
-                        <div class="stat-label">Registros</div>
+                        <div class="stat-label" data-i18n="acomp-registros">Registros</div>
                     </div>
                 </div>
 
@@ -511,39 +511,39 @@
             <form id="progressForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="recordDate">Data</label>
+                        <label for="recordDate" data-i18n="acomp-data">Data</label>
                         <input type="date" id="recordDate" required>
                     </div>
                     <div class="form-group">
-                        <label for="recordPeso">Peso (kg)</label>
+                        <label for="recordPeso" data-i18n="acomp-peso">Peso (kg)</label>
                         <input type="number" id="recordPeso" step="0.1" placeholder="70.5" required>
                     </div>
                     <div class="form-group">
-                        <label for="recordAltura">Altura (cm)</label>
+                        <label for="recordAltura" data-i18n="acomp-altura">Altura (cm)</label>
                         <input type="number" id="recordAltura" placeholder="170">
                     </div>
                     <div class="form-group">
-                        <label for="recordPeito">Peito (cm)</label>
+                        <label for="recordPeito" data-i18n="acomp-peito">Peito (cm)</label>
                         <input type="number" id="recordPeito" step="0.1" placeholder="95">
                     </div>
                     <div class="form-group">
-                        <label for="recordCintura">Cintura (cm)</label>
+                        <label for="recordCintura" data-i18n="acomp-cintura">Cintura (cm)</label>
                         <input type="number" id="recordCintura" step="0.1" placeholder="80">
                     </div>
                     <div class="form-group">
-                        <label for="recordQuadril">Quadril (cm)</label>
+                        <label for="recordQuadril" data-i18n="acomp-quadril">Quadril (cm)</label>
                         <input type="number" id="recordQuadril" step="0.1" placeholder="95">
                     </div>
                     <div class="form-group">
-                        <label for="recordBraco">Braço (cm)</label>
+                        <label for="recordBraco" data-i18n="acomp-braco">Braço (cm)</label>
                         <input type="number" id="recordBraco" step="0.1" placeholder="35">
                     </div>
                     <div class="form-group">
-                        <label for="recordCoxa">Coxa (cm)</label>
+                        <label for="recordCoxa" data-i18n="acomp-coxa">Coxa (cm)</label>
                         <input type="number" id="recordCoxa" step="0.1" placeholder="55">
                     </div>
                     <div class="form-group">
-                        <label for="recordBf">BF% (opcional)</label>
+                        <label for="recordBf" data-i18n="acomp-bf">BF% (opcional)</label>
                         <input type="number" id="recordBf" step="0.1" placeholder="15">
                     </div>
                 </div>
@@ -557,7 +557,7 @@
             <div class="timeline" id="timeline">
                 <div class="empty-state">
                     <div class="empty-state-icon">📊</div>
-                    <p>Nenhum registro ainda. Adicione seu primeiro registro acima!</p>
+                    <p data-i18n="acomp-nenhum-registro">Nenhum registro ainda. Adicione seu primeiro registro acima!</p>
                 </div>
             </div>
         </div>
@@ -632,7 +632,7 @@
             e.target.reset();
             document.getElementById('recordDate').valueAsDate = new Date();
             
-            alert('✅ Registro salvo com sucesso!');
+            alert(t('acomp-registro-salvo'));
         });
 
         function loadProfile() {
@@ -650,12 +650,12 @@
                 
                 profileInfo.innerHTML = `
                     <div class="info-item">
-                        <span class="info-label">Peso</span>
+                        <span class="info-label">${t('acomp-peso-label')}</span>
                         <span class="info-value">${latest.peso} kg</span>
                     </div>
                     ${latest.altura ? `
                     <div class="info-item">
-                        <span class="info-label">Altura</span>
+                        <span class="info-label">${t('acomp-altura-label')}</span>
                         <span class="info-value">${latest.altura} cm</span>
                     </div>` : ''}
                     ${latest.bf ? `
@@ -664,7 +664,7 @@
                         <span class="info-value">${latest.bf}%</span>
                     </div>` : ''}
                     <div class="info-item">
-                        <span class="info-label">IMC</span>
+                        <span class="info-label">${t('acomp-imc-label')}</span>
                         <span class="info-value">${calculateIMC(latest.peso, latest.altura)}</span>
                     </div>
                 `;
@@ -704,7 +704,7 @@
                 timeline.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📊</div>
-                        <p>Nenhum registro ainda. Adicione seu primeiro registro acima!</p>
+                        <p>${t('acomp-nenhum-registro')}</p>
                     </div>
                 `;
                 return;
@@ -722,17 +722,17 @@
                     <div>
                         <div class="timeline-data">
                             <div class="timeline-metric">
-                                <div class="timeline-metric-label">Peso</div>
+                                <div class="timeline-metric-label">${t('acomp-peso-label')}</div>
                                 <div class="timeline-metric-value">${record.peso} kg</div>
                             </div>
                             ${record.cintura ? `
                             <div class="timeline-metric">
-                                <div class="timeline-metric-label">Cintura</div>
+                                <div class="timeline-metric-label">${t('acomp-cintura')}</div>
                                 <div class="timeline-metric-value">${record.cintura} cm</div>
                             </div>` : ''}
                             ${record.braco ? `
                             <div class="timeline-metric">
-                                <div class="timeline-metric-label">Braço</div>
+                                <div class="timeline-metric-label">${t('acomp-braco')}</div>
                                 <div class="timeline-metric-value">${record.braco} cm</div>
                             </div>` : ''}
                             ${record.bf ? `
@@ -762,7 +762,7 @@
                 data: {
                     labels: [],
                     datasets: [{
-                        label: 'Peso (kg)',
+                        label: t('acomp-grafico-peso'),
                         data: [],
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
