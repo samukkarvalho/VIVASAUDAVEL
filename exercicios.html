@@ -809,19 +809,21 @@
                         if (btn.getAttribute('data-lang') === savedLang) btn.classList.add('active');
                     });
                 }
-                if (typeof renderExercises === 'function') renderExercises();
+                setTimeout(() => { if (typeof renderExercises === 'function') renderExercises(); }, 50);
             }
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 150));
-            } else { setTimeout(initTranslation, 150); }
-            // Re-render on language change
+                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 200));
+            } else { setTimeout(initTranslation, 200); }
+            // Re-renderizar ao trocar idioma
             setTimeout(() => {
                 const origSL = window.setLanguage;
-                if (origSL) window.setLanguage = function(lang) {
-                    origSL(lang);
-                    if (typeof renderExercises === 'function') renderExercises();
-                };
-            }, 400);
+                if (typeof origSL === 'function') {
+                    window.setLanguage = function(lang) {
+                        origSL(lang);
+                        if (typeof renderExercises === 'function') renderExercises();
+                    };
+                }
+            }, 500);
         })();
     </script>
 </body>

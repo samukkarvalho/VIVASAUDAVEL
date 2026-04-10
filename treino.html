@@ -411,11 +411,6 @@
     </div>
     <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
-        <!-- Botões de idioma -->
-        <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;">
-            <button onclick="setLanguage('pt')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇧🇷 PT</button>
-            <button onclick="setLanguage('en')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇺🇸 EN</button>
-        </div>
         
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s;">
             <span style="font-size: 1.5rem;">←</span>
@@ -1001,6 +996,8 @@
             document.getElementById('results').classList.add('show');
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
+        // Expose to global scope for language re-render
+        window.gerarTreino = gerarTreino;
     </script>
     <script src="/translations.js"></script>
     <script>
@@ -1019,17 +1016,19 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
             } else { setTimeout(initTranslation, 100); }
-            // Re-render workout when language changes
-            document.addEventListener('DOMContentLoaded', () => {
+            // Re-renderizar treino ao trocar idioma
+            setTimeout(() => {
                 const origSL = window.setLanguage;
-                if (origSL) window.setLanguage = function(lang) {
-                    origSL(lang);
-                    const results = document.getElementById('results');
-                    if (results && results.classList.contains('show') && window._lastTP) {
-                        gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
-                    }
-                };
-            });
+                if (typeof origSL === 'function') {
+                    window.setLanguage = function(lang) {
+                        origSL(lang);
+                        const results = document.getElementById('results');
+                        if (results && results.classList.contains('show') && window._lastTP && typeof window.gerarTreino === 'function') {
+                            window.gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
+                        }
+                    };
+                }
+            }, 500);
         })();
     </script>
 </body>

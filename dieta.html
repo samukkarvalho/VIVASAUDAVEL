@@ -1009,11 +1009,14 @@
             }
             
             const refeicoes = gerarDieta(selectedObjetivo, selectedOrcamento);
+            window._dietaAtual = refeicoes;
             renderDieta(refeicoes);
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         });
+        // Expor ao escopo global para re-renderizar ao trocar idioma
+        window.renderDieta = renderDieta;
     </script>
     <script src="/translations.js"></script>
     <script>
@@ -1032,13 +1035,13 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
             } else { setTimeout(initTranslation, 100); }
-            // Re-render diet on language change
+            // Re-render dieta ao trocar idioma
             setTimeout(() => {
                 const origSL = window.setLanguage;
                 if (origSL) window.setLanguage = function(lang) {
                     origSL(lang);
-                    if (typeof dietaAtual !== 'undefined' && dietaAtual && dietaAtual.length > 0 && typeof renderDieta === 'function') {
-                        renderDieta(dietaAtual);
+                    if (typeof window.renderDieta === 'function' && window._dietaAtual && window._dietaAtual.length > 0) {
+                        window.renderDieta(window._dietaAtual);
                     }
                 };
             }, 300);
