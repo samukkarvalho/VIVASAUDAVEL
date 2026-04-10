@@ -254,8 +254,8 @@
         
         <div class="header">
             <div class="lang-switcher">
-                <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 PT</button>
-                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+                <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); if(window._dietaAtual && typeof window.renderDieta==='function'){window.renderDieta(window._dietaAtual);var r=document.getElementById('results');if(r)r.style.display='block';}">🇧🇷 PT</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); if(window._dietaAtual && typeof window.renderDieta==='function'){window.renderDieta(window._dietaAtual);var r=document.getElementById('results');if(r)r.style.display='block';}">🇺🇸 EN</button>
             </div>
             <h1 data-i18n="dieta-title">DIETA PERSONALIZADA</h1>
             <p data-i18n="dieta-subtitle" data-i18n="dieta-result-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
@@ -1012,12 +1012,13 @@
             }
             
             const refeicoes = gerarDieta(selectedObjetivo, selectedOrcamento);
+            window._dietaAtual = refeicoes;
             renderDieta(refeicoes);
             
-            window._dietaAtual = refeicoes;
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         });
+        // Expor ao escopo global
         window.renderDieta = renderDieta;
     </script>
     <script src="/translations.js"></script>
@@ -1044,6 +1045,9 @@
                     origSL(lang);
                     if (typeof window.renderDieta === 'function' && window._dietaAtual && window._dietaAtual.length > 0) {
                         window.renderDieta(window._dietaAtual);
+                        // Garantir que results continua visível
+                        const res = document.getElementById('results');
+                        if (res) res.style.display = 'block';
                     }
                 };
             }, 50);

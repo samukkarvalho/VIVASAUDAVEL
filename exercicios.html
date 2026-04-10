@@ -421,8 +421,8 @@
     }
     </script>
     <div style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px; border-radius: 25px; backdrop-filter: blur(10px);">
-        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
-        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
+        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); renderExercises();" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); renderExercises();" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
     </div>
     <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
@@ -663,16 +663,12 @@
         };
         // Open video modal
         function openVideo(exercise) {
-            const lang = localStorage.getItem('language') || 'pt';
-            const isEN = lang === 'en';
+            const isEN = (localStorage.getItem('language') || 'pt') === 'en';
             const trans = _exTrans[exercise.name];
             // Atualizar labels do modal com idioma atual
-            const lMusculo = isEN ? '🎯 Main Muscle' : '🎯 Músculo Principal';
-            const lDica = isEN ? '💡 Execution Tip' : '💡 Dica de Execução';
-            const lCuidado = isEN ? '⚠️ Caution' : '⚠️ Cuidados';
-            document.querySelector('[data-i18n="modal-musculo"]').textContent = lMusculo;
-            document.querySelector('[data-i18n="modal-dica"]').textContent = lDica;
-            document.querySelector('[data-i18n="modal-cuidados"]').textContent = lCuidado;
+            document.querySelector('[data-i18n="modal-musculo"]').textContent = isEN ? '🎯 Main Muscle' : '🎯 Músculo Principal';
+            document.querySelector('[data-i18n="modal-dica"]').textContent = isEN ? '💡 Execution Tip' : '💡 Dica de Execução';
+            document.querySelector('[data-i18n="modal-cuidados"]').textContent = isEN ? '⚠️ Caution' : '⚠️ Cuidados';
             document.getElementById('modalTitle').textContent = _tr(exercise.name);
             document.getElementById('modalDescription').textContent = trans ? (isEN ? trans[1] : trans[0]) : exercise.description;
             document.getElementById('modalMuscle').textContent = _tr(exercise.muscle);

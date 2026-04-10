@@ -255,7 +255,6 @@
             'mus-peito-comp':'Peito Completo','mus-costas-comp':'Costas Completo',
             'mus-pernas-glu':'Pernas + Glúteos','mus-ombros-trap':'Ombros + Trapézio','mus-bracos-abd':'Braços + Abdômen',
             // Labels
-                        // Valores de biotipo/objetivo/nivel
             'val-ectomorfo':'Ectomorfo','val-mesomorfo':'Mesomorfo','val-endomorfo':'Endomorfo',
             'val-emagrecimento':'Emagrecimento','val-definicao':'Definição','val-hipertrofia':'Ganho de Massa',
             'val-iniciante':'Iniciante','val-intermediario':'Intermediário','val-avancado':'Avançado',
@@ -338,7 +337,6 @@
             'mus-peito-comp':'Full Chest','mus-costas-comp':'Full Back',
             'mus-pernas-glu':'Legs + Glutes','mus-ombros-trap':'Shoulders + Traps','mus-bracos-abd':'Arms + Abs',
             // Labels
-                        // Biotipo/objetivo/nivel values
             'val-ectomorfo':'Ectomorph','val-mesomorfo':'Mesomorph','val-endomorfo':'Endomorph',
             'val-emagrecimento':'Fat Loss','val-definicao':'Definition','val-hipertrofia':'Mass Gain',
             'val-iniciante':'Beginner','val-intermediario':'Intermediate','val-avancado':'Advanced',
@@ -414,8 +412,8 @@
     }
     </script>
     <div style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px; border-radius: 25px; backdrop-filter: blur(10px);">
-        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
-        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
+        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); if(window._lastTP && typeof window.gerarTreino==='function'){var r=document.getElementById('results');if(r&&r.classList.contains('show'))window.gerarTreino(window._lastTP.n,window._lastTP.b,window._lastTP.o,window._lastTP.nv);}" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); if(window._lastTP && typeof window.gerarTreino==='function'){var r=document.getElementById('results');if(r&&r.classList.contains('show'))window.gerarTreino(window._lastTP.n,window._lastTP.b,window._lastTP.o,window._lastTP.nv);}" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
     </div>
     <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
@@ -1034,8 +1032,8 @@
                 if (origSL) window.setLanguage = function(lang) {
                     origSL(lang);
                     const results = document.getElementById('results');
-                    if (results && results.classList.contains('show') && window._lastTP) {
-                        gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
+                    if (results && results.classList.contains('show') && window._lastTP && typeof window.gerarTreino === 'function') {
+                        window.gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
                     }
                 };
             });
