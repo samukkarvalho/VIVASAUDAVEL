@@ -663,8 +663,16 @@
         };
         // Open video modal
         function openVideo(exercise) {
-            const isEN = (localStorage.getItem('language') || 'pt') === 'en';
+            const lang = localStorage.getItem('language') || 'pt';
+            const isEN = lang === 'en';
             const trans = _exTrans[exercise.name];
+            // Atualizar labels do modal com idioma atual
+            const lMusculo = isEN ? '🎯 Main Muscle' : '🎯 Músculo Principal';
+            const lDica = isEN ? '💡 Execution Tip' : '💡 Dica de Execução';
+            const lCuidado = isEN ? '⚠️ Caution' : '⚠️ Cuidados';
+            document.querySelector('[data-i18n="modal-musculo"]').textContent = lMusculo;
+            document.querySelector('[data-i18n="modal-dica"]').textContent = lDica;
+            document.querySelector('[data-i18n="modal-cuidados"]').textContent = lCuidado;
             document.getElementById('modalTitle').textContent = _tr(exercise.name);
             document.getElementById('modalDescription').textContent = trans ? (isEN ? trans[1] : trans[0]) : exercise.description;
             document.getElementById('modalMuscle').textContent = _tr(exercise.muscle);
@@ -809,21 +817,19 @@
                         if (btn.getAttribute('data-lang') === savedLang) btn.classList.add('active');
                     });
                 }
-                setTimeout(() => { if (typeof renderExercises === 'function') renderExercises(); }, 50);
+                if (typeof renderExercises === 'function') renderExercises();
             }
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 200));
-            } else { setTimeout(initTranslation, 200); }
-            // Re-renderizar ao trocar idioma
+                document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 150));
+            } else { setTimeout(initTranslation, 150); }
+            // Re-render on language change
             setTimeout(() => {
                 const origSL = window.setLanguage;
-                if (typeof origSL === 'function') {
-                    window.setLanguage = function(lang) {
-                        origSL(lang);
-                        if (typeof renderExercises === 'function') renderExercises();
-                    };
-                }
-            }, 500);
+                if (origSL) window.setLanguage = function(lang) {
+                    origSL(lang);
+                    if (typeof renderExercises === 'function') renderExercises();
+                };
+            }, 400);
         })();
     </script>
 </body>

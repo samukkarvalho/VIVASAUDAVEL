@@ -41,13 +41,16 @@
         
         /* Language Switcher */
         .lang-switcher {
-            display: inline-flex;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
             gap: 6px;
             background: rgba(255,255,255,0.1);
             padding: 5px;
             border-radius: 25px;
             backdrop-filter: blur(10px);
-            margin-bottom: 16px;
+            z-index: 9999;
         }
         .lang-btn {
             padding: 8px 16px;
@@ -1009,13 +1012,12 @@
             }
             
             const refeicoes = gerarDieta(selectedObjetivo, selectedOrcamento);
-            window._dietaAtual = refeicoes;
             renderDieta(refeicoes);
             
+            window._dietaAtual = refeicoes;
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         });
-        // Expor ao escopo global para re-renderizar ao trocar idioma
         window.renderDieta = renderDieta;
     </script>
     <script src="/translations.js"></script>
@@ -1035,7 +1037,7 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
             } else { setTimeout(initTranslation, 100); }
-            // Re-render dieta ao trocar idioma
+            // Re-render diet on language change
             setTimeout(() => {
                 const origSL = window.setLanguage;
                 if (origSL) window.setLanguage = function(lang) {
@@ -1044,7 +1046,7 @@
                         window.renderDieta(window._dietaAtual);
                     }
                 };
-            }, 300);
+            }, 50);
         })();
     </script>
 </body>

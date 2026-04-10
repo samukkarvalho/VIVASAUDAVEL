@@ -255,6 +255,10 @@
             'mus-peito-comp':'Peito Completo','mus-costas-comp':'Costas Completo',
             'mus-pernas-glu':'Pernas + Glúteos','mus-ombros-trap':'Ombros + Trapézio','mus-bracos-abd':'Braços + Abdômen',
             // Labels
+                        // Valores de biotipo/objetivo/nivel
+            'val-ectomorfo':'Ectomorfo','val-mesomorfo':'Mesomorfo','val-endomorfo':'Endomorfo',
+            'val-emagrecimento':'Emagrecimento','val-definicao':'Definição','val-hipertrofia':'Ganho de Massa',
+            'val-iniciante':'Iniciante','val-intermediario':'Intermediário','val-avancado':'Avançado',
             'seu-plano':'SEU PLANO','biotipo-label':'Biotipo:','objetivo-label':'Objetivo:',
             'nivel-label':'Nível:','frequencia-label':'Frequência:','frequencia-semana':'por semana',
             'aquecimento-label':'AQUECIMENTO (10-15min):','alongamento-label':'ALONGAMENTO (10min):','obs-label':'💡 OBS:',
@@ -334,6 +338,10 @@
             'mus-peito-comp':'Full Chest','mus-costas-comp':'Full Back',
             'mus-pernas-glu':'Legs + Glutes','mus-ombros-trap':'Shoulders + Traps','mus-bracos-abd':'Arms + Abs',
             // Labels
+                        // Biotipo/objetivo/nivel values
+            'val-ectomorfo':'Ectomorph','val-mesomorfo':'Mesomorph','val-endomorfo':'Endomorph',
+            'val-emagrecimento':'Fat Loss','val-definicao':'Definition','val-hipertrofia':'Mass Gain',
+            'val-iniciante':'Beginner','val-intermediario':'Intermediate','val-avancado':'Advanced',
             'seu-plano':'YOUR PLAN','biotipo-label':'Body Type:','objetivo-label':'Goal:',
             'nivel-label':'Level:','frequencia-label':'Frequency:','frequencia-semana':'per week',
             'aquecimento-label':'WARM-UP (10-15min):','alongamento-label':'STRETCHING (10min):','obs-label':'💡 NOTE:',
@@ -411,6 +419,11 @@
     </div>
     <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
+        <!-- Botões de idioma -->
+        <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;">
+            <button onclick="setLanguage('pt')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇧🇷 PT</button>
+            <button onclick="setLanguage('en')" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🇺🇸 EN</button>
+        </div>
         
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s;">
             <span style="font-size: 1.5rem;">←</span>
@@ -903,9 +916,9 @@
                     <div class="warn-box">
                         <h3 style="color: var(--accent); margin-bottom: 15px;">📋 ${plano.divisao}</h3>
                         <p style="line-height: 1.8;">
-                            <strong>${_tr('biotipo-label')}</strong> ${biotipo.charAt(0).toUpperCase() + biotipo.slice(1)}<br>
-                            <strong>${_tr('objetivo-label')}</strong> ${objetivo.charAt(0).toUpperCase() + objetivo.slice(1)}<br>
-                            <strong>${_tr('nivel-label')}</strong> ${nivel.charAt(0).toUpperCase() + nivel.slice(1)}<br>
+                            <strong>${_tr('biotipo-label')}</strong> ${_tr('val-'+biotipo)}<br>
+                            <strong>${_tr('objetivo-label')}</strong> ${_tr('val-'+objetivo)}<br>
+                            <strong>${_tr('nivel-label')}</strong> ${_tr('val-'+nivel)}<br>
                             <strong>${_tr('frequencia-label')}</strong> ${plano.dias.length}x ${_tr('frequencia-semana')}
                         </p>
                     </div>
@@ -980,13 +993,13 @@
                             ${_tr('aprender-execucao')}
                         </p>
                         <a href="exercicios.html" style="display: inline-block; padding: 18px 50px; background: linear-gradient(135deg, var(--accent), #d97706); border-radius: 50px; color: white; text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4); transition: all 0.3s;">
-                            Ver Exercícios
+                            ${_tr('ver-exercicios')}
                         </a>
                     </div>
                     
                     <div style="text-align: center; margin-top: 40px;">
                         <button onclick="window.location.reload()" style="padding: 18px 50px; background: linear-gradient(135deg, var(--primary), #059669); border: none; border-radius: 50px; color: white; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); transition: all 0.3s;">
-                            🔄 Gerar Outro Treino
+                            ${_tr('btn-outro-treino')}
                         </button>
                     </div>
                 </div>
@@ -996,7 +1009,6 @@
             document.getElementById('results').classList.add('show');
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
-        // Expose to global scope for language re-render
         window.gerarTreino = gerarTreino;
     </script>
     <script src="/translations.js"></script>
@@ -1016,19 +1028,17 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
             } else { setTimeout(initTranslation, 100); }
-            // Re-renderizar treino ao trocar idioma
-            setTimeout(() => {
+            // Re-render workout when language changes
+            document.addEventListener('DOMContentLoaded', () => {
                 const origSL = window.setLanguage;
-                if (typeof origSL === 'function') {
-                    window.setLanguage = function(lang) {
-                        origSL(lang);
-                        const results = document.getElementById('results');
-                        if (results && results.classList.contains('show') && window._lastTP && typeof window.gerarTreino === 'function') {
-                            window.gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
-                        }
-                    };
-                }
-            }, 500);
+                if (origSL) window.setLanguage = function(lang) {
+                    origSL(lang);
+                    const results = document.getElementById('results');
+                    if (results && results.classList.contains('show') && window._lastTP) {
+                        gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
+                    }
+                };
+            });
         })();
     </script>
 </body>
