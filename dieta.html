@@ -246,6 +246,11 @@
     </style>
 </head>
 <body>
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); if(window._dietaAtual && typeof window.renderDieta==='function'){window.renderDieta(window._dietaAtual); var _r=document.getElementById('results'); if(_r) _r.style.display='block';document.getElementById('results').style.display='block';}">🇧🇷 PT</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); if(window._dietaAtual && typeof window.renderDieta==='function'){window.renderDieta(window._dietaAtual); var _r=document.getElementById('results'); if(_r) _r.style.display='block';document.getElementById('results').style.display='block';}">🇺🇸 EN</button>
+    </div>
+    <style>.lang-btn.active{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)!important;color:white!important;}</style>
     <div class="container">
         <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 10px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 20px; margin-top: 16px; transition: all 0.3s; font-size: 0.9rem;">
             <span style="font-size: 1.2rem;">←</span>
@@ -253,11 +258,7 @@
         </a>
         
         <div class="header">
-            <div class="lang-switcher">
-                <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); if(window._dietaAtual && typeof window.renderDieta==='function'){window.renderDieta(window._dietaAtual);var r=document.getElementById('results');if(r)r.style.display='block';}">🇧🇷 PT</button>
-                <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); if(window._dietaAtual && typeof window.renderDieta==='function'){window.renderDieta(window._dietaAtual);var r=document.getElementById('results');if(r)r.style.display='block';}">🇺🇸 EN</button>
-            </div>
-            <h1 data-i18n="dieta-title">DIETA PERSONALIZADA</h1>
+            <h1 data-i18n="dieta-title">GERADOR DE DIETA</h1>
             <p data-i18n="dieta-subtitle" data-i18n="dieta-result-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
         </div>
 
@@ -1018,7 +1019,6 @@
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         });
-        // Expor ao escopo global
         window.renderDieta = renderDieta;
     </script>
     <script src="/translations.js"></script>
@@ -1043,14 +1043,11 @@
                 const origSL = window.setLanguage;
                 if (origSL) window.setLanguage = function(lang) {
                     origSL(lang);
-                    if (typeof window.renderDieta === 'function' && window._dietaAtual && window._dietaAtual.length > 0) {
-                        window.renderDieta(window._dietaAtual);
-                        // Garantir que results continua visível
-                        const res = document.getElementById('results');
-                        if (res) res.style.display = 'block';
+                    if (typeof dietaAtual !== 'undefined' && dietaAtual && dietaAtual.length > 0 && typeof renderDieta === 'function') {
+                        renderDieta(dietaAtual);
                     }
                 };
-            }, 50);
+            }, 300);
         })();
     </script>
 </body>

@@ -412,8 +412,8 @@
     }
     </script>
     <div style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px; border-radius: 25px; backdrop-filter: blur(10px);">
-        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); if(window._lastTP && typeof window.gerarTreino==='function'){var r=document.getElementById('results');if(r&&r.classList.contains('show'))window.gerarTreino(window._lastTP.n,window._lastTP.b,window._lastTP.o,window._lastTP.nv);}" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
-        <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); if(window._lastTP && typeof window.gerarTreino==='function'){var r=document.getElementById('results');if(r&&r.classList.contains('show'))window.gerarTreino(window._lastTP.n,window._lastTP.b,window._lastTP.o,window._lastTP.nv);}" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
+        <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt'); var r=document.getElementById('results'); if(r&&r.classList.contains('show')&&window._lastTP&&typeof window.gerarTreino==='function')window.gerarTreino(window._lastTP.n,window._lastTP.b,window._lastTP.o,window._lastTP.nv);" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇧🇷 PT</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); var r=document.getElementById('results'); if(r&&r.classList.contains('show')&&window._lastTP&&typeof window.gerarTreino==='function')window.gerarTreino(window._lastTP.n,window._lastTP.b,window._lastTP.o,window._lastTP.nv);" style="padding: 8px 16px; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.3s;">🇺🇸 EN</button>
     </div>
     <style>.lang-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; }</style>
     <div class="container">
@@ -1026,17 +1026,19 @@
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
             } else { setTimeout(initTranslation, 100); }
-            // Re-render workout when language changes
-            document.addEventListener('DOMContentLoaded', () => {
+            // Re-render ao trocar idioma
+            setTimeout(() => {
                 const origSL = window.setLanguage;
-                if (origSL) window.setLanguage = function(lang) {
-                    origSL(lang);
-                    const results = document.getElementById('results');
-                    if (results && results.classList.contains('show') && window._lastTP && typeof window.gerarTreino === 'function') {
-                        window.gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
-                    }
-                };
-            });
+                if (typeof origSL === 'function') {
+                    window.setLanguage = function(lang) {
+                        origSL(lang);
+                        const results = document.getElementById('results');
+                        if (results && results.classList.contains('show') && window._lastTP && typeof window.gerarTreino === 'function') {
+                            window.gerarTreino(window._lastTP.n, window._lastTP.b, window._lastTP.o, window._lastTP.nv);
+                        }
+                    };
+                }
+            }, 600);
         })();
     </script>
 </body>

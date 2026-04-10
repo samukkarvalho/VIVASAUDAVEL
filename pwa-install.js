@@ -40,13 +40,14 @@ function createInstallButton() {
   // Criar botão
   installButton = document.createElement('button');
   installButton.id = 'install-button';
+  const _installLang = localStorage.getItem('language') || 'pt';
   installButton.innerHTML = `
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
       <polyline points="7 10 12 15 17 10"></polyline>
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
-    <span>Instalar App</span>
+    <span id="install-btn-text">${_installLang === 'en' ? 'Install App' : 'Instalar App'}</span>
   `;
   
   // Estilos do botão
@@ -163,3 +164,25 @@ function addPWAMetaTags() {
 
 // Executar ao carregar
 addPWAMetaTags();
+
+// Atualizar texto do botão quando idioma mudar
+function updateInstallButtonText() {
+    const span = document.getElementById('install-btn-text');
+    if (span) {
+        const lang = localStorage.getItem('language') || 'pt';
+        span.textContent = lang === 'en' ? 'Install App' : 'Instalar App';
+    }
+}
+
+// Sobrescrever setLanguage para atualizar o botão também
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const orig = window.setLanguage;
+        if (typeof orig === 'function') {
+            window.setLanguage = function(lang) {
+                orig(lang);
+                updateInstallButtonText();
+            };
+        }
+    }, 800);
+});
