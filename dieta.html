@@ -255,7 +255,7 @@
                 <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
             </div>
             <h1 data-i18n="dieta-title">DIETA PERSONALIZADA</h1>
-            <p data-i18n="dieta-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
+            <p data-i18n="dieta-subtitle" data-i18n="dieta-result-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
         </div>
 
         <div class="form-wrapper">
@@ -352,14 +352,13 @@
 
         <div class="results" id="results" style="display:none;">
             <div style="text-align:center;margin-bottom:40px;">
-                <h2 style="font-size:2.5rem;color:var(--primary);margin-bottom:10px;">✅ Sua Dieta Personalizada</h2>
-                <p style="color:rgba(255,255,255,0.7);font-size:1.1rem;">Clique em 🔄 para trocar qualquer alimento</p>
+                <h2 style="font-size:2.5rem;color:var(--primary);margin-bottom:10px;" data-i18n="dieta-result-title">✅ Sua Dieta Personalizada</h2>
+                <p style="color:rgba(255,255,255,0.7);font-size:1.1rem;" data-i18n="dieta-result-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
             </div>
             <div id="dietaList"></div>
         </div>
     </div>
 
-    <script src="/translations.js"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
@@ -534,9 +533,10 @@
 
         // Traduzir nome do alimento
         function translateFood(foodName) {
-            if (typeof t === 'function') {
-                const translated = t(foodName);
-                if (translated && translated !== foodName) return translated;
+            // Use inline _tr() which is always available
+            if (typeof _tr === 'function') {
+                const tr = _tr(foodName);
+                if (tr && tr !== foodName) return tr;
             }
             const lang = localStorage.getItem('language') || 'pt';
             return (foodTranslations[lang] && foodTranslations[lang][foodName]) || foodName;
@@ -1015,6 +1015,7 @@
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
+    <script src="/translations.js"></script>
     <script>
         (function() {
             function initTranslation() {
@@ -1030,21 +1031,17 @@
             }
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => setTimeout(initTranslation, 100));
-            } else {
-                setTimeout(initTranslation, 100);
-            }
-            // Override setLanguage to re-render diet
+            } else { setTimeout(initTranslation, 100); }
+            // Re-render diet on language change
             setTimeout(() => {
                 const origSL = window.setLanguage;
-                if (origSL) {
-                    window.setLanguage = function(lang) {
-                        origSL(lang);
-                        if (typeof dietaAtual !== 'undefined' && Array.isArray(dietaAtual) && dietaAtual.length > 0 && typeof renderDieta === 'function') {
-                            renderDieta(dietaAtual);
-                        }
-                    };
-                }
-            }, 200);
+                if (origSL) window.setLanguage = function(lang) {
+                    origSL(lang);
+                    if (typeof dietaAtual !== 'undefined' && dietaAtual && dietaAtual.length > 0 && typeof renderDieta === 'function') {
+                        renderDieta(dietaAtual);
+                    }
+                };
+            }, 300);
         })();
     </script>
 </body>
