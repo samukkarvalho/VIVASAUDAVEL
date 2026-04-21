@@ -500,6 +500,16 @@
             gerarTreino(nome, biotipo, objetivo, nivel);
         });
 
+
+        // Embaralhar array
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
         function gerarTreino(nome, biotipo, objetivo, nivel) {
             // Database compacto
             const treinos = {
@@ -841,7 +851,8 @@
         // Gerar novo treino sem recarregar
         function gerarNovoTreino() {
             const form = document.getElementById('treinoForm');
-            form.dispatchEvent(new Event('submit'));
+            const event = new Event('submit', { bubbles: true, cancelable: true });
+            form.dispatchEvent(event);
         }
 
         // Salvar treino em PDF
@@ -945,7 +956,8 @@
         // Gerar novo treino sem recarregar
         function gerarNovoTreino() {
             const form = document.getElementById('treinoForm');
-            form.dispatchEvent(new Event('submit'));
+            const event = new Event('submit', { bubbles: true, cancelable: true });
+            form.dispatchEvent(event);
         }
 
         // Salvar treino em PDF
