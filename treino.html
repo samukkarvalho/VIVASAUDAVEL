@@ -12,6 +12,8 @@
             --primary-dark: #059669;
             --bg-dark: #0f172a;
             --bg-card: #1e293b;
+            --rest-color: #6366f1;
+            --rest-bg: rgba(99,102,241,0.12);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -22,6 +24,8 @@
             padding: 20px;
         }
         .container { max-width: 1200px; margin: 0 auto; }
+
+        /* HEADER */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -35,6 +39,9 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
+        .header p { color: rgba(255,255,255,0.6); font-size: 1.1rem; }
+
+        /* FORM */
         .form-wrapper {
             background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
             backdrop-filter: blur(20px);
@@ -44,67 +51,81 @@
             margin-bottom: 40px;
         }
         .section-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+        .section-title:first-child { margin-top: 0; }
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        label {
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-        }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-weight: 600; color: rgba(255,255,255,0.9); font-size: 0.95rem; }
         input, select {
             width: 100%;
             padding: 15px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 12px;
             color: white;
             font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s;
         }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        select option { background: #1e293b; color: white; }
+
+        /* Experiência hint */
+        .exp-hint {
+            display: inline-block;
+            margin-top: 6px;
+            background: rgba(16,185,129,0.12);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.82rem;
+            color: var(--primary);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        /* CARDS */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
         .card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.04);
             border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 24px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16,185,129,0.06); }
         .card.selected {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, rgba(16,185,129,0.25) 0%, rgba(5,150,105,0.2) 100%);
             border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(16,185,129,0.3);
         }
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        .card-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
+        .card-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+        .card small { color: rgba(255,255,255,0.55); font-size: 0.78rem; }
+
         .submit-btn {
             width: 100%;
             padding: 20px;
@@ -116,9 +137,14 @@
             font-size: 1.2rem;
             cursor: pointer;
             text-transform: uppercase;
+            letter-spacing: 1px;
             transition: all 0.3s;
             box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+            margin-top: 40px;
         }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(16,185,129,0.5); }
+
+        /* RESULTS */
         .results {
             background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
             backdrop-filter: blur(20px);
@@ -127,80 +153,230 @@
             padding: 50px;
             margin-top: 40px;
         }
-        .treino-day {
-            background: rgba(255,255,255,0.03);
-            border-radius: 20px;
-            padding: 30px;
+
+        /* RESUMO DO PLANO */
+        .plano-resumo {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .plano-badge {
+            background: rgba(16,185,129,0.12);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 50px;
+            padding: 10px 22px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* SEMANA VISUAL */
+        .semana-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
             margin-bottom: 30px;
         }
+        .dia-semana-badge {
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .dia-semana-badge.treino {
+            background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(5,150,105,0.15));
+            border: 1px solid rgba(16,185,129,0.4);
+            color: #34d399;
+        }
+        .dia-semana-badge.descanso {
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.25);
+            color: rgba(255,255,255,0.4);
+        }
+        .dia-semana-badge .dia-nome { font-size: 0.72rem; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dia-semana-badge .dia-status { font-size: 1.1rem; }
+
+        /* DIAS DE TREINO */
+        .treino-day {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .treino-day:hover { border-color: rgba(16,185,129,0.25); }
+
+        .treino-day.descanso-card {
+            background: var(--rest-bg);
+            border-color: rgba(99,102,241,0.25);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 30px;
+        }
+        .descanso-icon { font-size: 2.5rem; }
+        .descanso-text h3 { font-size: 1.2rem; font-weight: 700; color: #a5b4fc; margin-bottom: 4px; }
+        .descanso-text p { color: rgba(255,255,255,0.5); font-size: 0.88rem; }
+
         .day-header {
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 16px;
             margin-bottom: 20px;
         }
-        .day-header h2 {
-            font-size: 1.8rem;
-            color: var(--primary);
+        .day-header-left { display: flex; align-items: center; gap: 12px; }
+        .day-number {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            flex-shrink: 0;
         }
+        .day-info h2 { font-size: 1.2rem; color: white; font-weight: 700; }
+        .day-info .day-grupos { font-size: 0.85rem; color: var(--primary); font-weight: 500; }
+        .day-weekday {
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+        }
+
         .exercise-item {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
+            background: rgba(255,255,255,0.04);
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s;
         }
-        .exercise-name {
+        .exercise-item:last-child { margin-bottom: 0; }
+        .exercise-item:hover { background: rgba(255,255,255,0.07); transform: translateX(4px); }
+        .exercise-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(16,185,129,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
             font-weight: 700;
-            font-size: 1.1rem;
-            color: white;
-            margin-bottom: 8px;
+            color: var(--primary);
+            flex-shrink: 0;
         }
+        .exercise-info { flex: 1; }
+        .exercise-name { font-weight: 700; font-size: 1rem; color: white; margin-bottom: 4px; }
         .exercise-details {
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.8);
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
         }
+        .exercise-details span { display: flex; align-items: center; gap: 4px; }
+        .exercise-details strong { color: rgba(255,255,255,0.85); }
+
+        /* BUTTONS */
         .button-group {
             text-align: center;
             margin-top: 40px;
             display: flex;
-            gap: 20px;
+            gap: 16px;
             justify-content: center;
             flex-wrap: wrap;
         }
-        .btn-gerar, .btn-pdf {
-            padding: 18px 40px;
+        .btn-gerar, .btn-pdf, .btn-back {
+            padding: 16px 32px;
             border: none;
             border-radius: 50px;
             color: white;
-            font-weight: 800;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .btn-gerar {
             background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
         }
         .btn-pdf {
             background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 10px 30px rgba(245,158,11,0.4);
+            box-shadow: 0 8px 25px rgba(245,158,11,0.4);
+        }
+        .btn-back {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .btn-gerar:hover, .btn-pdf:hover, .btn-back:hover { transform: translateY(-3px); }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+        .back-link:hover { background: rgba(255,255,255,0.15); }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2.2rem; }
+            .form-wrapper, .results { padding: 28px 20px; }
+            .semana-header { gap: 5px; }
+            .dia-semana-badge { padding: 10px 4px; }
+            .dia-semana-badge .dia-nome { font-size: 0.62rem; }
+            .button-group { flex-direction: column; align-items: center; }
+            .btn-gerar, .btn-pdf, .btn-back { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s;">
-            <span style="font-size: 1.5rem;">←</span>
+        <a href="index.html" class="back-link">
+            <span style="font-size:1.3rem;">←</span>
             Voltar para Início
         </a>
 
         <div class="header">
-            <h1>GERADOR DE TREINO</h1>
-            <p>Crie sua ficha de treino personalizada</p>
+            <h1>🏋️ GERADOR DE TREINO</h1>
+            <p>Crie sua ficha personalizada com dias da semana</p>
         </div>
 
         <div class="form-wrapper">
             <form id="treinoForm">
+                <div class="section-title">👤 Seus Dados</div>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Nome</label>
@@ -208,11 +384,12 @@
                     </div>
                     <div class="form-group">
                         <label>Idade</label>
-                        <input type="number" id="idade" required placeholder="25">
+                        <input type="number" id="idade" required placeholder="25" min="14" max="80">
                     </div>
                     <div class="form-group">
-                        <label>Experiência (meses)</label>
-                        <input type="number" id="experiencia" required placeholder="6" min="0">
+                        <label>Experiência na musculação</label>
+                        <input type="number" id="experiencia" required placeholder="Ex: 6" min="0" oninput="atualizarHintExp(this.value)">
+                        <span class="exp-hint" id="expHint">ℹ️ Preencha sua experiência em meses</span>
                     </div>
                 </div>
 
@@ -241,30 +418,44 @@
                     <div class="card" data-objetivo="ganho_massa">
                         <div class="card-icon">📈</div>
                         <div class="card-title">Ganho de Massa</div>
+                        <small>Aumentar músculo</small>
                     </div>
                     <div class="card" data-objetivo="definicao">
                         <div class="card-icon">⚡</div>
                         <div class="card-title">Definição</div>
+                        <small>Secar e definir</small>
                     </div>
                     <div class="card" data-objetivo="perda_gordura">
                         <div class="card-icon">🔥</div>
                         <div class="card-title">Perda de Gordura</div>
+                        <small>Emagrecer</small>
                     </div>
                 </div>
                 <input type="hidden" id="objetivo" required>
 
-                <button type="submit" class="submit-btn">🏋️ Gerar Meu Treino</button>
+                <button type="submit" class="submit-btn">🏋️ GERAR MEU TREINO</button>
             </form>
         </div>
 
         <div class="results" id="results" style="display:none;">
-            <div style="text-align:center;margin-bottom:40px;">
-                <h2 style="font-size:2.5rem;color:var(--primary);margin-bottom:10px;">✅ Seu Treino Personalizado</h2>
+            <div style="text-align:center;margin-bottom:36px;">
+                <h2 style="font-size:2rem;color:var(--primary);margin-bottom:8px;">✅ Seu Treino Personalizado</h2>
+                <p id="resultSubtitle" style="color:rgba(255,255,255,0.55);font-size:0.95rem;"></p>
             </div>
+
+            <!-- Badges resumo -->
+            <div class="plano-resumo" id="planoBadges"></div>
+
+            <!-- Semana visual -->
+            <div class="semana-header" id="semanaHeader"></div>
+
+            <!-- Lista de treinos -->
             <div id="treinoList"></div>
+
             <div class="button-group">
                 <button class="btn-gerar" onclick="gerarNovoTreino()">🔄 Gerar Outro Treino</button>
                 <button class="btn-pdf" onclick="salvarTreinoPDF()">📄 Salvar PDF</button>
+                <a href="index.html" class="btn-back">🏠 Início</a>
             </div>
         </div>
     </div>
@@ -283,36 +474,95 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // ─── DADOS ───────────────────────────────────────────────────────────
+        const DIAS_SEMANA = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+        const DIAS_SHORT  = ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB', 'DOM'];
+
         const exerciciosPorGrupo = {
-            peito: ['Supino Reto', 'Supino Inclinado', 'Supino Declinado', 'Peck Deck', 'Desenvolvimento na Máquina', 'Flexão', 'Supino com Halteres', 'Crossover', 'Fly com Halteres', 'Supino Smith', 'Máquina Convergente', 'Supino Máquina'],
-            costas: ['Puxada Frontal', 'Puxada Costas', 'Remada Curvada', 'Remada Máquina', 'Remada Unilateral', 'Puxada Aberta', 'Face Pull', 'Barra Fixa', 'Remada Com Halteres', 'Rosca Inversa', 'Pullover', 'Remada Baixa'],
-            perna: ['Agachamento Livre', 'Leg Press', 'Agachamento Smith', 'Hack Machine', 'Extensora', 'Mesa Flexora', 'Rosca Direta', 'Abdutor', 'Addutor', 'Levantamento Terra', 'Leg Press 45º', 'Agachamento Sumo', 'Passada', 'Cadeira Extensora', 'Panturrilha'],
-            ombro: ['Desenvolvimento Militar', 'Elevação Lateral', 'Rosca Direta', 'Máquina Ombro', 'Encolhimento', 'Desenvolvimento Máquina', 'Elevação Frontal', 'Shoulder Press', 'Elevação Lateral Máquina', 'Remada Alta', 'Rotação Interna', 'Desenvolvimento com Halteres'],
-            bíceps: ['Rosca Direta Barra', 'Rosca Direta Halteres', 'Rosca Máquina', 'Rosca Concentrada', 'Rosca Inversa', 'Rosca Diagonal', 'Rosca Inclinada', 'Máquina Biceps', 'Rosca Baixa', 'Rosca Altíssima', 'Rosca com Corda', 'Rosca Scott'],
-            tríceps: ['Tríceps Corda', 'Tríceps Halteres', 'Mergulho', 'Máquina Tríceps', 'Tríceps Barra', 'Tríceps Máquina Fechada', 'Extensão Cabeça', 'Tríceps Na Máquina', 'Rosca Francesa', 'Kickback', 'Paralelas', 'Tríceps Invertido']
+            peito:   ['Supino Reto', 'Supino Inclinado', 'Supino Declinado', 'Peck Deck', 'Desenvolvimento na Máquina', 'Flexão', 'Supino com Halteres', 'Crossover', 'Fly com Halteres', 'Supino Smith', 'Máquina Convergente', 'Supino Máquina'],
+            costas:  ['Puxada Frontal', 'Puxada Costas', 'Remada Curvada', 'Remada Máquina', 'Remada Unilateral', 'Puxada Aberta', 'Face Pull', 'Barra Fixa', 'Remada Com Halteres', 'Pullover', 'Remada Baixa', 'Remada Fechada'],
+            perna:   ['Agachamento Livre', 'Leg Press', 'Agachamento Smith', 'Hack Machine', 'Extensora', 'Mesa Flexora', 'Abdutor', 'Addutor', 'Levantamento Terra', 'Leg Press 45°', 'Agachamento Sumo', 'Passada', 'Cadeira Extensora', 'Panturrilha'],
+            ombro:   ['Desenvolvimento Militar', 'Elevação Lateral', 'Máquina Ombro', 'Encolhimento', 'Desenvolvimento Máquina', 'Elevação Frontal', 'Shoulder Press', 'Elevação Lateral Máquina', 'Remada Alta', 'Desenvolvimento com Halteres'],
+            bíceps:  ['Rosca Direta Barra', 'Rosca Direta Halteres', 'Rosca Máquina', 'Rosca Concentrada', 'Rosca Inversa', 'Rosca Diagonal', 'Rosca Inclinada', 'Rosca Scott', 'Rosca com Corda', 'Rosca Alternada'],
+            tríceps: ['Tríceps Corda', 'Tríceps Halteres', 'Mergulho', 'Máquina Tríceps', 'Tríceps Barra', 'Extensão Cabeça', 'Rosca Francesa', 'Kickback', 'Paralelas', 'Tríceps Invertido']
         };
 
-        const estruturaTreino = {
-            ectomorfo: {
-                ganho_massa: {dias: 3, focus: [['peito', 'ombro'], ['costas', 'bíceps'], ['perna', 'tríceps']], sets: 3, reps: '6-8', descanso: '2-3 min'},
-                definicao: {dias: 4, focus: [['peito', 'tríceps'], ['costas', 'bíceps'], ['ombro'], ['perna']], sets: 3, reps: '8-12', descanso: '45-60 seg'},
-                perda_gordura: {dias: 4, focus: [['peito', 'bíceps'], ['costas', 'tríceps'], ['ombro'], ['perna']], sets: 3, reps: '10-15', descanso: '30-45 seg'}
+        // ─── ESTRUTURA POR EXPERIÊNCIA ───────────────────────────────────────
+        // Retorna número de dias/semana com base nos meses de experiência
+        function diasPorExperiencia(meses) {
+            if (meses < 6)   return 3;
+            if (meses < 12)  return 4;
+            if (meses < 24)  return 5;
+            return 6;
+        }
+
+        function nivelExperiencia(meses) {
+            if (meses < 6)  return { label: 'Iniciante',      emoji: '🌱' };
+            if (meses < 12) return { label: 'Básico',         emoji: '💪' };
+            if (meses < 24) return { label: 'Intermediário',  emoji: '🔥' };
+            return              { label: 'Avançado',          emoji: '🏆' };
+        }
+
+        // Distribuição de grupos musculares por número de dias
+        const focusPorDias = {
+            3: {
+                ganho_massa:   [['peito','ombro'],   ['costas','bíceps'],   ['perna','tríceps']],
+                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['perna','ombro']],
+                perda_gordura: [['peito','bíceps'],   ['costas','tríceps'],  ['perna','ombro']]
             },
-            mesomorfo: {
-                ganho_massa: {dias: 4, focus: [['peito', 'ombro'], ['costas'], ['perna'], ['bíceps', 'tríceps']], sets: 4, reps: '8-12', descanso: '60-90 seg'},
-                definicao: {dias: 4, focus: [['peito', 'tríceps'], ['costas', 'bíceps'], ['ombro'], ['perna']], sets: 3, reps: '10-12', descanso: '45-60 seg'},
-                perda_gordura: {dias: 4, focus: [['peito'], ['costas', 'bíceps'], ['ombro', 'tríceps'], ['perna']], sets: 3, reps: '12-15', descanso: '30-45 seg'}
+            4: {
+                ganho_massa:   [['peito','ombro'],   ['costas'],            ['perna'],           ['bíceps','tríceps']],
+                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['ombro'],           ['perna']],
+                perda_gordura: [['peito'],            ['costas','bíceps'],   ['ombro','tríceps'], ['perna']]
             },
-            endomorfo: {
-                ganho_massa: {dias: 4, focus: [['peito', 'bíceps'], ['costas'], ['ombro', 'tríceps'], ['perna']], sets: 4, reps: '8-10', descanso: '60-90 seg'},
-                definicao: {dias: 5, focus: [['peito', 'tríceps'], ['costas'], ['ombro', 'bíceps'], ['perna'], ['abdômen']], sets: 3, reps: '10-15', descanso: '40-50 seg'},
-                perda_gordura: {dias: 5, focus: [['peito', 'costas'], ['perna'], ['ombro', 'bíceps'], ['tríceps'], ['cardio']], sets: 3, reps: '12-20', descanso: '20-40 seg'}
+            5: {
+                ganho_massa:   [['peito'],            ['costas'],            ['perna'],           ['ombro'],           ['bíceps','tríceps']],
+                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['peito','costas']],
+                perda_gordura: [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['perna']]
+            },
+            6: {
+                ganho_massa:   [['peito'],            ['costas'],            ['perna'],           ['ombro'],           ['bíceps'],          ['tríceps']],
+                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['peito','costas'],  ['perna']],
+                perda_gordura: [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['bíceps','tríceps'],['perna']]
             }
         };
 
-        let treinoAtual = null;
-        let dadosFormulario = {};
+        // Sets/reps variam por nível
+        const paramsPorNivel = {
+            iniciante:     { sets: 3, repsGanho: '8-10',  repsDefin: '10-12', repsPerda: '12-15', descansoGanho: '2-3 min',  descansoDefin: '60-90 seg', descansoPerda: '45-60 seg' },
+            basico:        { sets: 3, repsGanho: '6-10',  repsDefin: '10-12', repsPerda: '12-15', descansoGanho: '90-120 seg',descansoDefin: '60 seg',    descansoPerda: '45 seg' },
+            intermediario: { sets: 4, repsGanho: '6-8',   repsDefin: '8-12',  repsPerda: '12-15', descansoGanho: '2-3 min',  descansoDefin: '45-60 seg', descansoPerda: '30-45 seg' },
+            avancado:      { sets: 4, repsGanho: '4-8',   repsDefin: '8-12',  repsPerda: '10-15', descansoGanho: '3-5 min',  descansoDefin: '60 seg',    descansoPerda: '30-45 seg' }
+        };
 
+        function getNivelParams(meses) {
+            if (meses < 6)  return paramsPorNivel.iniciante;
+            if (meses < 12) return paramsPorNivel.basico;
+            if (meses < 24) return paramsPorNivel.intermediario;
+            return paramsPorNivel.avancado;
+        }
+
+        // ─── DISTRIBUIÇÃO DE DIAS NA SEMANA ──────────────────────────────────
+        // Monta quais dias (0=Seg … 6=Dom) são treino e quais são descanso
+        function distribuirDiasSemana(numDiasTreino) {
+            // Padrões por número de dias
+            const padroes = {
+                3: [0, 2, 4],           // Seg, Qua, Sex
+                4: [0, 1, 3, 4],        // Seg, Ter, Qui, Sex
+                5: [0, 1, 2, 3, 4],     // Seg–Sex
+                6: [0, 1, 2, 3, 4, 5]  // Seg–Sáb
+            };
+            const diasTreino = padroes[numDiasTreino] || padroes[3];
+            const semana = DIAS_SHORT.map((nome, idx) => ({
+                nome,
+                nomeLongo: DIAS_SEMANA[idx],
+                treino: diasTreino.includes(idx),
+                numTreino: diasTreino.includes(idx) ? diasTreino.indexOf(idx) + 1 : null
+            }));
+            return semana;
+        }
+
+        // ─── HELPERS ─────────────────────────────────────────────────────────
         function shuffle(array) {
             const arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
@@ -321,67 +571,136 @@
             }
             return arr;
         }
+        function random(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-        function random(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
+        // ─── GERAR TREINO ─────────────────────────────────────────────────────
+        function gerarTreino(biotipo, objetivo, meses) {
+            const numDias = diasPorExperiencia(meses);
+            const focus = focusPorDias[numDias][objetivo];
+            const params = getNivelParams(meses);
+            const semana = distribuirDiasSemana(numDias);
+            const nivel = nivelExperiencia(meses);
 
-        function gerarTreino(biotipo, objetivo) {
-            const estrutura = estruturaTreino[biotipo][objetivo];
+            const repsMap    = { ganho_massa: params.repsGanho,   definicao: params.repsDefin,   perda_gordura: params.repsPerda };
+            const descansoMap= { ganho_massa: params.descansoGanho, definicao: params.descansoDefin, perda_gordura: params.descansoPerda };
+
             const dias = [];
+            let diaIndex = 0;
 
-            for (let i = 0; i < estrutura.dias; i++) {
-                const gruposEscolhidos = estrutura.focus[i];
-                const exercicios = [];
+            semana.forEach(diaInfo => {
+                if (diaInfo.treino) {
+                    const gruposEscolhidos = focus[diaIndex];
+                    const exercicios = [];
 
-                gruposEscolhidos.forEach(grupo => {
-                    if (exerciciosPorGrupo[grupo]) {
-                        const exersDisponiveis = shuffle(exerciciosPorGrupo[grupo]);
-                        const quantidade = random(2, 3);
-                        
-                        for (let j = 0; j < Math.min(quantidade, exersDisponiveis.length); j++) {
-                            exercicios.push({
-                                nome: exersDisponiveis[j],
-                                series: estrutura.sets + random(-1, 1),
-                                repeticoes: estrutura.reps,
-                                descanso: estrutura.descanso
-                            });
+                    gruposEscolhidos.forEach(grupo => {
+                        if (exerciciosPorGrupo[grupo]) {
+                            const disponiveis = shuffle(exerciciosPorGrupo[grupo]);
+                            const qtd = random(2, 3);
+                            for (let j = 0; j < Math.min(qtd, disponiveis.length); j++) {
+                                exercicios.push({
+                                    nome: disponiveis[j],
+                                    series: params.sets + random(-1, 1),
+                                    repeticoes: repsMap[objetivo],
+                                    descanso: descansoMap[objetivo]
+                                });
+                            }
                         }
-                    }
-                });
+                    });
 
-                dias.push({
-                    numero: i + 1,
-                    grupos: gruposEscolhidos.join(' + '),
-                    exercicios: exercicios
-                });
-            }
+                    dias.push({
+                        tipo: 'treino',
+                        numero: diaIndex + 1,
+                        diaNome: diaInfo.nomeLongo,
+                        grupos: gruposEscolhidos.map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(' + '),
+                        exercicios
+                    });
+                    diaIndex++;
+                } else {
+                    dias.push({
+                        tipo: 'descanso',
+                        diaNome: diaInfo.nomeLongo
+                    });
+                }
+            });
 
-            return dias;
+            return { dias, numDias, semana, nivel, numTotalExercicios: dias.filter(d=>d.tipo==='treino').reduce((a,d)=>a+d.exercicios.length,0) };
         }
 
-        function renderizarTreino(treino) {
+        // ─── RENDERIZAR ───────────────────────────────────────────────────────
+        function renderizarTreino(resultado) {
+            const { dias, numDias, semana, nivel, numTotalExercicios } = resultado;
+            const nome = document.getElementById('nome').value;
+            const biotipo = document.getElementById('biotipo').value;
+            const objetivo = document.getElementById('objetivo').value;
+
+            // Subtítulo
+            const objLabel = { ganho_massa: 'Ganho de Massa', definicao: 'Definição', perda_gordura: 'Perda de Gordura' };
+            document.getElementById('resultSubtitle').textContent =
+                `${nome} • ${biotipo.charAt(0).toUpperCase()+biotipo.slice(1)} • ${objLabel[objetivo]}`;
+
+            // Badges
+            const badges = document.getElementById('planoBadges');
+            badges.innerHTML = `
+                <div class="plano-badge">${nivel.emoji} Nível ${nivel.label}</div>
+                <div class="plano-badge">📅 ${numDias} dias de treino/semana</div>
+                <div class="plano-badge">😴 ${7 - numDias} dias de descanso</div>
+                <div class="plano-badge">⚡ ${numTotalExercicios} exercícios no total</div>
+            `;
+
+            // Semana visual
+            const semanaHeader = document.getElementById('semanaHeader');
+            semanaHeader.innerHTML = semana.map(d => `
+                <div class="dia-semana-badge ${d.treino ? 'treino' : 'descanso'}">
+                    <div class="dia-nome">${d.nome}</div>
+                    <div class="dia-status">${d.treino ? '💪' : '😴'}</div>
+                </div>
+            `).join('');
+
+            // Lista de dias
             const treinoList = document.getElementById('treinoList');
             treinoList.innerHTML = '';
 
-            treino.forEach((dia) => {
+            dias.forEach(dia => {
                 const div = document.createElement('div');
-                div.className = 'treino-day';
-                div.innerHTML = `
-                    <div class="day-header">
-                        <h2>DIA ${dia.numero} - ${dia.grupos}</h2>
-                    </div>
-                    ${dia.exercicios.map((ex, idx) => `
-                        <div class="exercise-item">
-                            <div class="exercise-name">${idx + 1}. ${ex.nome}</div>
-                            <div class="exercise-details">
-                                <strong>Séries:</strong> ${ex.series} | 
-                                <strong>Repetições:</strong> ${ex.repeticoes} | 
-                                <strong>Descanso:</strong> ${ex.descanso}
-                            </div>
+
+                if (dia.tipo === 'descanso') {
+                    div.className = 'treino-day descanso-card';
+                    div.innerHTML = `
+                        <div class="descanso-icon">😴</div>
+                        <div class="descanso-text">
+                            <h3>${dia.diaNome} — Descanso</h3>
+                            <p>Recuperação muscular. Evite treinos intensos. Hidrate-se bem.</p>
                         </div>
-                    `).join('')}
-                `;
+                    `;
+                } else {
+                    div.className = 'treino-day';
+                    div.innerHTML = `
+                        <div class="day-header">
+                            <div class="day-header-left">
+                                <div class="day-number">D${dia.numero}</div>
+                                <div class="day-info">
+                                    <h2>${dia.diaNome}</h2>
+                                    <div class="day-grupos">${dia.grupos}</div>
+                                </div>
+                            </div>
+                            <div class="day-weekday">Treino ${dia.numero}</div>
+                        </div>
+                        ${dia.exercicios.map((ex, idx) => `
+                            <div class="exercise-item">
+                                <div class="exercise-num">${idx + 1}</div>
+                                <div class="exercise-info">
+                                    <div class="exercise-name">${ex.nome}</div>
+                                    <div class="exercise-details">
+                                        <span>🔁 <strong>${ex.series}</strong> séries</span>
+                                        <span>💥 <strong>${ex.repeticoes}</strong> reps</span>
+                                        <span>⏱ <strong>${ex.descanso}</strong> descanso</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
+
                 treinoList.appendChild(div);
             });
 
@@ -389,75 +708,109 @@
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
 
+        // ─── HINT EXPERIÊNCIA ─────────────────────────────────────────────────
+        window.atualizarHintExp = function(val) {
+            const meses = parseInt(val) || 0;
+            const hint = document.getElementById('expHint');
+            const dias = diasPorExperiencia(meses);
+            const nivel = nivelExperiencia(meses);
+            let faixa = '';
+            if (meses < 6)   faixa = '0–5 meses';
+            else if (meses < 12) faixa = '6–11 meses';
+            else if (meses < 24) faixa = '12–23 meses';
+            else faixa = '24+ meses';
+            hint.textContent = `${nivel.emoji} ${nivel.label} (${faixa}) → ${dias} dias/semana`;
+        };
+
+        // ─── GERAR NOVO ───────────────────────────────────────────────────────
         window.gerarNovoTreino = function() {
             if (!dadosFormulario.biotipo || !dadosFormulario.objetivo) {
                 alert('Por favor, preencha o formulário novamente');
                 return;
             }
-            
-            treinoAtual = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo);
-            renderizarTreino(treinoAtual);
+            const resultado = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo, dadosFormulario.experiencia);
+            treinoAtual = resultado;
+            renderizarTreino(resultado);
         };
 
+        // ─── PDF ──────────────────────────────────────────────────────────────
         window.salvarTreinoPDF = function() {
             try {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
-                
                 const nome = document.getElementById('nome').value;
                 const biotipo = document.getElementById('biotipo').value;
                 const objetivo = document.getElementById('objetivo').value;
-                
+                const meses = parseInt(document.getElementById('experiencia').value) || 0;
+                const nivel = nivelExperiencia(meses);
+                const numDias = diasPorExperiencia(meses);
+
                 let y = 20;
-                doc.setFontSize(20);
+                // Título
+                doc.setFontSize(22);
+                doc.setFont(undefined, 'bold');
                 doc.text('TREINO PERSONALIZADO', 105, y, { align: 'center' });
                 y += 10;
-                doc.setFontSize(12);
-                doc.text(`${nome}`, 105, y, { align: 'center' });
-                y += 5;
-                doc.setFontSize(10);
-                doc.text(`Biotipo: ${biotipo} | Objetivo: ${objetivo}`, 105, y, { align: 'center' });
-                y += 15;
-                
-                treinoAtual.forEach(dia => {
-                    if (y > 270) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    
-                    doc.setFontSize(14);
-                    doc.setFont(undefined, 'bold');
-                    doc.text(`DIA ${dia.numero} - ${dia.grupos}`, 20, y);
-                    y += 10;
-                    
-                    doc.setFont(undefined, 'normal');
-                    doc.setFontSize(10);
-                    
-                    dia.exercicios.forEach((ex, idx) => {
-                        if (y > 260) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                        
-                        doc.text(`${idx + 1}. ${ex.nome}`, 25, y);
-                        y += 5;
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                doc.text(nome, 105, y, { align: 'center' });
+                y += 6;
+                doc.setFontSize(9);
+                doc.text(`Biotipo: ${biotipo} | Objetivo: ${objetivo} | Nível: ${nivel.label} | ${numDias} dias/semana`, 105, y, { align: 'center' });
+                y += 14;
+
+                // Linha separadora
+                doc.setDrawColor(16, 185, 129);
+                doc.setLineWidth(0.5);
+                doc.line(20, y, 190, y);
+                y += 10;
+
+                treinoAtual.dias.forEach(dia => {
+                    if (y > 265) { doc.addPage(); y = 20; }
+
+                    if (dia.tipo === 'descanso') {
+                        doc.setFontSize(12);
+                        doc.setFont(undefined, 'bold');
+                        doc.setTextColor(120, 120, 180);
+                        doc.text(`${dia.diaNome.toUpperCase()} — DESCANSO 😴`, 20, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 10;
+                    } else {
+                        doc.setFontSize(13);
+                        doc.setFont(undefined, 'bold');
+                        doc.setTextColor(10, 150, 100);
+                        doc.text(`DIA ${dia.numero} — ${dia.diaNome.toUpperCase()} | ${dia.grupos}`, 20, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 8;
+
+                        doc.setFont(undefined, 'normal');
                         doc.setFontSize(9);
-                        doc.text(`Séries: ${ex.series} | Reps: ${ex.repeticoes} | Descanso: ${ex.descanso}`, 30, y);
-                        y += 5;
-                        doc.setFontSize(10);
-                    });
-                    
-                    y += 5;
+                        dia.exercicios.forEach((ex, idx) => {
+                            if (y > 265) { doc.addPage(); y = 20; }
+                            doc.text(`  ${idx + 1}. ${ex.nome}`, 20, y);
+                            y += 5;
+                            doc.setTextColor(100, 100, 100);
+                            doc.text(`     Séries: ${ex.series}  |  Reps: ${ex.repeticoes}  |  Descanso: ${ex.descanso}`, 20, y);
+                            doc.setTextColor(0, 0, 0);
+                            y += 6;
+                        });
+                        y += 4;
+                    }
                 });
-                
+
                 doc.save(`Treino_${nome}.pdf`);
                 alert('✅ PDF baixado com sucesso!');
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro ao gerar PDF');
+                alert('Erro ao gerar PDF. Tente novamente.');
             }
         };
 
+        // ─── ESTADO ───────────────────────────────────────────────────────────
+        let treinoAtual = null;
+        let dadosFormulario = {};
+
+        // ─── EVENTOS CARDS ────────────────────────────────────────────────────
         document.querySelectorAll('[data-biotipo]').forEach(card => {
             card.addEventListener('click', function() {
                 document.querySelectorAll('[data-biotipo]').forEach(c => c.classList.remove('selected'));
@@ -476,20 +829,24 @@
             });
         });
 
+        // ─── SUBMIT ───────────────────────────────────────────────────────────
         document.getElementById('treinoForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const user = auth.currentUser;
             if (!user) {
                 alert('Faça login para gerar seu treino!');
                 return;
             }
 
-            dadosFormulario.biotipo = document.getElementById('biotipo').value;
-            dadosFormulario.objetivo = document.getElementById('objetivo').value;
+            const meses = parseInt(document.getElementById('experiencia').value) || 0;
+            dadosFormulario.biotipo     = document.getElementById('biotipo').value;
+            dadosFormulario.objetivo    = document.getElementById('objetivo').value;
+            dadosFormulario.experiencia = meses;
 
-            treinoAtual = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo);
-            renderizarTreino(treinoAtual);
+            const resultado = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo, meses);
+            treinoAtual = resultado;
+            renderizarTreino(resultado);
         });
     </script>
 </body>
