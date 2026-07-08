@@ -475,17 +475,131 @@
         const db = getFirestore(app);
 
         // ─── DADOS ───────────────────────────────────────────────────────────
-        const DIAS_SEMANA = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-        const DIAS_SHORT  = ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB', 'DOM'];
-
-        const exerciciosPorGrupo = {
-            peito:   ['Supino Reto', 'Supino Inclinado', 'Supino Declinado', 'Peck Deck', 'Desenvolvimento na Máquina', 'Flexão', 'Supino com Halteres', 'Crossover', 'Fly com Halteres', 'Supino Smith', 'Máquina Convergente', 'Supino Máquina'],
-            costas:  ['Puxada Frontal', 'Puxada Costas', 'Remada Curvada', 'Remada Máquina', 'Remada Unilateral', 'Puxada Aberta', 'Face Pull', 'Barra Fixa', 'Remada Com Halteres', 'Pullover', 'Remada Baixa', 'Remada Fechada'],
-            perna:   ['Agachamento Livre', 'Leg Press', 'Agachamento Smith', 'Hack Machine', 'Extensora', 'Mesa Flexora', 'Abdutor', 'Addutor', 'Levantamento Terra', 'Leg Press 45°', 'Agachamento Sumo', 'Passada', 'Cadeira Extensora', 'Panturrilha'],
-            ombro:   ['Desenvolvimento Militar', 'Elevação Lateral', 'Máquina Ombro', 'Encolhimento', 'Desenvolvimento Máquina', 'Elevação Frontal', 'Shoulder Press', 'Elevação Lateral Máquina', 'Remada Alta', 'Desenvolvimento com Halteres'],
-            bíceps:  ['Rosca Direta Barra', 'Rosca Direta Halteres', 'Rosca Máquina', 'Rosca Concentrada', 'Rosca Inversa', 'Rosca Diagonal', 'Rosca Inclinada', 'Rosca Scott', 'Rosca com Corda', 'Rosca Alternada'],
-            tríceps: ['Tríceps Corda', 'Tríceps Halteres', 'Mergulho', 'Máquina Tríceps', 'Tríceps Barra', 'Extensão Cabeça', 'Rosca Francesa', 'Kickback', 'Paralelas', 'Tríceps Invertido']
+        // ─── TRADUÇÕES ────────────────────────────────────────────────────────
+        const T = {
+            pt: {
+                'back':'Voltar para Início',
+                'title':'🏋️ GERADOR DE TREINO',
+                'subtitle':'Crie sua ficha personalizada com dias da semana',
+                'dados':'👤 Seus Dados','label-nome':'Nome','label-idade':'Idade',
+                'label-exp':'Experiência na musculação',
+                'hint-default':'ℹ️ Preencha sua experiência em meses',
+                'biotipo-title':'💪 Seu Biotipo',
+                'bio-ecto':'Ectomorfo','bio-ecto-desc':'Magro, metabolismo rápido',
+                'bio-meso':'Mesomorfo','bio-meso-desc':'Atlético, ganha fácil',
+                'bio-endo':'Endomorfo','bio-endo-desc':'Robusto, metabolismo lento',
+                'obj-title':'🎯 Seu Objetivo',
+                'obj-massa':'Ganho de Massa','obj-massa-desc':'Aumentar músculo',
+                'obj-defin':'Definição','obj-defin-desc':'Secar e definir',
+                'obj-gordura':'Perda de Gordura','obj-gordura-desc':'Emagrecer',
+                'btn-gerar':'🏋️ GERAR MEU TREINO',
+                'result-title':'✅ Seu Treino Personalizado',
+                'btn-novo':'🔄 Gerar Outro Treino','btn-pdf':'📄 Salvar PDF','btn-inicio':'🏠 Início',
+                'nivel':{'iniciante':'Iniciante','basico':'Básico','intermediario':'Intermediário','avancado':'Avançado'},
+                'badge-nivel':'Nível','badge-treinos':'dias de treino/semana','badge-descanso':'dias de descanso','badge-exercicios':'exercícios no total',
+                'dias-semana':['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+                'dias-short':['SEG','TER','QUA','QUI','SEX','SÁB','DOM'],
+                'descanso-label':'Descanso','descanso-msg':'Recuperação muscular. Evite treinos intensos. Hidrate-se bem.',
+                'treino-label':'Treino','series':'séries','reps':'reps','rest':'descanso',
+                'faixas':['0–5 meses','6–11 meses','12–23 meses','24+ meses'],
+                'hint-suffix':'dias/semana',
+                'obj-labels':{'ganho_massa':'Ganho de Massa','definicao':'Definição','perda_gordura':'Perda de Gordura'},
+                'bio-labels':{'ectomorfo':'Ectomorfo','mesomorfo':'Mesomorfo','endomorfo':'Endomorfo'},
+                'exercicios':{
+                    peito:['Supino Reto','Supino Inclinado','Supino Declinado','Peck Deck','Desenvolvimento na Máquina','Flexão','Supino com Halteres','Crossover','Fly com Halteres','Supino Smith','Máquina Convergente','Supino Máquina'],
+                    costas:['Puxada Frontal','Puxada Costas','Remada Curvada','Remada Máquina','Remada Unilateral','Puxada Aberta','Face Pull','Barra Fixa','Remada Com Halteres','Pullover','Remada Baixa','Remada Fechada'],
+                    perna:['Agachamento Livre','Leg Press','Agachamento Smith','Hack Machine','Extensora','Mesa Flexora','Abdutor','Addutor','Levantamento Terra','Leg Press 45°','Agachamento Sumo','Passada','Cadeira Extensora','Panturrilha'],
+                    ombro:['Desenvolvimento Militar','Elevação Lateral','Máquina Ombro','Encolhimento','Desenvolvimento Máquina','Elevação Frontal','Shoulder Press','Elevação Lateral Máquina','Remada Alta','Desenvolvimento com Halteres'],
+                    bíceps:['Rosca Direta Barra','Rosca Direta Halteres','Rosca Máquina','Rosca Concentrada','Rosca Inversa','Rosca Diagonal','Rosca Inclinada','Rosca Scott','Rosca com Corda','Rosca Alternada'],
+                    tríceps:['Tríceps Corda','Tríceps Halteres','Mergulho','Máquina Tríceps','Tríceps Barra','Extensão Cabeça','Rosca Francesa','Kickback','Paralelas','Tríceps Invertido']
+                }
+            },
+            en: {
+                'back':'Back to Home',
+                'title':'🏋️ WORKOUT GENERATOR',
+                'subtitle':'Create your personalized schedule with weekly days',
+                'dados':'👤 Your Info','label-nome':'Name','label-idade':'Age',
+                'label-exp':'Gym experience',
+                'hint-default':'ℹ️ Fill your experience in months',
+                'biotipo-title':'💪 Your Body Type',
+                'bio-ecto':'Ectomorph','bio-ecto-desc':'Lean, fast metabolism',
+                'bio-meso':'Mesomorph','bio-meso-desc':'Athletic, gains easily',
+                'bio-endo':'Endomorph','bio-endo-desc':'Stocky, slow metabolism',
+                'obj-title':'🎯 Your Goal',
+                'obj-massa':'Muscle Gain','obj-massa-desc':'Build muscle',
+                'obj-defin':'Definition','obj-defin-desc':'Lean and define',
+                'obj-gordura':'Fat Loss','obj-gordura-desc':'Lose weight',
+                'btn-gerar':'🏋️ GENERATE MY WORKOUT',
+                'result-title':'✅ Your Personalized Workout',
+                'btn-novo':'🔄 Generate Another','btn-pdf':'📄 Save PDF','btn-inicio':'🏠 Home',
+                'nivel':{'iniciante':'Beginner','basico':'Basic','intermediario':'Intermediate','avancado':'Advanced'},
+                'badge-nivel':'Level','badge-treinos':'training days/week','badge-descanso':'rest days','badge-exercicios':'total exercises',
+                'dias-semana':['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                'dias-short':['MON','TUE','WED','THU','FRI','SAT','SUN'],
+                'descanso-label':'Rest Day','descanso-msg':'Muscle recovery. Avoid intense training. Stay hydrated.',
+                'treino-label':'Workout','series':'sets','reps':'reps','rest':'rest',
+                'faixas':['0–5 months','6–11 months','12–23 months','24+ months'],
+                'hint-suffix':'days/week',
+                'obj-labels':{'ganho_massa':'Muscle Gain','definicao':'Definition','perda_gordura':'Fat Loss'},
+                'bio-labels':{'ectomorfo':'Ectomorph','mesomorfo':'Mesomorph','endomorfo':'Endomorph'},
+                'exercicios':{
+                    peito:['Flat Bench Press','Incline Bench Press','Decline Bench Press','Pec Deck','Machine Press','Push-Up','Dumbbell Press','Cable Crossover','Dumbbell Fly','Smith Machine Press','Converging Machine','Chest Machine'],
+                    costas:['Lat Pulldown','Reverse Pulldown','Bent Over Row','Machine Row','Single-Arm Row','Wide Pulldown','Face Pull','Pull-Up','Dumbbell Row','Pullover','Seated Row','Close-Grip Row'],
+                    perna:['Barbell Squat','Leg Press','Smith Squat','Hack Squat','Leg Extension','Leg Curl','Abductor','Adductor','Deadlift','Leg Press 45°','Sumo Squat','Lunge','Knee Extension','Calf Raise'],
+                    ombro:['Military Press','Lateral Raise','Machine Press','Shrugs','Machine Shoulder','Front Raise','Shoulder Press','Machine Lateral Raise','Upright Row','Dumbbell Press'],
+                    bíceps:['Barbell Curl','Dumbbell Curl','Machine Curl','Concentration Curl','Reverse Curl','Diagonal Curl','Incline Curl','Preacher Curl','Rope Curl','Alternating Curl'],
+                    tríceps:['Rope Pushdown','Dumbbell Triceps','Dips','Triceps Machine','Bar Pushdown','Overhead Extension','French Press','Kickback','Parallel Bars','Reverse Pushdown']
+                }
+            }
         };
+
+        function lang() { return localStorage.getItem('language') || 'pt'; }
+        function t(k) { return (T[lang()] && T[lang()][k] !== undefined) ? T[lang()][k] : (T['pt'][k] || k); }
+
+        function applyTranslations() {
+            const l = lang();
+            // back link
+            document.querySelector('.back-link span:last-child') && (document.querySelector('.back-link span:last-child').textContent = t('back'));
+            document.querySelector('.header h1') && (document.querySelector('.header h1').textContent = t('title'));
+            document.querySelector('.header p') && (document.querySelector('.header p').textContent = t('subtitle'));
+            // form labels
+            const labels = document.querySelectorAll('label');
+            const lkeys = ['label-nome','label-idade','label-exp'];
+            labels.forEach((el,i) => { if(lkeys[i]) el.textContent = t(lkeys[i]); });
+            // section titles
+            const sections = document.querySelectorAll('.section-title');
+            if(sections[0]) sections[0].textContent = t('dados');
+            if(sections[1]) sections[1].textContent = t('biotipo-title');
+            if(sections[2]) sections[2].textContent = t('obj-title');
+            // biotipo cards
+            const bc = document.querySelectorAll('[data-biotipo]');
+            if(bc[0]){ bc[0].querySelector('.card-title').textContent=t('bio-ecto'); bc[0].querySelector('small').textContent=t('bio-ecto-desc'); }
+            if(bc[1]){ bc[1].querySelector('.card-title').textContent=t('bio-meso'); bc[1].querySelector('small').textContent=t('bio-meso-desc'); }
+            if(bc[2]){ bc[2].querySelector('.card-title').textContent=t('bio-endo'); bc[2].querySelector('small').textContent=t('bio-endo-desc'); }
+            // objetivo cards
+            const oc = document.querySelectorAll('[data-objetivo]');
+            if(oc[0]){ oc[0].querySelector('.card-title').textContent=t('obj-massa'); oc[0].querySelector('small').textContent=t('obj-massa-desc'); }
+            if(oc[1]){ oc[1].querySelector('.card-title').textContent=t('obj-defin'); oc[1].querySelector('small').textContent=t('obj-defin-desc'); }
+            if(oc[2]){ oc[2].querySelector('.card-title').textContent=t('obj-gordura'); oc[2].querySelector('small').textContent=t('obj-gordura-desc'); }
+            // submit button
+            document.querySelector('.submit-btn') && (document.querySelector('.submit-btn').textContent = t('btn-gerar'));
+            // result title
+            const rt = document.querySelector('#results h2');
+            if(rt) rt.textContent = t('result-title');
+            // buttons
+            const btns = document.querySelectorAll('.btn-gerar,.btn-pdf,.btn-back');
+            if(btns[0]) btns[0].textContent = t('btn-novo');
+            if(btns[1]) btns[1].textContent = t('btn-pdf');
+            if(btns[2]) btns[2].textContent = t('btn-inicio');
+            // hint
+            const hint = document.getElementById('expHint');
+            if(hint && hint.textContent.includes('ℹ️')) hint.textContent = t('hint-default');
+        }
+
+        const DIAS_SEMANA = T['pt']['dias-semana'];
+        const DIAS_SHORT  = T['pt']['dias-short'];
+
+        function getExerciciosPorGrupo() { return T[lang()].exercicios; }
 
         // ─── ESTRUTURA POR EXPERIÊNCIA ───────────────────────────────────────
         // Retorna número de dias/semana com base nos meses de experiência
@@ -497,10 +611,11 @@
         }
 
         function nivelExperiencia(meses) {
-            if (meses < 6)  return { label: 'Iniciante',      emoji: '🌱' };
-            if (meses < 12) return { label: 'Básico',         emoji: '💪' };
-            if (meses < 24) return { label: 'Intermediário',  emoji: '🔥' };
-            return              { label: 'Avançado',          emoji: '🏆' };
+            const n = t('nivel');
+            if (meses < 6)  return { label: n.iniciante,     emoji: '🌱', key:'iniciante' };
+            if (meses < 12) return { label: n.basico,        emoji: '💪', key:'basico' };
+            if (meses < 24) return { label: n.intermediario, emoji: '🔥', key:'intermediario' };
+            return              { label: n.avancado,         emoji: '🏆', key:'avancado' };
         }
 
         // Distribuição de grupos musculares por número de dias
@@ -545,21 +660,16 @@
         // ─── DISTRIBUIÇÃO DE DIAS NA SEMANA ──────────────────────────────────
         // Monta quais dias (0=Seg … 6=Dom) são treino e quais são descanso
         function distribuirDiasSemana(numDiasTreino) {
-            // Padrões por número de dias
-            const padroes = {
-                3: [0, 2, 4],           // Seg, Qua, Sex
-                4: [0, 1, 3, 4],        // Seg, Ter, Qui, Sex
-                5: [0, 1, 2, 3, 4],     // Seg–Sex
-                6: [0, 1, 2, 3, 4, 5]  // Seg–Sáb
-            };
+            const padroes = { 3:[0,2,4], 4:[0,1,3,4], 5:[0,1,2,3,4], 6:[0,1,2,3,4,5] };
             const diasTreino = padroes[numDiasTreino] || padroes[3];
-            const semana = DIAS_SHORT.map((nome, idx) => ({
+            const short = T[lang()]['dias-short'];
+            const longo = T[lang()]['dias-semana'];
+            return short.map((nome, idx) => ({
                 nome,
-                nomeLongo: DIAS_SEMANA[idx],
+                nomeLongo: longo[idx],
                 treino: diasTreino.includes(idx),
-                numTreino: diasTreino.includes(idx) ? diasTreino.indexOf(idx) + 1 : null
+                numTreino: diasTreino.includes(idx) ? diasTreino.indexOf(idx)+1 : null
             }));
-            return semana;
         }
 
         // ─── HELPERS ─────────────────────────────────────────────────────────
@@ -592,6 +702,7 @@
                     const gruposEscolhidos = focus[diaIndex];
                     const exercicios = [];
 
+                    const exerciciosPorGrupo = getExerciciosPorGrupo();
                     gruposEscolhidos.forEach(grupo => {
                         if (exerciciosPorGrupo[grupo]) {
                             const disponiveis = shuffle(exerciciosPorGrupo[grupo]);
@@ -634,22 +745,20 @@
             const objetivo = document.getElementById('objetivo').value;
 
             // Subtítulo
-            const objLabel = { ganho_massa: 'Ganho de Massa', definicao: 'Definição', perda_gordura: 'Perda de Gordura' };
             document.getElementById('resultSubtitle').textContent =
-                `${nome} • ${biotipo.charAt(0).toUpperCase()+biotipo.slice(1)} • ${objLabel[objetivo]}`;
+                `${nome} • ${t('bio-labels')[biotipo]} • ${t('obj-labels')[objetivo]}`;
 
             // Badges
             const badges = document.getElementById('planoBadges');
             badges.innerHTML = `
-                <div class="plano-badge">${nivel.emoji} Nível ${nivel.label}</div>
-                <div class="plano-badge">📅 ${numDias} dias de treino/semana</div>
-                <div class="plano-badge">😴 ${7 - numDias} dias de descanso</div>
-                <div class="plano-badge">⚡ ${numTotalExercicios} exercícios no total</div>
+                <div class="plano-badge">${nivel.emoji} ${t('badge-nivel')} ${nivel.label}</div>
+                <div class="plano-badge">📅 ${numDias} ${t('badge-treinos')}</div>
+                <div class="plano-badge">😴 ${7 - numDias} ${t('badge-descanso')}</div>
+                <div class="plano-badge">⚡ ${numTotalExercicios} ${t('badge-exercicios')}</div>
             `;
 
             // Semana visual
-            const semanaHeader = document.getElementById('semanaHeader');
-            semanaHeader.innerHTML = semana.map(d => `
+            document.getElementById('semanaHeader').innerHTML = semana.map(d => `
                 <div class="dia-semana-badge ${d.treino ? 'treino' : 'descanso'}">
                     <div class="dia-nome">${d.nome}</div>
                     <div class="dia-status">${d.treino ? '💪' : '😴'}</div>
@@ -668,8 +777,8 @@
                     div.innerHTML = `
                         <div class="descanso-icon">😴</div>
                         <div class="descanso-text">
-                            <h3>${dia.diaNome} — Descanso</h3>
-                            <p>Recuperação muscular. Evite treinos intensos. Hidrate-se bem.</p>
+                            <h3>${dia.diaNome} — ${t('descanso-label')}</h3>
+                            <p>${t('descanso-msg')}</p>
                         </div>
                     `;
                 } else {
@@ -683,7 +792,7 @@
                                     <div class="day-grupos">${dia.grupos}</div>
                                 </div>
                             </div>
-                            <div class="day-weekday">Treino ${dia.numero}</div>
+                            <div class="day-weekday">${t('treino-label')} ${dia.numero}</div>
                         </div>
                         ${dia.exercicios.map((ex, idx) => `
                             <div class="exercise-item">
@@ -691,9 +800,9 @@
                                 <div class="exercise-info">
                                     <div class="exercise-name">${ex.nome}</div>
                                     <div class="exercise-details">
-                                        <span>🔁 <strong>${ex.series}</strong> séries</span>
-                                        <span>💥 <strong>${ex.repeticoes}</strong> reps</span>
-                                        <span>⏱ <strong>${ex.descanso}</strong> descanso</span>
+                                        <span>🔁 <strong>${ex.series}</strong> ${t('series')}</span>
+                                        <span>💥 <strong>${ex.repeticoes}</strong> ${t('reps')}</span>
+                                        <span>⏱ <strong>${ex.descanso}</strong> ${t('rest')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -714,12 +823,9 @@
             const hint = document.getElementById('expHint');
             const dias = diasPorExperiencia(meses);
             const nivel = nivelExperiencia(meses);
-            let faixa = '';
-            if (meses < 6)   faixa = '0–5 meses';
-            else if (meses < 12) faixa = '6–11 meses';
-            else if (meses < 24) faixa = '12–23 meses';
-            else faixa = '24+ meses';
-            hint.textContent = `${nivel.emoji} ${nivel.label} (${faixa}) → ${dias} dias/semana`;
+            const faixas = t('faixas');
+            const fi = meses<6?0: meses<12?1: meses<24?2:3;
+            hint.textContent = `${nivel.emoji} ${nivel.label} (${faixas[fi]}) → ${dias} ${t('hint-suffix')}`;
         };
 
         // ─── GERAR NOVO ───────────────────────────────────────────────────────
@@ -848,6 +954,27 @@
             treinoAtual = resultado;
             renderizarTreino(resultado);
         });
+        // ─── INIT TRADUÇÃO ────────────────────────────────────────────────────
+        function initLang() {
+            applyTranslations();
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => setTimeout(initLang, 100));
+        } else { setTimeout(initLang, 100); }
+
+        // Reagir a mudança de idioma do botão global
+        const _origSL = window.setLanguage;
+        window.setLanguage = function(l) {
+            if (_origSL) _origSL(l);
+            applyTranslations();
+            // Se já tem treino gerado, regenera na nova língua
+            if (treinoAtual && dadosFormulario.biotipo) {
+                const resultado = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo, dadosFormulario.experiencia || 0);
+                treinoAtual = resultado;
+                renderizarTreino(resultado);
+            }
+        };
     </script>
+    <script src="/translations.js"></script>
 </body>
 </html>

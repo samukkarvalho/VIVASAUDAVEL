@@ -7,506 +7,467 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-top: 30px;
-        }
-        .header h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, #34d399 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        .form-wrapper {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 50px;
-            margin-bottom: 40px;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 30px;
-            margin-top: 40px;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        label {
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-        }
-        input, select {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-        .card.selected {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-color: var(--primary);
-        }
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 800;
-            font-size: 1.2rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
-        }
-        .results {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 50px;
-            margin-top: 40px;
-        }
-        .meal-container {
-            background: rgba(255,255,255,0.03);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-        .meal-header {
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .meal-header h2 {
-            font-size: 1.6rem;
-            color: var(--primary);
-        }
-        .food-item {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 15px;
-            align-items: center;
-        }
-        .food-name {
-            font-weight: 700;
-            color: white;
-        }
-        .food-amount {
-            color: var(--primary);
-            font-weight: 700;
-        }
-        .food-macros {
-            text-align: right;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-        }
-        .button-group {
-            text-align: center;
-            margin-top: 40px;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 18px 40px;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-gerar {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
-        }
-        .btn-pdf {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 10px 30px rgba(245,158,11,0.4);
+        :root { --primary:#10b981; --primary-dark:#059669; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%); color:white; min-height:100vh; padding:20px; }
+        .container { max-width:1200px; margin:0 auto; }
+        .header { text-align:center; margin-bottom:40px; padding-top:30px; }
+        .header h1 { font-size:3.5rem; font-weight:800; background:linear-gradient(135deg,var(--primary) 0%,#34d399 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:10px; }
+        .header p { color:rgba(255,255,255,0.6); }
+        .form-wrapper { background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:30px; padding:50px; margin-bottom:40px; }
+        .section-title { font-size:1.5rem; font-weight:700; color:var(--primary); margin-bottom:25px; margin-top:35px; }
+        .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-bottom:20px; }
+        .form-group { display:flex; flex-direction:column; gap:8px; }
+        label { font-weight:600; color:rgba(255,255,255,0.9); }
+        input,select { width:100%; padding:15px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:white; font-size:1rem; font-family:'Poppins',sans-serif; }
+        input:focus,select:focus { outline:none; border-color:var(--primary); }
+        select option { background:#1e293b; }
+        .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:15px; margin-bottom:20px; }
+        .card { background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.1); border-radius:15px; padding:20px; text-align:center; cursor:pointer; transition:all 0.3s; }
+        .card:hover { transform:translateY(-4px); border-color:var(--primary); }
+        .card.selected { background:linear-gradient(135deg,rgba(16,185,129,0.25),rgba(5,150,105,0.2)); border-color:var(--primary); box-shadow:0 0 20px rgba(16,185,129,0.3); }
+        .card-icon { font-size:2.2rem; margin-bottom:8px; }
+        .card-title { font-weight:700; font-size:1rem; }
+        .submit-btn { width:100%; padding:20px; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border:none; border-radius:50px; color:white; font-weight:800; font-size:1.2rem; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all 0.3s; box-shadow:0 10px 30px rgba(16,185,129,0.4); margin-top:30px; font-family:'Poppins',sans-serif; }
+        .submit-btn:hover { transform:translateY(-3px); }
+        .results { background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:30px; padding:50px; margin-top:40px; }
+        .meal-container { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:20px; padding:28px; margin-bottom:24px; }
+        .meal-header { border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:14px; margin-bottom:18px; }
+        .meal-header h2 { font-size:1.4rem; color:var(--primary); font-weight:700; }
+        /* FOOD ITEM - desktop */
+        .food-item { background:rgba(255,255,255,0.05); padding:14px 16px; margin-bottom:10px; border-radius:12px; border-left:3px solid var(--primary); display:flex; align-items:center; gap:12px; justify-content:space-between; }
+        .food-item:last-child { margin-bottom:0; }
+        .food-name { font-weight:700; color:white; flex:1; font-size:1rem; }
+        .food-amount { color:var(--primary); font-weight:700; font-size:0.95rem; white-space:nowrap; }
+        .food-macros { color:rgba(255,255,255,0.55); font-size:0.82rem; white-space:nowrap; }
+        .btn-trocar { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); border-radius:8px; padding:6px 12px; font-size:0.78rem; cursor:pointer; font-family:'Poppins',sans-serif; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
+        .btn-trocar:hover { background:rgba(16,185,129,0.2); border-color:var(--primary); color:var(--primary); }
+        .button-group { text-align:center; margin-top:40px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+        .btn-gerar,.btn-pdf,.btn-back { padding:16px 32px; border:none; border-radius:50px; color:white; font-weight:700; font-size:0.95rem; cursor:pointer; transition:all 0.3s; font-family:'Poppins',sans-serif; }
+        .btn-gerar { background:linear-gradient(135deg,#10b981,#059669); box-shadow:0 8px 25px rgba(16,185,129,0.4); }
+        .btn-pdf { background:linear-gradient(135deg,#f59e0b,#d97706); box-shadow:0 8px 25px rgba(245,158,11,0.4); }
+        .btn-back { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); }
+        .btn-gerar:hover,.btn-pdf:hover,.btn-back:hover { transform:translateY(-3px); }
+        .back-link { display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); padding:12px 24px; border-radius:50px; text-decoration:none; color:white; font-weight:600; margin-bottom:30px; transition:all 0.3s; }
+        .back-link:hover { background:rgba(255,255,255,0.15); }
+
+        /* ── MOBILE ONLY ─────────────────────────────── */
+        @media(max-width:600px){
+            body { padding:12px; }
+            .header h1 { font-size:2rem; }
+            .header p { font-size:0.88rem; }
+            .form-wrapper { padding:20px 16px; border-radius:20px; }
+            .section-title { font-size:1.2rem; margin-top:22px; margin-bottom:16px; }
+            .card-grid { grid-template-columns:1fr 1fr 1fr; gap:8px; }
+            .card { padding:12px 6px; border-radius:12px; }
+            .card-icon { font-size:1.6rem; margin-bottom:4px; }
+            .card-title { font-size:0.78rem; }
+            .card small { font-size:0.65rem; }
+            .submit-btn { font-size:1rem; padding:16px; }
+            .results { padding:20px 14px; border-radius:20px; }
+            .meal-container { padding:16px 12px; border-radius:14px; }
+            .meal-header h2 { font-size:1.05rem; }
+            /* food item mobile: stack em coluna */
+            .food-item { flex-direction:column; align-items:flex-start; gap:6px; padding:12px; }
+            .food-name { font-size:0.92rem; }
+            .food-amount { font-size:0.85rem; }
+            .food-macros { font-size:0.75rem; }
+            .food-row-bottom { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+            .btn-trocar { font-size:0.72rem; padding:4px 10px; }
+            .button-group { flex-direction:column; align-items:center; gap:10px; }
+            .btn-gerar,.btn-pdf,.btn-back { width:100%; justify-content:center; padding:14px; font-size:0.9rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.1); padding: 12px 24px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; margin-bottom: 30px; transition: all 0.3s;">
-            <span style="font-size: 1.5rem;">←</span>
-            Voltar para Início
+        <a href="index.html" class="back-link">
+            <span style="font-size:1.3rem;">←</span>
+            <span data-i18n="btn-voltar">Voltar para Início</span>
         </a>
 
         <div class="header">
-            <h1>GERADOR DE DIETA</h1>
-            <p>Crie seu plano alimentar personalizado</p>
+            <h1 data-i18n="diet-title">🥗 GERADOR DE DIETA</h1>
+            <p data-i18n="diet-subtitle">Crie seu plano alimentar personalizado</p>
         </div>
 
         <div class="form-wrapper">
             <form id="dietaForm">
+                <div class="section-title" data-i18n="diet-dados">👤 Seus Dados</div>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Nome</label>
+                        <label data-i18n="diet-nome">Nome</label>
                         <input type="text" id="nome" required placeholder="Seu nome">
                     </div>
                     <div class="form-group">
-                        <label>Peso (kg)</label>
+                        <label data-i18n="diet-peso">Peso (kg)</label>
                         <input type="number" id="peso" required placeholder="70" min="30" max="300">
                     </div>
                     <div class="form-group">
-                        <label>Altura (cm)</label>
+                        <label data-i18n="diet-altura">Altura (cm)</label>
                         <input type="number" id="altura" required placeholder="170" min="100" max="250">
                     </div>
                 </div>
 
-                <div class="section-title">💪 Seu Biotipo</div>
+                <div class="section-title" data-i18n="diet-biotipo-title">💪 Seu Biotipo</div>
                 <div class="card-grid">
                     <div class="card" data-biotipo="ectomorfo">
                         <div class="card-icon">🏃</div>
-                        <div class="card-title">Ectomorfo</div>
-                        <small>Magro, metabolismo rápido</small>
+                        <div class="card-title" data-i18n="bio-ecto">Ectomorfo</div>
+                        <small data-i18n="bio-ecto-desc">Magro, metabolismo rápido</small>
                     </div>
                     <div class="card" data-biotipo="mesomorfo">
                         <div class="card-icon">💪</div>
-                        <div class="card-title">Mesomorfo</div>
-                        <small>Atlético, ganha fácil</small>
+                        <div class="card-title" data-i18n="bio-meso">Mesomorfo</div>
+                        <small data-i18n="bio-meso-desc">Atlético, ganha fácil</small>
                     </div>
                     <div class="card" data-biotipo="endomorfo">
                         <div class="card-icon">🏋️</div>
-                        <div class="card-title">Endomorfo</div>
-                        <small>Robusto, metabolismo lento</small>
+                        <div class="card-title" data-i18n="bio-endo">Endomorfo</div>
+                        <small data-i18n="bio-endo-desc">Robusto, metabolismo lento</small>
                     </div>
                 </div>
                 <input type="hidden" id="biotipo" required>
 
-                <div class="section-title">🎯 Seu Objetivo</div>
+                <div class="section-title" data-i18n="diet-obj-title">🎯 Seu Objetivo</div>
                 <div class="card-grid">
                     <div class="card" data-objetivo="ganho_massa">
                         <div class="card-icon">📈</div>
-                        <div class="card-title">Ganho de Massa</div>
+                        <div class="card-title" data-i18n="obj-massa">Ganho de Massa</div>
                     </div>
                     <div class="card" data-objetivo="definicao">
                         <div class="card-icon">⚡</div>
-                        <div class="card-title">Definição</div>
+                        <div class="card-title" data-i18n="obj-defin">Definição</div>
                     </div>
                     <div class="card" data-objetivo="perda_gordura">
                         <div class="card-icon">🔥</div>
-                        <div class="card-title">Perda de Gordura</div>
+                        <div class="card-title" data-i18n="obj-gordura">Perda de Gordura</div>
                     </div>
                 </div>
                 <input type="hidden" id="objetivo" required>
 
-                <button type="submit" class="submit-btn">🥗 Gerar Minha Dieta</button>
+                <button type="submit" class="submit-btn" data-i18n="diet-btn-gerar">🥗 Gerar Minha Dieta</button>
             </form>
         </div>
 
         <div class="results" id="results" style="display:none;">
-            <div style="text-align:center;margin-bottom:40px;">
-                <h2 style="font-size:2.5rem;color:var(--primary);margin-bottom:10px;">✅ Sua Dieta Personalizada</h2>
+            <div style="text-align:center;margin-bottom:32px;">
+                <h2 style="font-size:2rem;color:var(--primary);margin-bottom:8px;" data-i18n="diet-result-title">✅ Sua Dieta Personalizada</h2>
+                <p id="resultSubtitle" style="color:rgba(255,255,255,0.5);font-size:0.9rem;"></p>
             </div>
             <div id="dietaList"></div>
             <div class="button-group">
-                <button class="btn-gerar" onclick="gerarNovaDieta()">🔄 Gerar Nova Dieta</button>
-                <button class="btn-pdf" onclick="salvarDietaPDF()">📄 Salvar PDF</button>
+                <button class="btn-gerar" onclick="gerarNovaDieta()" data-i18n="diet-btn-nova">🔄 Gerar Nova Dieta</button>
+                <button class="btn-pdf" onclick="salvarDietaPDF()" data-i18n="diet-btn-pdf">📄 Salvar PDF</button>
+                <a href="index.html" class="btn-back" data-i18n="btn-voltar">🏠 Início</a>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
         const app = initializeApp({
             apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
             authDomain: "vidasaudavel-490d6.firebaseapp.com",
             projectId: "vidasaudavel-490d6"
         });
-
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
-        const alimentos = {
-            cafe_manha: {
-                proteina: ['Ovo mexido', 'Ovo cozido', 'Iogurte grego', 'Queijo cottage', 'Whey protein'],
-                carboidrato: ['Pão integral', 'Aveia', 'Tapioca', 'Granola', 'Banana'],
-                gordura: ['Amendoim', 'Amêndoas', 'Pasta de amendoim', 'Abacate'],
-                fruta: ['Banana', 'Maçã', 'Morango', 'Laranja', 'Mamão']
+        // ── TRADUÇÕES INTERNAS ──────────────────────────────────────────────
+        const T = {
+            pt: {
+                'btn-voltar':'Voltar para Início',
+                'diet-title':'🥗 GERADOR DE DIETA',
+                'diet-subtitle':'Crie seu plano alimentar personalizado',
+                'diet-dados':'👤 Seus Dados',
+                'diet-nome':'Nome','diet-peso':'Peso (kg)','diet-altura':'Altura (cm)',
+                'diet-biotipo-title':'💪 Seu Biotipo',
+                'bio-ecto':'Ectomorfo','bio-ecto-desc':'Magro, metabolismo rápido',
+                'bio-meso':'Mesomorfo','bio-meso-desc':'Atlético, ganha fácil',
+                'bio-endo':'Endomorfo','bio-endo-desc':'Robusto, metabolismo lento',
+                'diet-obj-title':'🎯 Seu Objetivo',
+                'obj-massa':'Ganho de Massa','obj-defin':'Definição','obj-gordura':'Perda de Gordura',
+                'diet-btn-gerar':'🥗 Gerar Minha Dieta',
+                'diet-result-title':'✅ Sua Dieta Personalizada',
+                'diet-btn-nova':'🔄 Gerar Nova Dieta','diet-btn-pdf':'📄 Salvar PDF',
+                'lbl-trocar':'🔄 Trocar',
+                'meals':['☀️ Café da manhã (7h)','🍎 Lanche (10h)','🍽️ Almoço (13h)','🥤 Lanche (16h)','🌙 Jantar (20h)','🥛 Ceia (22h)'],
+                'tipos':{'proteina':'Proteína','carboidrato':'Carboidrato','vegetal':'Vegetal','gordura':'Gordura','fruta':'Fruta'},
+                'obj-labels':{'ganho_massa':'Ganho de Massa','definicao':'Definição','perda_gordura':'Perda de Gordura'},
+                'bio-labels':{'ectomorfo':'Ectomorfo','mesomorfo':'Mesomorfo','endomorfo':'Endomorfo'},
+                'alimentos':{
+                    cafe_manha:{
+                        proteina:['Ovo mexido','Ovo cozido','Iogurte grego','Queijo cottage','Whey protein'],
+                        carboidrato:['Pão integral','Aveia','Tapioca','Granola','Banana'],
+                        gordura:['Amendoim','Amêndoas','Pasta de amendoim','Abacate'],
+                        fruta:['Banana','Maçã','Morango','Laranja','Mamão']
+                    },
+                    almoco:{
+                        proteina:['Frango grelhado','Peito de frango','Tilápia','Carne moída','Filé mignon','Peito de peru'],
+                        carboidrato:['Arroz branco','Arroz integral','Batata doce','Batata inglesa','Macarrão integral','Quinoa'],
+                        vegetal:['Brócolis','Couve','Alface','Tomate','Feijão','Cenoura'],
+                        gordura:['Azeite','Abacate','Castanha','Óleo de coco']
+                    },
+                    lanche:{
+                        proteina:['Whey protein','Ovo cozido','Iogurte grego','Queijo cottage'],
+                        carboidrato:['Banana','Maçã','Pão integral','Tapioca','Aveia'],
+                        gordura:['Castanha','Amendoim','Pasta de amendoim','Amêndoas']
+                    },
+                    jantar:{
+                        proteina:['Frango grelhado','Peito de frango','Tilápia','Salmão','Atum','Ovo mexido'],
+                        carboidrato:['Arroz integral','Batata doce','Macarrão integral','Batata inglesa'],
+                        vegetal:['Brócolis','Alface','Cenoura','Couve','Tomate','Abobrinha']
+                    }
+                }
             },
-            almoço: {
-                proteina: ['Frango grelhado', 'Peito de frango', 'Tilápia', 'Carne moída', 'Filé mignon', 'Peito de peru'],
-                carboidrato: ['Arroz branco', 'Arroz integral', 'Batata doce', 'Batata inglesa', 'Macarrão integral', 'Quinoa'],
-                vegetal: ['Brócolis', 'Couve', 'Alface', 'Tomate', 'Feijão', 'Cenoura'],
-                gordura: ['Azeite', 'Abacate', 'Castanha', 'Óleo de coco']
-            },
-            lanche: {
-                proteina: ['Whey protein', 'Ovo cozido', 'Iogurte grego', 'Queijo cottage'],
-                carboidrato: ['Banana', 'Maçã', 'Pão integral', 'Tapioca', 'Aveia'],
-                gordura: ['Castanha', 'Amendoim', 'Pasta de amendoim', 'Amêndoas']
-            },
-            jantar: {
-                proteina: ['Frango grelhado', 'Peito de frango', 'Tilápia', 'Salmão', 'Atum', 'Ovo mexido'],
-                carboidrato: ['Arroz integral', 'Batata doce', 'Macarrão integral', 'Batata inglesa'],
-                vegetal: ['Brócolis', 'Alface', 'Cenoura', 'Couve', 'Tomate', 'Abobrinha']
+            en: {
+                'btn-voltar':'Back to Home',
+                'diet-title':'🥗 DIET GENERATOR',
+                'diet-subtitle':'Create your personalized meal plan',
+                'diet-dados':'👤 Your Info',
+                'diet-nome':'Name','diet-peso':'Weight (kg)','diet-altura':'Height (cm)',
+                'diet-biotipo-title':'💪 Your Body Type',
+                'bio-ecto':'Ectomorph','bio-ecto-desc':'Lean, fast metabolism',
+                'bio-meso':'Mesomorph','bio-meso-desc':'Athletic, gains easily',
+                'bio-endo':'Endomorph','bio-endo-desc':'Stocky, slow metabolism',
+                'diet-obj-title':'🎯 Your Goal',
+                'obj-massa':'Muscle Gain','obj-defin':'Definition','obj-gordura':'Fat Loss',
+                'diet-btn-gerar':'🥗 Generate My Diet',
+                'diet-result-title':'✅ Your Personalized Diet',
+                'diet-btn-nova':'🔄 Generate New Diet','diet-btn-pdf':'📄 Save PDF',
+                'lbl-trocar':'🔄 Swap',
+                'meals':['☀️ Breakfast (7am)','🍎 Snack (10am)','🍽️ Lunch (1pm)','🥤 Snack (4pm)','🌙 Dinner (8pm)','🥛 Late snack (10pm)'],
+                'tipos':{'proteina':'Protein','carboidrato':'Carb','vegetal':'Vegetable','gordura':'Fat','fruta':'Fruit'},
+                'obj-labels':{'ganho_massa':'Muscle Gain','definicao':'Definition','perda_gordura':'Fat Loss'},
+                'bio-labels':{'ectomorfo':'Ectomorph','mesomorfo':'Mesomorph','endomorfo':'Endomorph'},
+                'alimentos':{
+                    cafe_manha:{
+                        proteina:['Scrambled Eggs','Boiled Eggs','Greek Yogurt','Cottage Cheese','Whey Protein'],
+                        carboidrato:['Whole Wheat Bread','Oatmeal','Tapioca','Granola','Banana'],
+                        gordura:['Peanut Butter','Almonds','Peanut Butter','Avocado'],
+                        fruta:['Banana','Apple','Strawberry','Orange','Papaya']
+                    },
+                    almoco:{
+                        proteina:['Grilled Chicken','Chicken Breast','Tilapia','Ground Beef','Filet Mignon','Turkey Breast'],
+                        carboidrato:['White Rice','Brown Rice','Sweet Potato','Potato','Whole Wheat Pasta','Quinoa'],
+                        vegetal:['Broccoli','Kale','Lettuce','Tomato','Black Beans','Carrot'],
+                        gordura:['Olive Oil','Avocado','Brazil Nuts','Coconut Oil']
+                    },
+                    lanche:{
+                        proteina:['Whey Protein','Boiled Eggs','Greek Yogurt','Cottage Cheese'],
+                        carboidrato:['Banana','Apple','Whole Wheat Bread','Tapioca','Oatmeal'],
+                        gordura:['Brazil Nuts','Peanut','Peanut Butter','Almonds']
+                    },
+                    jantar:{
+                        proteina:['Grilled Chicken','Chicken Breast','Tilapia','Salmon','Tuna','Scrambled Eggs'],
+                        carboidrato:['Brown Rice','Sweet Potato','Whole Wheat Pasta','Potato'],
+                        vegetal:['Broccoli','Lettuce','Carrot','Kale','Tomato','Zucchini']
+                    }
+                }
             }
         };
 
+        function lang() { return localStorage.getItem('language') || 'pt'; }
+        function t(k) { return (T[lang()] && T[lang()][k]) ? T[lang()][k] : (T['pt'][k] || k); }
+
+        // Aplicar traduções estáticas
+        function applyTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const k = el.getAttribute('data-i18n');
+                const v = t(k);
+                if (v) el.textContent = v;
+            });
+        }
+
+        // ── DADOS ───────────────────────────────────────────────────────────
         const estruturaDieta = {
             ectomorfo: {
-                ganho_massa: {refeicoes: 5, cals_por_refeição: 500, desc: 'Alto volume para ganho'},
-                definicao: {refeicoes: 4, cals_por_refeição: 400, desc: 'Moderado para definição'},
-                perda_gordura: {refeicoes: 5, cals_por_refeição: 350, desc: 'Distribuído para queimar'}
+                ganho_massa: {refeicoes:5, desc:'Alto volume para ganho'},
+                definicao:   {refeicoes:4, desc:'Moderado para definição'},
+                perda_gordura:{refeicoes:5, desc:'Distribuído para queimar'}
             },
             mesomorfo: {
-                ganho_massa: {refeicoes: 5, cals_por_refeição: 550, desc: 'Alto volume balanceado'},
-                definicao: {refeicoes: 5, cals_por_refeição: 400, desc: 'Equilíbrio e definição'},
-                perda_gordura: {refeicoes: 5, cals_por_refeição: 380, desc: 'Déficit moderado'}
+                ganho_massa: {refeicoes:5, desc:'Alto volume balanceado'},
+                definicao:   {refeicoes:5, desc:'Equilíbrio e definição'},
+                perda_gordura:{refeicoes:5, desc:'Déficit moderado'}
             },
             endomorfo: {
-                ganho_massa: {refeicoes: 4, cals_por_refeição: 600, desc: 'Concentrado em grandes refeições'},
-                definicao: {refeicoes: 6, cals_por_refeição: 350, desc: 'Alta frequência, menos gordura'},
-                perda_gordura: {refeicoes: 6, cals_por_refeição: 320, desc: 'Máximo volume, menos calorias'}
+                ganho_massa: {refeicoes:4, desc:'Concentrado'},
+                definicao:   {refeicoes:6, desc:'Alta frequência'},
+                perda_gordura:{refeicoes:6, desc:'Máximo volume, menos calorias'}
             }
         };
 
         let dietaAtual = null;
         let dadosFormulario = {};
 
-        function shuffle(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
+        function shuffle(arr) {
+            const a=[...arr];
+            for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+            return a;
         }
-
-        function random(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
+        function random(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
 
         function gerarDieta(biotipo, objetivo) {
             const estrutura = estruturaDieta[biotipo][objetivo];
-            const horarios = ['Café da manhã (7h)', 'Lanche (10h)', 'Almoço (13h)', 'Lanche (16h)', 'Jantar (20h)'];
+            const l = lang();
+            const alims = T[l].alimentos;
+            const horarios = T[l].meals;
             const refeicoes = [];
 
-            for (let i = 0; i < estrutura.refeicoes; i++) {
-                const horario = horarios[i];
-                const tipo = i === 0 ? 'cafe_manha' : i === 2 ? 'almoço' : i === 4 ? 'jantar' : 'lanche';
-                
-                const alim = alimentos[tipo];
-                const alimentos_escolhidos = [];
+            for(let i=0;i<estrutura.refeicoes;i++){
+                const tipo = i===0?'cafe_manha': i===2?'almoco': i===4?'jantar':'lanche';
+                const alim = alims[tipo];
+                const escolhidos = [];
 
-                ['proteina', 'carboidrato'].forEach(cat => {
-                    if (alim[cat]) {
+                ['proteina','carboidrato'].forEach(cat => {
+                    if(alim[cat]){
                         const lista = shuffle(alim[cat]);
-                        alimentos_escolhidos.push({
-                            nome: lista[0],
-                            quantidade: random(100, 150),
-                            tipo: cat
-                        });
+                        escolhidos.push({ nome:lista[0], quantidade:random(100,150), tipo:cat, tipoKey:cat, lista:alim[cat] });
                     }
                 });
-
-                if (alim.vegetal && i !== 1 && i !== 3) {
-                    const lista = shuffle(alim.vegetal);
-                    alimentos_escolhidos.push({
-                        nome: lista[0],
-                        quantidade: random(100, 150),
-                        tipo: 'vegetal'
-                    });
+                if(alim.vegetal && i!==1 && i!==3){
+                    const lista=shuffle(alim.vegetal);
+                    escolhidos.push({ nome:lista[0], quantidade:random(80,130), tipo:'vegetal', tipoKey:'vegetal', lista:alim.vegetal });
                 }
 
-                refeicoes.push({
-                    horario: horario,
-                    alimentos: alimentos_escolhidos
-                });
+                refeicoes.push({ horario:horarios[i], alimentos:escolhidos });
             }
-
             return refeicoes;
         }
 
+        function trocarAlimento(mealIdx, aliIdx) {
+            const l = lang();
+            const alims = T[l].alimentos;
+            const refeicao = dietaAtual[mealIdx];
+            const ali = refeicao.alimentos[aliIdx];
+            const tipo = i===0?'cafe_manha': i===2?'almoco': i===4?'jantar':'lanche';
+
+            // Determina qual tipo de refeição (pelo índice no dietaAtual)
+            // Precisamos saber o tipo original — guardamos no objeto
+            const lista = ali.lista || [];
+            if(lista.length < 2){ return; }
+            let opcoes = lista.filter(n => n !== ali.nome);
+            ali.nome = opcoes[Math.floor(Math.random()*opcoes.length)];
+            renderizarDieta(dietaAtual);
+        }
+        window.trocarAlimento = trocarAlimento;
+
         function renderizarDieta(refeicoes) {
+            const l = lang();
+            const tipos = T[l].tipos;
+            dietaAtual = refeicoes;
             const dietaList = document.getElementById('dietaList');
             dietaList.innerHTML = '';
-            dietaAtual = refeicoes;
 
-            refeicoes.forEach(refeicao => {
+            refeicoes.forEach((refeicao, mIdx) => {
                 const div = document.createElement('div');
                 div.className = 'meal-container';
-                
-                const alimentos_html = refeicao.alimentos.map(ali => `
+
+                const alHtml = refeicao.alimentos.map((ali, aIdx) => {
+                    const tipoLabel = tipos[ali.tipoKey] || ali.tipoKey;
+                    return `
                     <div class="food-item">
                         <div class="food-name">${ali.nome}</div>
-                        <div class="food-amount">⚖️ ${ali.quantidade}g</div>
-                        <div class="food-macros">${ali.tipo}</div>
-                    </div>
-                `).join('');
+                        <div class="food-row-bottom" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <span class="food-amount">⚖️ ${ali.quantidade}g</span>
+                            <span class="food-macros">${tipoLabel}</span>
+                            <button class="btn-trocar" onclick="trocarAlimento(${mIdx},${aIdx})">${t('lbl-trocar')}</button>
+                        </div>
+                    </div>`;
+                }).join('');
 
                 div.innerHTML = `
-                    <div class="meal-header">
-                        <h2>🕐 ${refeicao.horario}</h2>
-                    </div>
-                    <div>${alimentos_html}</div>
-                `;
-                
+                    <div class="meal-header"><h2>${refeicao.horario}</h2></div>
+                    ${alHtml}`;
                 dietaList.appendChild(div);
             });
 
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('results').style.display='block';
+            document.getElementById('results').scrollIntoView({behavior:'smooth'});
         }
 
         window.gerarNovaDieta = function() {
-            if (!dadosFormulario.biotipo || !dadosFormulario.objetivo) {
-                alert('Por favor, preencha o formulário novamente');
-                return;
-            }
-            
+            if(!dadosFormulario.biotipo||!dadosFormulario.objetivo){ alert(lang()==='en'?'Please fill the form again':'Por favor, preencha o formulário novamente'); return; }
             dietaAtual = gerarDieta(dadosFormulario.biotipo, dadosFormulario.objetivo);
             renderizarDieta(dietaAtual);
         };
 
         window.salvarDietaPDF = function() {
             try {
-                const { jsPDF } = window.jspdf;
+                const {jsPDF} = window.jspdf;
                 const doc = new jsPDF();
-                
                 const nome = document.getElementById('nome').value;
-                
-                let y = 20;
-                doc.setFontSize(20);
-                doc.text('DIETA PERSONALIZADA', 105, y, { align: 'center' });
-                y += 10;
-                doc.setFontSize(12);
-                doc.text(`${nome}`, 105, y, { align: 'center' });
-                y += 15;
-                
-                dietaAtual.forEach(refeicao => {
-                    if (y > 270) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    
-                    doc.setFontSize(14);
-                    doc.setFont(undefined, 'bold');
-                    doc.text(refeicao.horario, 20, y);
-                    y += 10;
-                    
-                    doc.setFont(undefined, 'normal');
-                    doc.setFontSize(10);
-                    
-                    refeicao.alimentos.forEach(ali => {
-                        if (y > 260) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                        doc.text(`• ${ali.nome} - ${ali.quantidade}g`, 25, y);
-                        y += 6;
+                let y=20;
+                doc.setFontSize(20); doc.setFont(undefined,'bold');
+                doc.text(lang()==='en'?'PERSONALIZED DIET':'DIETA PERSONALIZADA',105,y,{align:'center'});
+                y+=10; doc.setFontSize(12); doc.setFont(undefined,'normal');
+                doc.text(nome,105,y,{align:'center'}); y+=15;
+                doc.setDrawColor(16,185,129); doc.setLineWidth(0.5); doc.line(20,y,190,y); y+=10;
+                dietaAtual.forEach(r=>{
+                    if(y>265){doc.addPage();y=20;}
+                    doc.setFontSize(13); doc.setFont(undefined,'bold');
+                    doc.setTextColor(10,150,100); doc.text(r.horario,20,y);
+                    doc.setTextColor(0,0,0); y+=8;
+                    doc.setFont(undefined,'normal'); doc.setFontSize(10);
+                    r.alimentos.forEach(a=>{
+                        if(y>265){doc.addPage();y=20;}
+                        doc.text(`  • ${a.nome} — ${a.quantidade}g`,20,y); y+=6;
                     });
-                    
-                    y += 5;
+                    y+=4;
                 });
-                
                 doc.save(`Dieta_${nome}.pdf`);
                 alert('✅ PDF baixado com sucesso!');
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Erro ao gerar PDF');
-            }
+            } catch(e){ alert('Erro ao gerar PDF'); }
         };
 
-        document.querySelectorAll('[data-biotipo]').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('[data-biotipo]').forEach(c => c.classList.remove('selected'));
+        // Cards
+        document.querySelectorAll('[data-biotipo]').forEach(card=>{
+            card.addEventListener('click',function(){
+                document.querySelectorAll('[data-biotipo]').forEach(c=>c.classList.remove('selected'));
                 this.classList.add('selected');
-                document.getElementById('biotipo').value = this.dataset.biotipo;
-                dadosFormulario.biotipo = this.dataset.biotipo;
+                document.getElementById('biotipo').value=this.dataset.biotipo;
+                dadosFormulario.biotipo=this.dataset.biotipo;
+            });
+        });
+        document.querySelectorAll('[data-objetivo]').forEach(card=>{
+            card.addEventListener('click',function(){
+                document.querySelectorAll('[data-objetivo]').forEach(c=>c.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('objetivo').value=this.dataset.objetivo;
+                dadosFormulario.objetivo=this.dataset.objetivo;
             });
         });
 
-        document.querySelectorAll('[data-objetivo]').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('[data-objetivo]').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('objetivo').value = this.dataset.objetivo;
-                dadosFormulario.objetivo = this.dataset.objetivo;
-            });
-        });
-
-        document.getElementById('dietaForm').addEventListener('submit', async function(e) {
+        // Submit
+        document.getElementById('dietaForm').addEventListener('submit',async function(e){
             e.preventDefault();
-            
             const user = auth.currentUser;
-            if (!user) {
-                alert('Faça login para gerar sua dieta!');
-                return;
-            }
-
-            dadosFormulario.biotipo = document.getElementById('biotipo').value;
-            dadosFormulario.objetivo = document.getElementById('objetivo').value;
-
-            dietaAtual = gerarDieta(dadosFormulario.biotipo, dadosFormulario.objetivo);
+            if(!user){ alert(lang()==='en'?'Please log in to generate your diet!':'Faça login para gerar sua dieta!'); return; }
+            dadosFormulario.biotipo=document.getElementById('biotipo').value;
+            dadosFormulario.objetivo=document.getElementById('objetivo').value;
+            dietaAtual=gerarDieta(dadosFormulario.biotipo,dadosFormulario.objetivo);
             renderizarDieta(dietaAtual);
         });
+
+        // Init tradução
+        function initLang(){
+            const l=localStorage.getItem('language')||'pt';
+            applyTranslations();
+        }
+        if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',()=>setTimeout(initLang,100)); }
+        else { setTimeout(initLang,100); }
+
+        // Reagir a mudança de idioma (do translations.js global)
+        const _origSL=window.setLanguage;
+        window.setLanguage=function(l){
+            if(_origSL) _origSL(l);
+            applyTranslations();
+            if(dietaAtual){ dietaAtual=gerarDieta(dadosFormulario.biotipo,dadosFormulario.objetivo); renderizarDieta(dietaAtual); }
+        };
     </script>
+    <script src="/translations.js"></script>
 </body>
 </html>
