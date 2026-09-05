@@ -1,980 +1,520 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Treino - VidaSaudável</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --rest-color: #6366f1;
-            --rest-bg: rgba(99,102,241,0.12);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container { max-width: 1200px; margin: 0 auto; }
-
-        /* HEADER */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-top: 30px;
-        }
-        .header h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, #34d399 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        .header p { color: rgba(255,255,255,0.6); font-size: 1.1rem; }
-
-        /* FORM */
-        .form-wrapper {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 50px;
-            margin-bottom: 40px;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 25px;
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-title:first-child { margin-top: 0; }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 10px;
-        }
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-weight: 600; color: rgba(255,255,255,0.9); font-size: 0.95rem; }
-        input, select {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        select option { background: #1e293b; color: white; }
-
-        /* Experiência hint */
-        .exp-hint {
-            display: inline-block;
-            margin-top: 6px;
-            background: rgba(16,185,129,0.12);
-            border: 1px solid rgba(16,185,129,0.3);
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 0.82rem;
-            color: var(--primary);
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        /* CARDS */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 10px;
-        }
-        .card {
-            background: rgba(255,255,255,0.04);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 18px;
-            padding: 24px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16,185,129,0.06); }
-        .card.selected {
-            background: linear-gradient(135deg, rgba(16,185,129,0.25) 0%, rgba(5,150,105,0.2) 100%);
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(16,185,129,0.3);
-        }
-        .card-icon { font-size: 2.5rem; margin-bottom: 10px; }
-        .card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
-        .card small { color: rgba(255,255,255,0.55); font-size: 0.78rem; }
-
-        .submit-btn {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 800;
-            font-size: 1.2rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
-            margin-top: 40px;
-        }
-        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(16,185,129,0.5); }
-
-        /* RESULTS */
-        .results {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 50px;
-            margin-top: 40px;
-        }
-
-        /* RESUMO DO PLANO */
-        .plano-resumo {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
-        .plano-badge {
-            background: rgba(16,185,129,0.12);
-            border: 1px solid rgba(16,185,129,0.3);
-            border-radius: 50px;
-            padding: 10px 22px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* SEMANA VISUAL */
-        .semana-header {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 30px;
-        }
-        .dia-semana-badge {
-            border-radius: 12px;
-            padding: 12px 8px;
-            text-align: center;
-            font-size: 0.78rem;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-        .dia-semana-badge.treino {
-            background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(5,150,105,0.15));
-            border: 1px solid rgba(16,185,129,0.4);
-            color: #34d399;
-        }
-        .dia-semana-badge.descanso {
-            background: rgba(99,102,241,0.1);
-            border: 1px solid rgba(99,102,241,0.25);
-            color: rgba(255,255,255,0.4);
-        }
-        .dia-semana-badge .dia-nome { font-size: 0.72rem; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .dia-semana-badge .dia-status { font-size: 1.1rem; }
-
-        /* DIAS DE TREINO */
-        .treino-day {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-        }
-        .treino-day:hover { border-color: rgba(16,185,129,0.25); }
-
-        .treino-day.descanso-card {
-            background: var(--rest-bg);
-            border-color: rgba(99,102,241,0.25);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 24px 30px;
-        }
-        .descanso-icon { font-size: 2.5rem; }
-        .descanso-text h3 { font-size: 1.2rem; font-weight: 700; color: #a5b4fc; margin-bottom: 4px; }
-        .descanso-text p { color: rgba(255,255,255,0.5); font-size: 0.88rem; }
-
-        .day-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding-bottom: 16px;
-            margin-bottom: 20px;
-        }
-        .day-header-left { display: flex; align-items: center; gap: 12px; }
-        .day-number {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 12px;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-        .day-info h2 { font-size: 1.2rem; color: white; font-weight: 700; }
-        .day-info .day-grupos { font-size: 0.85rem; color: var(--primary); font-weight: 500; }
-        .day-weekday {
-            background: rgba(255,255,255,0.08);
-            border-radius: 8px;
-            padding: 6px 14px;
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.6);
-            font-weight: 600;
-        }
-
-        .exercise-item {
-            background: rgba(255,255,255,0.04);
-            padding: 14px 16px;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            border-left: 3px solid var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: all 0.2s;
-        }
-        .exercise-item:last-child { margin-bottom: 0; }
-        .exercise-item:hover { background: rgba(255,255,255,0.07); transform: translateX(4px); }
-        .exercise-num {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: rgba(16,185,129,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            flex-shrink: 0;
-        }
-        .exercise-info { flex: 1; }
-        .exercise-name { font-weight: 700; font-size: 1rem; color: white; margin-bottom: 4px; }
-        .exercise-details {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.6);
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .exercise-details span { display: flex; align-items: center; gap: 4px; }
-        .exercise-details strong { color: rgba(255,255,255,0.85); }
-
-        /* BUTTONS */
-        .button-group {
-            text-align: center;
-            margin-top: 40px;
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-gerar, .btn-pdf, .btn-back {
-            padding: 16px 32px;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-gerar {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
-        }
-        .btn-pdf {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 8px 25px rgba(245,158,11,0.4);
-        }
-        .btn-back {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-        .btn-gerar:hover, .btn-pdf:hover, .btn-back:hover { transform: translateY(-3px); }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 24px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            margin-bottom: 30px;
-            transition: all 0.3s;
-        }
-        .back-link:hover { background: rgba(255,255,255,0.15); }
-
-        @media (max-width: 600px) {
-            .header h1 { font-size: 2.2rem; }
-            .form-wrapper, .results { padding: 28px 20px; }
-            .semana-header { gap: 5px; }
-            .dia-semana-badge { padding: 10px 4px; }
-            .dia-semana-badge .dia-nome { font-size: 0.62rem; }
-            .button-group { flex-direction: column; align-items: center; }
-            .btn-gerar, .btn-pdf, .btn-back { width: 100%; justify-content: center; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Treino - VidaSaudável</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--primary:#10b981;--primary-dark:#059669;--rest:#6366f1;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:white;min-height:100vh;padding:20px;}
+.container{max-width:1200px;margin:0 auto;}
+.header{text-align:center;margin-bottom:40px;padding-top:30px;}
+.header h1{font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,var(--primary) 0%,#34d399 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.header p{color:rgba(255,255,255,0.6);}
+.form-wrapper{background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:30px;padding:50px;margin-bottom:40px;}
+.section-title{font-size:1.4rem;font-weight:700;color:var(--primary);margin-bottom:20px;margin-top:30px;}
+.section-title:first-child{margin-top:0;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:10px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+label{font-weight:600;color:rgba(255,255,255,0.9);font-size:0.95rem;}
+input,select{width:100%;padding:15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:white;font-size:1rem;font-family:'Poppins',sans-serif;}
+input:focus,select:focus{outline:none;border-color:var(--primary);}
+select option{background:#1e293b;}
+.exp-hint{display:inline-block;margin-top:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:5px 12px;font-size:0.78rem;color:var(--primary);font-weight:500;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:10px;}
+.card{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:15px;padding:20px;text-align:center;cursor:pointer;transition:all 0.3s;}
+.card:hover{transform:translateY(-4px);border-color:var(--primary);}
+.card.selected{background:linear-gradient(135deg,rgba(16,185,129,0.25),rgba(5,150,105,0.2));border-color:var(--primary);box-shadow:0 0 20px rgba(16,185,129,0.3);}
+.card-icon{font-size:2.2rem;margin-bottom:8px;}
+.card-title{font-weight:700;font-size:0.95rem;}
+.card small{color:rgba(255,255,255,0.5);font-size:0.75rem;}
+.submit-btn{width:100%;padding:20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.3s;box-shadow:0 10px 30px rgba(16,185,129,0.4);margin-top:30px;font-family:'Poppins',sans-serif;}
+.submit-btn:hover{transform:translateY(-3px);}
+.results{background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:30px;padding:50px;margin-top:40px;}
+.plano-resumo{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:30px;}
+.plano-badge{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);border-radius:50px;padding:8px 18px;font-size:0.85rem;font-weight:600;color:var(--primary);}
+.semana-header{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:28px;}
+.dia-badge{border-radius:10px;padding:10px 4px;text-align:center;font-size:0.72rem;font-weight:700;}
+.dia-badge.treino{background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);color:#34d399;}
+.dia-badge.descanso{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);color:rgba(255,255,255,0.4);}
+.dia-badge .dia-nome{font-size:0.65rem;margin-bottom:3px;text-transform:uppercase;}
+.treino-day{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:24px;margin-bottom:16px;}
+.treino-day.descanso-card{background:rgba(99,102,241,0.08);border-color:rgba(99,102,241,0.2);display:flex;align-items:center;gap:16px;padding:18px 24px;}
+.descanso-text h3{font-size:1.1rem;color:#a5b4fc;margin-bottom:3px;}
+.descanso-text p{color:rgba(255,255,255,0.45);font-size:0.82rem;}
+.day-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07);padding-bottom:14px;margin-bottom:16px;}
+.day-left{display:flex;align-items:center;gap:12px;}
+.day-num{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;flex-shrink:0;}
+.day-info h2{font-size:1.1rem;font-weight:700;}
+.day-info .day-grupos{font-size:0.8rem;color:var(--primary);font-weight:500;}
+.day-label{background:rgba(255,255,255,0.07);border-radius:7px;padding:5px 12px;font-size:0.78rem;color:rgba(255,255,255,0.55);}
+.exercise-item{background:rgba(255,255,255,0.04);padding:12px 14px;margin-bottom:8px;border-radius:10px;border-left:3px solid var(--primary);display:flex;align-items:center;gap:12px;}
+.exercise-item:last-child{margin-bottom:0;}
+.ex-num{width:26px;height:26px;border-radius:50%;background:rgba(16,185,129,0.18);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--primary);flex-shrink:0;}
+.ex-info{flex:1;}
+.ex-name{font-weight:700;font-size:0.95rem;color:white;margin-bottom:4px;}
+.ex-details{font-size:0.78rem;color:rgba(255,255,255,0.55);display:flex;gap:12px;flex-wrap:wrap;}
+.ex-details strong{color:rgba(255,255,255,0.8);}
+.button-group{text-align:center;margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-gerar,.btn-pdf,.btn-back{padding:15px 30px;border:none;border-radius:50px;color:white;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.3s;font-family:'Poppins',sans-serif;text-decoration:none;display:inline-block;}
+.btn-gerar{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 8px 25px rgba(16,185,129,0.4);}
+.btn-pdf{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 8px 25px rgba(245,158,11,0.4);}
+.btn-back{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);}
+.btn-gerar:hover,.btn-pdf:hover,.btn-back:hover{transform:translateY(-3px);}
+.back-link{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);padding:12px 24px;border-radius:50px;text-decoration:none;color:white;font-weight:600;margin-bottom:30px;transition:all 0.3s;}
+.lang-switcher{position:fixed;top:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(255,255,255,0.1);padding:6px;border-radius:25px;backdrop-filter:blur(10px);}
+.lang-btn{padding:8px 16px;background:transparent;border:none;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:20px;font-weight:600;transition:all 0.3s;font-family:'Poppins',sans-serif;font-size:0.85rem;}
+.lang-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:white;}
+@media(max-width:600px){
+  body{padding:10px;}
+  .header h1{font-size:1.9rem;}
+  .form-wrapper{padding:18px 14px;border-radius:18px;}
+  .section-title{font-size:1.05rem;margin-top:20px;margin-bottom:14px;}
+  .card-grid{grid-template-columns:repeat(3,1fr);gap:7px;}
+  .card{padding:10px 5px;border-radius:10px;}
+  .card-icon{font-size:1.5rem;margin-bottom:3px;}
+  .card-title{font-size:0.7rem;}
+  .card small{font-size:0.6rem;}
+  .submit-btn{font-size:0.9rem;padding:15px;}
+  .results{padding:16px 12px;border-radius:18px;}
+  .semana-header{gap:4px;}
+  .dia-badge{padding:8px 2px;}
+  .treino-day{padding:14px 12px;}
+  .button-group{flex-direction:column;align-items:center;gap:10px;}
+  .btn-gerar,.btn-pdf,.btn-back{width:100%;text-align:center;padding:13px;}
+  .lang-switcher{top:10px;right:10px;}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back-link">
-            <span style="font-size:1.3rem;">←</span>
-            Voltar para Início
-        </a>
-
-        <div class="header">
-            <h1>🏋️ GERADOR DE TREINO</h1>
-            <p>Crie sua ficha personalizada com dias da semana</p>
+<div class="lang-switcher">
+  <button class="lang-btn" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 PT</button>
+  <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+</div>
+<div class="container">
+  <a href="index.html" class="back-link"><span style="font-size:1.3rem;">←</span><span data-i18n="btn-voltar">Voltar para Início</span></a>
+  <div class="header">
+    <h1 id="pageTitle">🏋️ GERADOR DE TREINO</h1>
+    <p id="pageSubtitle">Crie sua ficha personalizada com dias da semana</p>
+  </div>
+  <div class="form-wrapper">
+    <form id="treinoForm">
+      <div class="section-title" id="lbl-dados">👤 Seus Dados</div>
+      <div class="form-grid">
+        <div class="form-group"><label id="lbl-nome">Nome</label><input type="text" id="nome" required placeholder="Seu nome"></div>
+        <div class="form-group"><label id="lbl-idade">Idade</label><input type="number" id="idade" required placeholder="25" min="14" max="80"></div>
+        <div class="form-group">
+          <label id="lbl-exp">Experiência (meses)</label>
+          <input type="number" id="experiencia" required placeholder="6" min="0" oninput="atualizarHint(this.value)">
+          <span class="exp-hint" id="expHint">ℹ️ Preencha sua experiência</span>
         </div>
-
-        <div class="form-wrapper">
-            <form id="treinoForm">
-                <div class="section-title">👤 Seus Dados</div>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text" id="nome" required placeholder="Seu nome">
-                    </div>
-                    <div class="form-group">
-                        <label>Idade</label>
-                        <input type="number" id="idade" required placeholder="25" min="14" max="80">
-                    </div>
-                    <div class="form-group">
-                        <label>Experiência na musculação</label>
-                        <input type="number" id="experiencia" required placeholder="Ex: 6" min="0" oninput="atualizarHintExp(this.value)">
-                        <span class="exp-hint" id="expHint">ℹ️ Preencha sua experiência em meses</span>
-                    </div>
-                </div>
-
-                <div class="section-title">💪 Seu Biotipo</div>
-                <div class="card-grid">
-                    <div class="card" data-biotipo="ectomorfo">
-                        <div class="card-icon">🏃</div>
-                        <div class="card-title">Ectomorfo</div>
-                        <small>Magro, metabolismo rápido</small>
-                    </div>
-                    <div class="card" data-biotipo="mesomorfo">
-                        <div class="card-icon">💪</div>
-                        <div class="card-title">Mesomorfo</div>
-                        <small>Atlético, ganha fácil</small>
-                    </div>
-                    <div class="card" data-biotipo="endomorfo">
-                        <div class="card-icon">🏋️</div>
-                        <div class="card-title">Endomorfo</div>
-                        <small>Robusto, metabolismo lento</small>
-                    </div>
-                </div>
-                <input type="hidden" id="biotipo" required>
-
-                <div class="section-title">🎯 Seu Objetivo</div>
-                <div class="card-grid">
-                    <div class="card" data-objetivo="ganho_massa">
-                        <div class="card-icon">📈</div>
-                        <div class="card-title">Ganho de Massa</div>
-                        <small>Aumentar músculo</small>
-                    </div>
-                    <div class="card" data-objetivo="definicao">
-                        <div class="card-icon">⚡</div>
-                        <div class="card-title">Definição</div>
-                        <small>Secar e definir</small>
-                    </div>
-                    <div class="card" data-objetivo="perda_gordura">
-                        <div class="card-icon">🔥</div>
-                        <div class="card-title">Perda de Gordura</div>
-                        <small>Emagrecer</small>
-                    </div>
-                </div>
-                <input type="hidden" id="objetivo" required>
-
-                <button type="submit" class="submit-btn">🏋️ GERAR MEU TREINO</button>
-            </form>
+        <div class="form-group">
+          <label id="lbl-sexo">Sexo</label>
+          <select id="sexo" required>
+            <option value="" id="opt-sexo-default">Selecione</option>
+            <option value="masculino" id="opt-masculino">Masculino</option>
+            <option value="feminino" id="opt-feminino">Feminino</option>
+          </select>
         </div>
-
-        <div class="results" id="results" style="display:none;">
-            <div style="text-align:center;margin-bottom:36px;">
-                <h2 style="font-size:2rem;color:var(--primary);margin-bottom:8px;">✅ Seu Treino Personalizado</h2>
-                <p id="resultSubtitle" style="color:rgba(255,255,255,0.55);font-size:0.95rem;"></p>
-            </div>
-
-            <!-- Badges resumo -->
-            <div class="plano-resumo" id="planoBadges"></div>
-
-            <!-- Semana visual -->
-            <div class="semana-header" id="semanaHeader"></div>
-
-            <!-- Lista de treinos -->
-            <div id="treinoList"></div>
-
-            <div class="button-group">
-                <button class="btn-gerar" onclick="gerarNovoTreino()">🔄 Gerar Outro Treino</button>
-                <button class="btn-pdf" onclick="salvarTreinoPDF()">📄 Salvar PDF</button>
-                <a href="index.html" class="btn-back">🏠 Início</a>
-            </div>
-        </div>
+      </div>
+      <div class="section-title" id="lbl-biotipo">💪 Seu Biotipo</div>
+      <div class="card-grid">
+        <div class="card" data-biotipo="ectomorfo"><div class="card-icon">🏃</div><div class="card-title" id="bio-ecto">Ectomorfo</div><small id="bio-ecto-desc">Magro, metabolismo rápido</small></div>
+        <div class="card" data-biotipo="mesomorfo"><div class="card-icon">💪</div><div class="card-title" id="bio-meso">Mesomorfo</div><small id="bio-meso-desc">Atlético, ganha fácil</small></div>
+        <div class="card" data-biotipo="endomorfo"><div class="card-icon">🏋️</div><div class="card-title" id="bio-endo">Endomorfo</div><small id="bio-endo-desc">Robusto, metabolismo lento</small></div>
+      </div>
+      <input type="hidden" id="biotipo" required>
+      <div class="section-title" id="lbl-objetivo">🎯 Seu Objetivo</div>
+      <div class="card-grid">
+        <div class="card" data-objetivo="ganho_massa"><div class="card-icon">📈</div><div class="card-title" id="obj-massa">Ganho de Massa</div><small id="obj-massa-desc">Aumentar músculo</small></div>
+        <div class="card" data-objetivo="definicao"><div class="card-icon">⚡</div><div class="card-title" id="obj-def">Definição</div><small id="obj-def-desc">Secar e definir</small></div>
+        <div class="card" data-objetivo="perda_gordura"><div class="card-icon">🔥</div><div class="card-title" id="obj-gord">Perda de Gordura</div><small id="obj-gord-desc">Emagrecer</small></div>
+      </div>
+      <input type="hidden" id="objetivo" required>
+      <button type="submit" class="submit-btn" id="btn-submit">🏋️ GERAR MEU TREINO</button>
+    </form>
+  </div>
+  <div class="results" id="results" style="display:none;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <h2 style="font-size:1.8rem;color:var(--primary);margin-bottom:6px;" id="result-title">✅ Seu Treino Personalizado</h2>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;" id="result-subtitle"></p>
     </div>
+    <div class="plano-resumo" id="planoBadges"></div>
+    <div class="semana-header" id="semanaHeader"></div>
+    <div id="treinoList"></div>
+    <div class="button-group">
+      <button class="btn-gerar" onclick="gerarNovoTreino()" id="btn-novo">🔄 Gerar Outro Treino</button>
+      <button class="btn-pdf" onclick="salvarPDF()" id="btn-pdf">📄 Salvar PDF</button>
+      <a href="index.html" class="btn-back" data-i18n="btn-voltar">Início</a>
+    </div>
+  </div>
+</div>
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import{getAuth}from'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+const app=initializeApp({apiKey:"AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",authDomain:"vidasaudavel-490d6.firebaseapp.com",projectId:"vidasaudavel-490d6"});
+const auth=getAuth(app);
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+// ── TRADUÇÕES ──────────────────────────────────────────────────────────
+const TXT={
+  pt:{
+    title:'🏋️ GERADOR DE TREINO',subtitle:'Crie sua ficha personalizada com dias da semana',
+    dados:'👤 Seus Dados',nome:'Nome',idade:'Idade',exp:'Experiência (meses)',sexo:'Sexo',
+    'sexo-default':'Selecione','masculino':'Masculino','feminino':'Feminino',
+    biotipo:'💪 Seu Biotipo','bio-ecto':'Ectomorfo','bio-ecto-d':'Magro, metabolismo rápido',
+    'bio-meso':'Mesomorfo','bio-meso-d':'Atlético, ganha fácil',
+    'bio-endo':'Endomorfo','bio-endo-d':'Robusto, metabolismo lento',
+    objetivo:'🎯 Seu Objetivo','obj-massa':'Ganho de Massa','obj-massa-d':'Aumentar músculo',
+    'obj-def':'Definição','obj-def-d':'Secar e definir',
+    'obj-gord':'Perda de Gordura','obj-gord-d':'Emagrecer',
+    submit:'🏋️ GERAR MEU TREINO','result-title':'✅ Seu Treino Personalizado',
+    'btn-novo':'🔄 Gerar Outro Treino','btn-pdf':'📄 Salvar PDF',
+    nivel:{iniciante:'Iniciante',basico:'Básico',intermediario:'Intermediário',avancado:'Avançado'},
+    'badge-nivel':'Nível','badge-dias':'dias de treino/sem','badge-desc':'dias de descanso','badge-exs':'exercícios',
+    dias:['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+    'dias-short':['SEG','TER','QUA','QUI','SEX','SÁB','DOM'],
+    descanso:'Descanso','descanso-msg':'Recuperação muscular. Hidrate-se bem.',
+    treino:'Treino',series:'séries',reps:'reps',rest:'descanso',
+    hint:['ℹ️ Preencha sua experiência','🌱 Iniciante (0–5 m) → ','💪 Básico (6–11 m) → ','🔥 Intermediário (12–23 m) → ','🏆 Avançado (24+ m) → '],
+    'hint-suffix':'dias/sem',
+    'obj-labels':{'ganho_massa':'Ganho de Massa','definicao':'Definição','perda_gordura':'Perda de Gordura'},
+    'bio-labels':{'ectomorfo':'Ectomorfo','mesomorfo':'Mesomorfo','endomorfo':'Endomorfo'},
+    'sexo-labels':{'masculino':'Masculino','feminino':'Feminino'},
+    'faixas':['0–5 meses','6–11 meses','12–23 meses','24+ meses']
+  },
+  en:{
+    title:'🏋️ WORKOUT GENERATOR',subtitle:'Create your personalized schedule with weekly days',
+    dados:'👤 Your Info',nome:'Name',idade:'Age',exp:'Experience (months)',sexo:'Gender',
+    'sexo-default':'Select','masculino':'Male','feminino':'Female',
+    biotipo:'💪 Your Body Type','bio-ecto':'Ectomorph','bio-ecto-d':'Lean, fast metabolism',
+    'bio-meso':'Mesomorph','bio-meso-d':'Athletic, gains easily',
+    'bio-endo':'Endomorph','bio-endo-d':'Stocky, slow metabolism',
+    objetivo:'🎯 Your Goal','obj-massa':'Muscle Gain','obj-massa-d':'Build muscle',
+    'obj-def':'Definition','obj-def-d':'Lean and define',
+    'obj-gord':'Fat Loss','obj-gord-d':'Lose weight',
+    submit:'🏋️ GENERATE MY WORKOUT','result-title':'✅ Your Personalized Workout',
+    'btn-novo':'🔄 Generate Another','btn-pdf':'📄 Save PDF',
+    nivel:{iniciante:'Beginner',basico:'Basic',intermediario:'Intermediate',avancado:'Advanced'},
+    'badge-nivel':'Level','badge-dias':'training days/wk','badge-desc':'rest days','badge-exs':'exercises',
+    dias:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    'dias-short':['MON','TUE','WED','THU','FRI','SAT','SUN'],
+    descanso:'Rest Day','descanso-msg':'Muscle recovery. Stay hydrated.',
+    treino:'Workout',series:'sets',reps:'reps',rest:'rest',
+    hint:['ℹ️ Fill your experience','🌱 Beginner (0–5 m) → ','💪 Basic (6–11 m) → ','🔥 Intermediate (12–23 m) → ','🏆 Advanced (24+ m) → '],
+    'hint-suffix':'days/wk',
+    'obj-labels':{'ganho_massa':'Muscle Gain','definicao':'Definition','perda_gordura':'Fat Loss'},
+    'bio-labels':{'ectomorfo':'Ectomorph','mesomorfo':'Mesomorph','endomorfo':'Endomorph'},
+    'sexo-labels':{'masculino':'Male','feminino':'Female'},
+    'faixas':['0–5 months','6–11 months','12–23 months','24+ months']
+  }
+};
 
-        const app = initializeApp({
-            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
-            authDomain: "vidasaudavel-490d6.firebaseapp.com",
-            projectId: "vidasaudavel-490d6"
-        });
+// ── EXERCÍCIOS POR SEXO/GRUPO ──────────────────────────────────────────
+const EX={
+  pt:{
+    masculino:{
+      peito:['Supino Reto','Supino Inclinado','Supino Declinado','Peck Deck','Crossover','Flexão','Supino Halteres','Fly com Halteres','Supino Smith','Máquina Convergente'],
+      costas:['Puxada Frontal','Remada Curvada','Remada Unilateral','Barra Fixa','Face Pull','Remada Baixa','Pullover','Puxada Triângulo','Levantamento Terra','Encolhimento'],
+      perna:['Agachamento Livre','Leg Press','Hack Squat','Extensora','Mesa Flexora','Stiff','Levantamento Terra','Panturrilha em Pé','Agachamento Sumo','Passada'],
+      ombro:['Desenvolvimento Militar','Elevação Lateral','Remada Alta','Arnold Press','Elevação Frontal','Elevação Posterior','Shoulder Press','Encolhimento'],
+      bíceps:['Rosca Direta Barra','Rosca Alternada','Rosca Martelo','Rosca Scott','Rosca Concentrada','Rosca no Cabo'],
+      tríceps:['Tríceps Corda','Tríceps Testa','Tríceps Francês','Paralelas','Mergulho no Banco','Tríceps Polia'],
+      glúteos:['Agachamento Livre','Leg Press','Stiff','Afundo','Búlgaro','Passada','Hip Thrust','Abdutora'],
+      abdomen:['Prancha','Abdominal Supra','Abdominal Bicicleta','Elevação de Pernas','Roda Abdominal','Prancha Lateral']
+    },
+    feminino:{
+      glúteos:['Hip Thrust','Stiff','Afundo','Búlgaro','Agachamento Sumo','Abdutora','Leg Press','Passada','Agachamento Livre','Extensora Glúteo'],
+      perna:['Leg Press','Extensora','Mesa Flexora','Panturrilha em Pé','Panturrilha Sentado','Adutora','Abdutora','Agachamento Hack','Cadeira Extensora','Leg Press 45°'],
+      abdomen:['Prancha','Abdominal Supra','Abdominal Bicicleta','Elevação de Pernas','Prancha Lateral','Abdominal Infra','Roda Abdominal'],
+      costas:['Puxada Frontal','Remada Baixa','Remada Unilateral','Face Pull','Puxada Triângulo','Pullover'],
+      peito:['Supino Inclinado Halteres','Crossover','Peck Deck','Flexão','Supino Máquina'],
+      ombro:['Elevação Lateral','Desenvolvimento Halteres','Elevação Posterior','Arnold Press','Elevação Frontal'],
+      bíceps:['Rosca Alternada','Rosca Martelo','Rosca Concentrada','Rosca Scott'],
+      tríceps:['Tríceps Corda','Mergulho no Banco','Tríceps Francês','Tríceps Polia']
+    }
+  },
+  en:{
+    masculino:{
+      peito:['Flat Bench Press','Incline Bench Press','Decline Bench Press','Pec Deck','Cable Crossover','Push-Up','Dumbbell Press','Dumbbell Fly','Smith Machine Press','Converging Machine'],
+      costas:['Lat Pulldown','Bent Over Row','Single-Arm Row','Pull-Up','Face Pull','Seated Row','Pullover','Triangle Pulldown','Deadlift','Shrugs'],
+      perna:['Barbell Squat','Leg Press','Hack Squat','Leg Extension','Leg Curl','Romanian Deadlift','Deadlift','Standing Calf Raise','Sumo Squat','Lunge'],
+      ombro:['Military Press','Lateral Raise','Upright Row','Arnold Press','Front Raise','Rear Delt Raise','Shoulder Press','Shrugs'],
+      bíceps:['Barbell Curl','Alternating Curl','Hammer Curl','Preacher Curl','Concentration Curl','Cable Curl'],
+      tríceps:['Rope Pushdown','Skull Crusher','French Press','Bar Dips','Bench Dips','Triceps Pushdown'],
+      glúteos:['Barbell Squat','Leg Press','Romanian Deadlift','Lunge','Bulgarian Split Squat','Lunge Walk','Hip Thrust','Hip Abduction'],
+      abdomen:['Plank','Crunches','Bicycle Crunch','Leg Raise','Ab Wheel','Side Plank']
+    },
+    feminino:{
+      glúteos:['Hip Thrust','Romanian Deadlift','Lunge','Bulgarian Split Squat','Sumo Squat','Hip Abduction','Leg Press','Walking Lunge','Barbell Squat','Glute Extension'],
+      perna:['Leg Press','Leg Extension','Leg Curl','Standing Calf Raise','Seated Calf Raise','Hip Adduction','Hip Abduction','Hack Squat','Seated Leg Extension','Leg Press 45°'],
+      abdomen:['Plank','Crunches','Bicycle Crunch','Leg Raise','Side Plank','Lower Crunch','Ab Wheel'],
+      costas:['Lat Pulldown','Seated Row','Single-Arm Row','Face Pull','Triangle Pulldown','Pullover'],
+      peito:['Incline Dumbbell Press','Cable Crossover','Pec Deck','Push-Up','Chest Machine'],
+      ombro:['Lateral Raise','Dumbbell Press','Rear Delt Raise','Arnold Press','Front Raise'],
+      bíceps:['Alternating Curl','Hammer Curl','Concentration Curl','Preacher Curl'],
+      tríceps:['Rope Pushdown','Bench Dips','French Press','Triceps Pushdown']
+    }
+  }
+};
 
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+// ── ESTRUTURA DE TREINO POR SEXO/BIOTIPO/OBJETIVO/NÍVEL ───────────────
+function getFocus(sexo,biotipo,objetivo,dias){
+  if(sexo==='feminino'){
+    if(objetivo==='ganho_massa'||objetivo==='definicao'){
+      if(dias===3) return [['glúteos','perna'],['costas','bíceps'],['peito','ombro','tríceps']];
+      if(dias===4) return [['glúteos','perna'],['costas','bíceps'],['peito','ombro'],['glúteos','abdomen']];
+      if(dias===5) return [['glúteos'],['costas','bíceps'],['glúteos','perna'],['peito','ombro','tríceps'],['glúteos','abdomen']];
+      return [['glúteos'],['costas','bíceps'],['glúteos','perna'],['peito','ombro'],['glúteos','abdomen'],['perna','tríceps']];
+    }
+    // perda gordura feminino
+    if(dias===3) return [['glúteos','perna','abdomen'],['costas','bíceps','peito'],['glúteos','perna','abdomen']];
+    if(dias===4) return [['glúteos','perna'],['costas','peito','bíceps'],['glúteos','abdomen'],['perna','ombro','tríceps']];
+    if(dias===5) return [['glúteos','perna'],['costas','bíceps'],['glúteos','abdomen'],['peito','ombro'],['perna','tríceps']];
+    return [['glúteos'],['costas','bíceps'],['perna','abdomen'],['peito','ombro'],['glúteos','tríceps'],['perna','abdomen']];
+  }
+  // masculino
+  const maps={
+    3:{ganho_massa:[['peito','ombro'],['costas','bíceps'],['perna','tríceps']],definicao:[['peito','tríceps'],['costas','bíceps'],['perna','ombro']],perda_gordura:[['peito','bíceps'],['costas','tríceps'],['perna','ombro']]},
+    4:{ganho_massa:[['peito','ombro'],['costas'],['perna'],['bíceps','tríceps']],definicao:[['peito','tríceps'],['costas','bíceps'],['ombro'],['perna']],perda_gordura:[['peito'],['costas','bíceps'],['ombro','tríceps'],['perna']]},
+    5:{ganho_massa:[['peito'],['costas'],['perna'],['ombro'],['bíceps','tríceps']],definicao:[['peito','tríceps'],['costas','bíceps'],['perna'],['ombro'],['bíceps','tríceps']],perda_gordura:[['peito','tríceps'],['costas','bíceps'],['perna'],['ombro'],['perna']]},
+    6:{ganho_massa:[['peito'],['costas'],['perna'],['ombro'],['bíceps'],['tríceps']],definicao:[['peito','tríceps'],['costas','bíceps'],['perna'],['ombro'],['peito','costas'],['perna']],perda_gordura:[['peito','tríceps'],['costas','bíceps'],['perna'],['ombro'],['bíceps','tríceps'],['perna']]}
+  };
+  return maps[dias]?.[objetivo]||maps[4]['definicao'];
+}
 
-        // ─── DADOS ───────────────────────────────────────────────────────────
-        // ─── TRADUÇÕES ────────────────────────────────────────────────────────
-        const T = {
-            pt: {
-                'back':'Voltar para Início',
-                'title':'🏋️ GERADOR DE TREINO',
-                'subtitle':'Crie sua ficha personalizada com dias da semana',
-                'dados':'👤 Seus Dados','label-nome':'Nome','label-idade':'Idade',
-                'label-exp':'Experiência na musculação',
-                'hint-default':'ℹ️ Preencha sua experiência em meses',
-                'biotipo-title':'💪 Seu Biotipo',
-                'bio-ecto':'Ectomorfo','bio-ecto-desc':'Magro, metabolismo rápido',
-                'bio-meso':'Mesomorfo','bio-meso-desc':'Atlético, ganha fácil',
-                'bio-endo':'Endomorfo','bio-endo-desc':'Robusto, metabolismo lento',
-                'obj-title':'🎯 Seu Objetivo',
-                'obj-massa':'Ganho de Massa','obj-massa-desc':'Aumentar músculo',
-                'obj-defin':'Definição','obj-defin-desc':'Secar e definir',
-                'obj-gordura':'Perda de Gordura','obj-gordura-desc':'Emagrecer',
-                'btn-gerar':'🏋️ GERAR MEU TREINO',
-                'result-title':'✅ Seu Treino Personalizado',
-                'btn-novo':'🔄 Gerar Outro Treino','btn-pdf':'📄 Salvar PDF','btn-inicio':'🏠 Início',
-                'nivel':{'iniciante':'Iniciante','basico':'Básico','intermediario':'Intermediário','avancado':'Avançado'},
-                'badge-nivel':'Nível','badge-treinos':'dias de treino/semana','badge-descanso':'dias de descanso','badge-exercicios':'exercícios no total',
-                'dias-semana':['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
-                'dias-short':['SEG','TER','QUA','QUI','SEX','SÁB','DOM'],
-                'descanso-label':'Descanso','descanso-msg':'Recuperação muscular. Evite treinos intensos. Hidrate-se bem.',
-                'treino-label':'Treino','series':'séries','reps':'reps','rest':'descanso',
-                'faixas':['0–5 meses','6–11 meses','12–23 meses','24+ meses'],
-                'hint-suffix':'dias/semana',
-                'obj-labels':{'ganho_massa':'Ganho de Massa','definicao':'Definição','perda_gordura':'Perda de Gordura'},
-                'bio-labels':{'ectomorfo':'Ectomorfo','mesomorfo':'Mesomorfo','endomorfo':'Endomorfo'},
-                'exercicios':{
-                    peito:['Supino Reto','Supino Inclinado','Supino Declinado','Peck Deck','Desenvolvimento na Máquina','Flexão','Supino com Halteres','Crossover','Fly com Halteres','Supino Smith','Máquina Convergente','Supino Máquina'],
-                    costas:['Puxada Frontal','Puxada Costas','Remada Curvada','Remada Máquina','Remada Unilateral','Puxada Aberta','Face Pull','Barra Fixa','Remada Com Halteres','Pullover','Remada Baixa','Remada Fechada'],
-                    perna:['Agachamento Livre','Leg Press','Agachamento Smith','Hack Machine','Extensora','Mesa Flexora','Abdutor','Addutor','Levantamento Terra','Leg Press 45°','Agachamento Sumo','Passada','Cadeira Extensora','Panturrilha'],
-                    ombro:['Desenvolvimento Militar','Elevação Lateral','Máquina Ombro','Encolhimento','Desenvolvimento Máquina','Elevação Frontal','Shoulder Press','Elevação Lateral Máquina','Remada Alta','Desenvolvimento com Halteres'],
-                    bíceps:['Rosca Direta Barra','Rosca Direta Halteres','Rosca Máquina','Rosca Concentrada','Rosca Inversa','Rosca Diagonal','Rosca Inclinada','Rosca Scott','Rosca com Corda','Rosca Alternada'],
-                    tríceps:['Tríceps Corda','Tríceps Halteres','Mergulho','Máquina Tríceps','Tríceps Barra','Extensão Cabeça','Rosca Francesa','Kickback','Paralelas','Tríceps Invertido']
-                }
-            },
-            en: {
-                'back':'Back to Home',
-                'title':'🏋️ WORKOUT GENERATOR',
-                'subtitle':'Create your personalized schedule with weekly days',
-                'dados':'👤 Your Info','label-nome':'Name','label-idade':'Age',
-                'label-exp':'Gym experience',
-                'hint-default':'ℹ️ Fill your experience in months',
-                'biotipo-title':'💪 Your Body Type',
-                'bio-ecto':'Ectomorph','bio-ecto-desc':'Lean, fast metabolism',
-                'bio-meso':'Mesomorph','bio-meso-desc':'Athletic, gains easily',
-                'bio-endo':'Endomorph','bio-endo-desc':'Stocky, slow metabolism',
-                'obj-title':'🎯 Your Goal',
-                'obj-massa':'Muscle Gain','obj-massa-desc':'Build muscle',
-                'obj-defin':'Definition','obj-defin-desc':'Lean and define',
-                'obj-gordura':'Fat Loss','obj-gordura-desc':'Lose weight',
-                'btn-gerar':'🏋️ GENERATE MY WORKOUT',
-                'result-title':'✅ Your Personalized Workout',
-                'btn-novo':'🔄 Generate Another','btn-pdf':'📄 Save PDF','btn-inicio':'🏠 Home',
-                'nivel':{'iniciante':'Beginner','basico':'Basic','intermediario':'Intermediate','avancado':'Advanced'},
-                'badge-nivel':'Level','badge-treinos':'training days/week','badge-descanso':'rest days','badge-exercicios':'total exercises',
-                'dias-semana':['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                'dias-short':['MON','TUE','WED','THU','FRI','SAT','SUN'],
-                'descanso-label':'Rest Day','descanso-msg':'Muscle recovery. Avoid intense training. Stay hydrated.',
-                'treino-label':'Workout','series':'sets','reps':'reps','rest':'rest',
-                'faixas':['0–5 months','6–11 months','12–23 months','24+ months'],
-                'hint-suffix':'days/week',
-                'obj-labels':{'ganho_massa':'Muscle Gain','definicao':'Definition','perda_gordura':'Fat Loss'},
-                'bio-labels':{'ectomorfo':'Ectomorph','mesomorfo':'Mesomorph','endomorfo':'Endomorph'},
-                'exercicios':{
-                    peito:['Flat Bench Press','Incline Bench Press','Decline Bench Press','Pec Deck','Machine Press','Push-Up','Dumbbell Press','Cable Crossover','Dumbbell Fly','Smith Machine Press','Converging Machine','Chest Machine'],
-                    costas:['Lat Pulldown','Reverse Pulldown','Bent Over Row','Machine Row','Single-Arm Row','Wide Pulldown','Face Pull','Pull-Up','Dumbbell Row','Pullover','Seated Row','Close-Grip Row'],
-                    perna:['Barbell Squat','Leg Press','Smith Squat','Hack Squat','Leg Extension','Leg Curl','Abductor','Adductor','Deadlift','Leg Press 45°','Sumo Squat','Lunge','Knee Extension','Calf Raise'],
-                    ombro:['Military Press','Lateral Raise','Machine Press','Shrugs','Machine Shoulder','Front Raise','Shoulder Press','Machine Lateral Raise','Upright Row','Dumbbell Press'],
-                    bíceps:['Barbell Curl','Dumbbell Curl','Machine Curl','Concentration Curl','Reverse Curl','Diagonal Curl','Incline Curl','Preacher Curl','Rope Curl','Alternating Curl'],
-                    tríceps:['Rope Pushdown','Dumbbell Triceps','Dips','Triceps Machine','Bar Pushdown','Overhead Extension','French Press','Kickback','Parallel Bars','Reverse Pushdown']
-                }
-            }
-        };
+function getSetsReps(objetivo,meses){
+  const adv=meses>=24,mid=meses>=12;
+  if(objetivo==='ganho_massa') return{sets:adv?5:mid?4:3,reps:adv?'4-6':mid?'6-8':'8-10',rest:adv?'3-5 min':mid?'2-3 min':'90 seg'};
+  if(objetivo==='definicao') return{sets:adv?4:mid?4:3,reps:adv?'10-15':mid?'10-12':'10-12',rest:adv?'45 seg':mid?'45-60 seg':'60 seg'};
+  return{sets:adv?4:mid?3:3,reps:adv?'15-20':mid?'12-15':'12-15',rest:adv?'30 seg':mid?'30-45 seg':'45 seg'};
+}
 
-        function lang() { return localStorage.getItem('language') || 'pt'; }
-        function t(k) { return (T[lang()] && T[lang()][k] !== undefined) ? T[lang()][k] : (T['pt'][k] || k); }
+function diasPorExp(m){return m<6?3:m<12?4:m<24?5:6;}
+function nivelKey(m){return m<6?'iniciante':m<12?'basico':m<24?'intermediario':'avancado';}
 
-        function applyTranslations() {
-            const l = lang();
-            // back link
-            document.querySelector('.back-link span:last-child') && (document.querySelector('.back-link span:last-child').textContent = t('back'));
-            document.querySelector('.header h1') && (document.querySelector('.header h1').textContent = t('title'));
-            document.querySelector('.header p') && (document.querySelector('.header p').textContent = t('subtitle'));
-            // form labels
-            const labels = document.querySelectorAll('label');
-            const lkeys = ['label-nome','label-idade','label-exp'];
-            labels.forEach((el,i) => { if(lkeys[i]) el.textContent = t(lkeys[i]); });
-            // section titles
-            const sections = document.querySelectorAll('.section-title');
-            if(sections[0]) sections[0].textContent = t('dados');
-            if(sections[1]) sections[1].textContent = t('biotipo-title');
-            if(sections[2]) sections[2].textContent = t('obj-title');
-            // biotipo cards
-            const bc = document.querySelectorAll('[data-biotipo]');
-            if(bc[0]){ bc[0].querySelector('.card-title').textContent=t('bio-ecto'); bc[0].querySelector('small').textContent=t('bio-ecto-desc'); }
-            if(bc[1]){ bc[1].querySelector('.card-title').textContent=t('bio-meso'); bc[1].querySelector('small').textContent=t('bio-meso-desc'); }
-            if(bc[2]){ bc[2].querySelector('.card-title').textContent=t('bio-endo'); bc[2].querySelector('small').textContent=t('bio-endo-desc'); }
-            // objetivo cards
-            const oc = document.querySelectorAll('[data-objetivo]');
-            if(oc[0]){ oc[0].querySelector('.card-title').textContent=t('obj-massa'); oc[0].querySelector('small').textContent=t('obj-massa-desc'); }
-            if(oc[1]){ oc[1].querySelector('.card-title').textContent=t('obj-defin'); oc[1].querySelector('small').textContent=t('obj-defin-desc'); }
-            if(oc[2]){ oc[2].querySelector('.card-title').textContent=t('obj-gordura'); oc[2].querySelector('small').textContent=t('obj-gordura-desc'); }
-            // submit button
-            document.querySelector('.submit-btn') && (document.querySelector('.submit-btn').textContent = t('btn-gerar'));
-            // result title
-            const rt = document.querySelector('#results h2');
-            if(rt) rt.textContent = t('result-title');
-            // buttons
-            const btns = document.querySelectorAll('.btn-gerar,.btn-pdf,.btn-back');
-            if(btns[0]) btns[0].textContent = t('btn-novo');
-            if(btns[1]) btns[1].textContent = t('btn-pdf');
-            if(btns[2]) btns[2].textContent = t('btn-inicio');
-            // hint
-            const hint = document.getElementById('expHint');
-            if(hint && hint.textContent.includes('ℹ️')) hint.textContent = t('hint-default');
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+function getLang(){return localStorage.getItem('language')||'pt';}
+function isEN(){return getLang()==='en';}
+function txt(k){return TXT[getLang()]?.[k]??TXT['pt'][k]??k;}
+
+function applyTranslations(){
+  const l=getLang();const t=TXT[l];
+  document.getElementById('pageTitle').textContent=t.title;
+  document.getElementById('pageSubtitle').textContent=t.subtitle;
+  document.getElementById('lbl-dados').textContent=t.dados;
+  document.getElementById('lbl-nome').textContent=t.nome;
+  document.getElementById('lbl-idade').textContent=t.idade;
+  document.getElementById('lbl-exp').textContent=t.exp;
+  document.getElementById('lbl-sexo').textContent=t.sexo;
+  document.getElementById('opt-sexo-default').textContent=t['sexo-default'];
+  document.getElementById('opt-masculino').textContent=t['masculino'];
+  document.getElementById('opt-feminino').textContent=t['feminino'];
+  document.getElementById('lbl-biotipo').textContent=t.biotipo;
+  document.getElementById('bio-ecto').textContent=t['bio-ecto'];
+  document.getElementById('bio-ecto-desc').textContent=t['bio-ecto-d'];
+  document.getElementById('bio-meso').textContent=t['bio-meso'];
+  document.getElementById('bio-meso-desc').textContent=t['bio-meso-d'];
+  document.getElementById('bio-endo').textContent=t['bio-endo'];
+  document.getElementById('bio-endo-desc').textContent=t['bio-endo-d'];
+  document.getElementById('lbl-objetivo').textContent=t.objetivo;
+  document.getElementById('obj-massa').textContent=t['obj-massa'];
+  document.getElementById('obj-massa-desc').textContent=t['obj-massa-d'];
+  document.getElementById('obj-def').textContent=t['obj-def'];
+  document.getElementById('obj-def-desc').textContent=t['obj-def-d'];
+  document.getElementById('obj-gord').textContent=t['obj-gord'];
+  document.getElementById('obj-gord-desc').textContent=t['obj-gord-d'];
+  document.getElementById('btn-submit').textContent=t.submit;
+  document.getElementById('result-title').textContent=t['result-title'];
+  document.getElementById('btn-novo').textContent=t['btn-novo'];
+  document.getElementById('btn-pdf').textContent=t['btn-pdf'];
+  document.querySelectorAll('[data-i18n="btn-voltar"]').forEach(el=>{el.textContent='';});
+  // hint
+  const expVal=document.getElementById('experiencia').value;
+  if(expVal) atualizarHint(expVal); else document.getElementById('expHint').textContent=t.hint[0];
+  // se resultados visíveis, re-render
+  if(treinoAtual&&dadosFormulario.biotipo) renderizarTreino(treinoAtual);
+}
+
+let treinoAtual=null,dadosFormulario={};
+
+window.atualizarHint=function(val){
+  const m=parseInt(val)||0;
+  const d=diasPorExp(m);const l=getLang();const t=TXT[l];
+  const idx=m<6?1:m<12?2:m<24?3:4;
+  document.getElementById('expHint').textContent=t.hint[idx]+d+' '+t['hint-suffix'];
+};
+
+function gerarTreino(sexo,biotipo,objetivo,meses){
+  const numDias=diasPorExp(meses);
+  const focus=getFocus(sexo,biotipo,objetivo,numDias);
+  const sr=getSetsReps(objetivo,meses);
+  const l=getLang();
+  const exDB=EX[l]?.[sexo]||EX['pt'][sexo];
+  const padroes={3:[0,2,4],4:[0,1,3,4],5:[0,1,2,3,4],6:[0,1,2,3,4,5]};
+  const diasTreino=padroes[numDias]||padroes[4];
+  const short=txt('dias-short');
+  const long=txt('dias');
+  const semana=short.map((nm,i)=>({nome:nm,nomeLongo:Array.isArray(long)?long[i]:long,treino:diasTreino.includes(i),numTreino:diasTreino.includes(i)?diasTreino.indexOf(i)+1:null}));
+  const dias=[];let dIdx=0;
+  semana.forEach(d=>{
+    if(d.treino){
+      const grupos=focus[dIdx]||focus[0];
+      const exercicios=[];
+      grupos.forEach(g=>{
+        const lista=exDB[g];
+        if(!lista) return;
+        const disp=shuffle(lista);
+        const qtd=rand(2,3);
+        for(let j=0;j<Math.min(qtd,disp.length);j++){
+          exercicios.push({nome:disp[j],series:sr.sets+rand(-1,1),repeticoes:sr.reps,descanso:sr.rest});
         }
+      });
+      dias.push({tipo:'treino',numero:dIdx+1,diaNome:d.nomeLongo,grupos:grupos.map(g=>g.charAt(0).toUpperCase()+g.slice(1)).join(' + '),exercicios});
+      dIdx++;
+    } else {
+      dias.push({tipo:'descanso',diaNome:d.nomeLongo});
+    }
+  });
+  return{dias,numDias,semana,nivel:nivelKey(meses),numExs:dias.filter(d=>d.tipo==='treino').reduce((a,d)=>a+d.exercicios.length,0)};
+}
 
-        const DIAS_SEMANA = T['pt']['dias-semana'];
-        const DIAS_SHORT  = T['pt']['dias-short'];
+function renderizarTreino(resultado){
+  treinoAtual=resultado;
+  const{dias,numDias,semana,nivel,numExs}=resultado;
+  const l=getLang();const t=TXT[l];
+  const nv=t.nivel[nivel]||nivel;
+  const nome=document.getElementById('nome').value;
+  const bio=dadosFormulario.biotipo||'';const obj=dadosFormulario.objetivo||'';const sx=dadosFormulario.sexo||'';
+  document.getElementById('result-subtitle').textContent=`${nome} • ${t['bio-labels'][bio]||bio} • ${t['obj-labels'][obj]||obj} • ${t['sexo-labels'][sx]||sx}`;
+  // badges
+  document.getElementById('planoBadges').innerHTML=`
+    <div class="plano-badge">${nivel==='iniciante'?'🌱':nivel==='basico'?'💪':nivel==='intermediario'?'🔥':'🏆'} ${t['badge-nivel']} ${nv}</div>
+    <div class="plano-badge">📅 ${numDias} ${t['badge-dias']}</div>
+    <div class="plano-badge">😴 ${7-numDias} ${t['badge-desc']}</div>
+    <div class="plano-badge">⚡ ${numExs} ${t['badge-exs']}</div>`;
+  // semana
+  const short=Array.isArray(t['dias-short'])?t['dias-short']:['S','T','Q','Q','S','S','D'];
+  document.getElementById('semanaHeader').innerHTML=semana.map((d,i)=>`
+    <div class="dia-badge ${d.treino?'treino':'descanso'}">
+      <div class="dia-nome">${short[i]||d.nome}</div>
+      <div>${d.treino?'💪':'😴'}</div>
+    </div>`).join('');
+  // lista
+  const el=document.getElementById('treinoList');el.innerHTML='';
+  dias.forEach(dia=>{
+    const div=document.createElement('div');
+    if(dia.tipo==='descanso'){
+      div.className='treino-day descanso-card';
+      div.innerHTML=`<div style="font-size:2rem;">😴</div><div class="descanso-text"><h3>${dia.diaNome} — ${t.descanso}</h3><p>${t['descanso-msg']}</p></div>`;
+    } else {
+      div.className='treino-day';
+      div.innerHTML=`
+        <div class="day-header">
+          <div class="day-left">
+            <div class="day-num">D${dia.numero}</div>
+            <div class="day-info"><h2>${dia.diaNome}</h2><div class="day-grupos">${dia.grupos}</div></div>
+          </div>
+          <div class="day-label">${t.treino} ${dia.numero}</div>
+        </div>
+        ${dia.exercicios.map((ex,i)=>`
+          <div class="exercise-item">
+            <div class="ex-num">${i+1}</div>
+            <div class="ex-info">
+              <div class="ex-name">${ex.nome}</div>
+              <div class="ex-details">
+                <span>🔁 <strong>${ex.series}</strong> ${t.series}</span>
+                <span>💥 <strong>${ex.repeticoes}</strong> ${t.reps}</span>
+                <span>⏱ <strong>${ex.descanso}</strong> ${t.rest}</span>
+              </div>
+            </div>
+          </div>`).join('')}`;
+    }
+    el.appendChild(div);
+  });
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
 
-        function getExerciciosPorGrupo() { return T[lang()].exercicios; }
+window.gerarNovoTreino=function(){
+  if(!dadosFormulario.biotipo||!dadosFormulario.objetivo||!dadosFormulario.sexo){alert(isEN()?'Please fill the form again':'Preencha o formulário novamente');return;}
+  const m=parseInt(document.getElementById('experiencia').value)||0;
+  const r=gerarTreino(dadosFormulario.sexo,dadosFormulario.biotipo,dadosFormulario.objetivo,m);
+  treinoAtual=r;renderizarTreino(r);
+};
 
-        // ─── ESTRUTURA POR EXPERIÊNCIA ───────────────────────────────────────
-        // Retorna número de dias/semana com base nos meses de experiência
-        function diasPorExperiencia(meses) {
-            if (meses < 6)   return 3;
-            if (meses < 12)  return 4;
-            if (meses < 24)  return 5;
-            return 6;
-        }
+window.salvarPDF=function(){
+  try{
+    const{jsPDF}=window.jspdf;const doc=new jsPDF();
+    const nome=document.getElementById('nome').value;
+    let y=20;
+    doc.setFontSize(18);doc.setFont(undefined,'bold');
+    doc.text(isEN()?'PERSONALIZED WORKOUT':'TREINO PERSONALIZADO',105,y,{align:'center'});
+    y+=10;doc.setFontSize(11);doc.setFont(undefined,'normal');
+    doc.text(nome,105,y,{align:'center'});y+=14;
+    doc.setDrawColor(16,185,129);doc.setLineWidth(0.5);doc.line(20,y,190,y);y+=10;
+    treinoAtual.dias.forEach(dia=>{
+      if(y>265){doc.addPage();y=20;}
+      if(dia.tipo==='descanso'){
+        doc.setFontSize(11);doc.setFont(undefined,'bold');
+        doc.setTextColor(120,120,200);doc.text(`${dia.diaNome} — ${isEN()?'Rest Day':'Descanso'} 😴`,20,y);
+        doc.setTextColor(0,0,0);y+=10;
+      } else {
+        doc.setFontSize(12);doc.setFont(undefined,'bold');
+        doc.setTextColor(10,150,100);doc.text(`${isEN()?'Day':'Dia'} ${dia.numero} — ${dia.diaNome} | ${dia.grupos}`,20,y);
+        doc.setTextColor(0,0,0);y+=8;
+        doc.setFont(undefined,'normal');doc.setFontSize(9);
+        dia.exercicios.forEach((ex,i)=>{
+          if(y>265){doc.addPage();y=20;}
+          doc.text(`  ${i+1}. ${ex.nome}`,20,y);y+=5;
+          doc.setTextColor(100,100,100);
+          doc.text(`     ${isEN()?'Sets':'Séries'}: ${ex.series} | Reps: ${ex.repeticoes} | ${isEN()?'Rest':'Descanso'}: ${ex.descanso}`,20,y);
+          doc.setTextColor(0,0,0);y+=6;
+        });y+=4;
+      }
+    });
+    doc.save(`Treino_${nome}.pdf`);alert('✅ PDF baixado!');
+  }catch(e){alert('Erro ao gerar PDF');}
+};
 
-        function nivelExperiencia(meses) {
-            const n = t('nivel');
-            if (meses < 6)  return { label: n.iniciante,     emoji: '🌱', key:'iniciante' };
-            if (meses < 12) return { label: n.basico,        emoji: '💪', key:'basico' };
-            if (meses < 24) return { label: n.intermediario, emoji: '🔥', key:'intermediario' };
-            return              { label: n.avancado,         emoji: '🏆', key:'avancado' };
-        }
+// Cards
+document.querySelectorAll('[data-biotipo]').forEach(c=>{c.addEventListener('click',function(){document.querySelectorAll('[data-biotipo]').forEach(x=>x.classList.remove('selected'));this.classList.add('selected');document.getElementById('biotipo').value=this.dataset.biotipo;dadosFormulario.biotipo=this.dataset.biotipo;});});
+document.querySelectorAll('[data-objetivo]').forEach(c=>{c.addEventListener('click',function(){document.querySelectorAll('[data-objetivo]').forEach(x=>x.classList.remove('selected'));this.classList.add('selected');document.getElementById('objetivo').value=this.dataset.objetivo;dadosFormulario.objetivo=this.dataset.objetivo;});});
 
-        // Distribuição de grupos musculares por número de dias
-        const focusPorDias = {
-            3: {
-                ganho_massa:   [['peito','ombro'],   ['costas','bíceps'],   ['perna','tríceps']],
-                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['perna','ombro']],
-                perda_gordura: [['peito','bíceps'],   ['costas','tríceps'],  ['perna','ombro']]
-            },
-            4: {
-                ganho_massa:   [['peito','ombro'],   ['costas'],            ['perna'],           ['bíceps','tríceps']],
-                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['ombro'],           ['perna']],
-                perda_gordura: [['peito'],            ['costas','bíceps'],   ['ombro','tríceps'], ['perna']]
-            },
-            5: {
-                ganho_massa:   [['peito'],            ['costas'],            ['perna'],           ['ombro'],           ['bíceps','tríceps']],
-                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['peito','costas']],
-                perda_gordura: [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['perna']]
-            },
-            6: {
-                ganho_massa:   [['peito'],            ['costas'],            ['perna'],           ['ombro'],           ['bíceps'],          ['tríceps']],
-                definicao:     [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['peito','costas'],  ['perna']],
-                perda_gordura: [['peito','tríceps'],  ['costas','bíceps'],   ['perna'],           ['ombro'],           ['bíceps','tríceps'],['perna']]
-            }
-        };
+document.getElementById('treinoForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const user=auth.currentUser;
+  if(!user){alert(isEN()?'Please log in!':'Faça login para gerar seu treino!');return;}
+  const sexo=document.getElementById('sexo').value;
+  if(!sexo){alert(isEN()?'Select your gender!':'Selecione seu sexo!');return;}
+  dadosFormulario.sexo=sexo;
+  dadosFormulario.biotipo=document.getElementById('biotipo').value;
+  dadosFormulario.objetivo=document.getElementById('objetivo').value;
+  const m=parseInt(document.getElementById('experiencia').value)||0;
+  const r=gerarTreino(sexo,dadosFormulario.biotipo,dadosFormulario.objetivo,m);
+  treinoAtual=r;renderizarTreino(r);
+});
 
-        // Sets/reps variam por nível
-        const paramsPorNivel = {
-            iniciante:     { sets: 3, repsGanho: '8-10',  repsDefin: '10-12', repsPerda: '12-15', descansoGanho: '2-3 min',  descansoDefin: '60-90 seg', descansoPerda: '45-60 seg' },
-            basico:        { sets: 3, repsGanho: '6-10',  repsDefin: '10-12', repsPerda: '12-15', descansoGanho: '90-120 seg',descansoDefin: '60 seg',    descansoPerda: '45 seg' },
-            intermediario: { sets: 4, repsGanho: '6-8',   repsDefin: '8-12',  repsPerda: '12-15', descansoGanho: '2-3 min',  descansoDefin: '45-60 seg', descansoPerda: '30-45 seg' },
-            avancado:      { sets: 4, repsGanho: '4-8',   repsDefin: '8-12',  repsPerda: '10-15', descansoGanho: '3-5 min',  descansoDefin: '60 seg',    descansoPerda: '30-45 seg' }
-        };
+// Lang hook
+window.__treinoOnLang=function(){applyTranslations();};
 
-        function getNivelParams(meses) {
-            if (meses < 6)  return paramsPorNivel.iniciante;
-            if (meses < 12) return paramsPorNivel.basico;
-            if (meses < 24) return paramsPorNivel.intermediario;
-            return paramsPorNivel.avancado;
-        }
-
-        // ─── DISTRIBUIÇÃO DE DIAS NA SEMANA ──────────────────────────────────
-        // Monta quais dias (0=Seg … 6=Dom) são treino e quais são descanso
-        function distribuirDiasSemana(numDiasTreino) {
-            const padroes = { 3:[0,2,4], 4:[0,1,3,4], 5:[0,1,2,3,4], 6:[0,1,2,3,4,5] };
-            const diasTreino = padroes[numDiasTreino] || padroes[3];
-            const short = T[lang()]['dias-short'];
-            const longo = T[lang()]['dias-semana'];
-            return short.map((nome, idx) => ({
-                nome,
-                nomeLongo: longo[idx],
-                treino: diasTreino.includes(idx),
-                numTreino: diasTreino.includes(idx) ? diasTreino.indexOf(idx)+1 : null
-            }));
-        }
-
-        // ─── HELPERS ─────────────────────────────────────────────────────────
-        function shuffle(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-        function random(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-
-        // ─── GERAR TREINO ─────────────────────────────────────────────────────
-        function gerarTreino(biotipo, objetivo, meses) {
-            const numDias = diasPorExperiencia(meses);
-            const focus = focusPorDias[numDias][objetivo];
-            const params = getNivelParams(meses);
-            const semana = distribuirDiasSemana(numDias);
-            const nivel = nivelExperiencia(meses);
-
-            const repsMap    = { ganho_massa: params.repsGanho,   definicao: params.repsDefin,   perda_gordura: params.repsPerda };
-            const descansoMap= { ganho_massa: params.descansoGanho, definicao: params.descansoDefin, perda_gordura: params.descansoPerda };
-
-            const dias = [];
-            let diaIndex = 0;
-
-            semana.forEach(diaInfo => {
-                if (diaInfo.treino) {
-                    const gruposEscolhidos = focus[diaIndex];
-                    const exercicios = [];
-
-                    const exerciciosPorGrupo = getExerciciosPorGrupo();
-                    gruposEscolhidos.forEach(grupo => {
-                        if (exerciciosPorGrupo[grupo]) {
-                            const disponiveis = shuffle(exerciciosPorGrupo[grupo]);
-                            const qtd = random(2, 3);
-                            for (let j = 0; j < Math.min(qtd, disponiveis.length); j++) {
-                                exercicios.push({
-                                    nome: disponiveis[j],
-                                    series: params.sets + random(-1, 1),
-                                    repeticoes: repsMap[objetivo],
-                                    descanso: descansoMap[objetivo]
-                                });
-                            }
-                        }
-                    });
-
-                    dias.push({
-                        tipo: 'treino',
-                        numero: diaIndex + 1,
-                        diaNome: diaInfo.nomeLongo,
-                        grupos: gruposEscolhidos.map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(' + '),
-                        exercicios
-                    });
-                    diaIndex++;
-                } else {
-                    dias.push({
-                        tipo: 'descanso',
-                        diaNome: diaInfo.nomeLongo
-                    });
-                }
-            });
-
-            return { dias, numDias, semana, nivel, numTotalExercicios: dias.filter(d=>d.tipo==='treino').reduce((a,d)=>a+d.exercicios.length,0) };
-        }
-
-        // ─── RENDERIZAR ───────────────────────────────────────────────────────
-        function renderizarTreino(resultado) {
-            const { dias, numDias, semana, nivel, numTotalExercicios } = resultado;
-            const nome = document.getElementById('nome').value;
-            const biotipo = document.getElementById('biotipo').value;
-            const objetivo = document.getElementById('objetivo').value;
-
-            // Subtítulo
-            document.getElementById('resultSubtitle').textContent =
-                `${nome} • ${t('bio-labels')[biotipo]} • ${t('obj-labels')[objetivo]}`;
-
-            // Badges
-            const badges = document.getElementById('planoBadges');
-            badges.innerHTML = `
-                <div class="plano-badge">${nivel.emoji} ${t('badge-nivel')} ${nivel.label}</div>
-                <div class="plano-badge">📅 ${numDias} ${t('badge-treinos')}</div>
-                <div class="plano-badge">😴 ${7 - numDias} ${t('badge-descanso')}</div>
-                <div class="plano-badge">⚡ ${numTotalExercicios} ${t('badge-exercicios')}</div>
-            `;
-
-            // Semana visual
-            document.getElementById('semanaHeader').innerHTML = semana.map(d => `
-                <div class="dia-semana-badge ${d.treino ? 'treino' : 'descanso'}">
-                    <div class="dia-nome">${d.nome}</div>
-                    <div class="dia-status">${d.treino ? '💪' : '😴'}</div>
-                </div>
-            `).join('');
-
-            // Lista de dias
-            const treinoList = document.getElementById('treinoList');
-            treinoList.innerHTML = '';
-
-            dias.forEach(dia => {
-                const div = document.createElement('div');
-
-                if (dia.tipo === 'descanso') {
-                    div.className = 'treino-day descanso-card';
-                    div.innerHTML = `
-                        <div class="descanso-icon">😴</div>
-                        <div class="descanso-text">
-                            <h3>${dia.diaNome} — ${t('descanso-label')}</h3>
-                            <p>${t('descanso-msg')}</p>
-                        </div>
-                    `;
-                } else {
-                    div.className = 'treino-day';
-                    div.innerHTML = `
-                        <div class="day-header">
-                            <div class="day-header-left">
-                                <div class="day-number">D${dia.numero}</div>
-                                <div class="day-info">
-                                    <h2>${dia.diaNome}</h2>
-                                    <div class="day-grupos">${dia.grupos}</div>
-                                </div>
-                            </div>
-                            <div class="day-weekday">${t('treino-label')} ${dia.numero}</div>
-                        </div>
-                        ${dia.exercicios.map((ex, idx) => `
-                            <div class="exercise-item">
-                                <div class="exercise-num">${idx + 1}</div>
-                                <div class="exercise-info">
-                                    <div class="exercise-name">${ex.nome}</div>
-                                    <div class="exercise-details">
-                                        <span>🔁 <strong>${ex.series}</strong> ${t('series')}</span>
-                                        <span>💥 <strong>${ex.repeticoes}</strong> ${t('reps')}</span>
-                                        <span>⏱ <strong>${ex.descanso}</strong> ${t('rest')}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    `;
-                }
-
-                treinoList.appendChild(div);
-            });
-
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // ─── HINT EXPERIÊNCIA ─────────────────────────────────────────────────
-        window.atualizarHintExp = function(val) {
-            const meses = parseInt(val) || 0;
-            const hint = document.getElementById('expHint');
-            const dias = diasPorExperiencia(meses);
-            const nivel = nivelExperiencia(meses);
-            const faixas = t('faixas');
-            const fi = meses<6?0: meses<12?1: meses<24?2:3;
-            hint.textContent = `${nivel.emoji} ${nivel.label} (${faixas[fi]}) → ${dias} ${t('hint-suffix')}`;
-        };
-
-        // ─── GERAR NOVO ───────────────────────────────────────────────────────
-        window.gerarNovoTreino = function() {
-            if (!dadosFormulario.biotipo || !dadosFormulario.objetivo) {
-                alert('Por favor, preencha o formulário novamente');
-                return;
-            }
-            const resultado = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo, dadosFormulario.experiencia);
-            treinoAtual = resultado;
-            renderizarTreino(resultado);
-        };
-
-        // ─── PDF ──────────────────────────────────────────────────────────────
-        window.salvarTreinoPDF = function() {
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                const nome = document.getElementById('nome').value;
-                const biotipo = document.getElementById('biotipo').value;
-                const objetivo = document.getElementById('objetivo').value;
-                const meses = parseInt(document.getElementById('experiencia').value) || 0;
-                const nivel = nivelExperiencia(meses);
-                const numDias = diasPorExperiencia(meses);
-
-                let y = 20;
-                // Título
-                doc.setFontSize(22);
-                doc.setFont(undefined, 'bold');
-                doc.text('TREINO PERSONALIZADO', 105, y, { align: 'center' });
-                y += 10;
-                doc.setFontSize(11);
-                doc.setFont(undefined, 'normal');
-                doc.text(nome, 105, y, { align: 'center' });
-                y += 6;
-                doc.setFontSize(9);
-                doc.text(`Biotipo: ${biotipo} | Objetivo: ${objetivo} | Nível: ${nivel.label} | ${numDias} dias/semana`, 105, y, { align: 'center' });
-                y += 14;
-
-                // Linha separadora
-                doc.setDrawColor(16, 185, 129);
-                doc.setLineWidth(0.5);
-                doc.line(20, y, 190, y);
-                y += 10;
-
-                treinoAtual.dias.forEach(dia => {
-                    if (y > 265) { doc.addPage(); y = 20; }
-
-                    if (dia.tipo === 'descanso') {
-                        doc.setFontSize(12);
-                        doc.setFont(undefined, 'bold');
-                        doc.setTextColor(120, 120, 180);
-                        doc.text(`${dia.diaNome.toUpperCase()} — DESCANSO 😴`, 20, y);
-                        doc.setTextColor(0, 0, 0);
-                        y += 10;
-                    } else {
-                        doc.setFontSize(13);
-                        doc.setFont(undefined, 'bold');
-                        doc.setTextColor(10, 150, 100);
-                        doc.text(`DIA ${dia.numero} — ${dia.diaNome.toUpperCase()} | ${dia.grupos}`, 20, y);
-                        doc.setTextColor(0, 0, 0);
-                        y += 8;
-
-                        doc.setFont(undefined, 'normal');
-                        doc.setFontSize(9);
-                        dia.exercicios.forEach((ex, idx) => {
-                            if (y > 265) { doc.addPage(); y = 20; }
-                            doc.text(`  ${idx + 1}. ${ex.nome}`, 20, y);
-                            y += 5;
-                            doc.setTextColor(100, 100, 100);
-                            doc.text(`     Séries: ${ex.series}  |  Reps: ${ex.repeticoes}  |  Descanso: ${ex.descanso}`, 20, y);
-                            doc.setTextColor(0, 0, 0);
-                            y += 6;
-                        });
-                        y += 4;
-                    }
-                });
-
-                doc.save(`Treino_${nome}.pdf`);
-                alert('✅ PDF baixado com sucesso!');
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Erro ao gerar PDF. Tente novamente.');
-            }
-        };
-
-        // ─── ESTADO ───────────────────────────────────────────────────────────
-        let treinoAtual = null;
-        let dadosFormulario = {};
-
-        // ─── EVENTOS CARDS ────────────────────────────────────────────────────
-        document.querySelectorAll('[data-biotipo]').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('[data-biotipo]').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('biotipo').value = this.dataset.biotipo;
-                dadosFormulario.biotipo = this.dataset.biotipo;
-            });
-        });
-
-        document.querySelectorAll('[data-objetivo]').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('[data-objetivo]').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('objetivo').value = this.dataset.objetivo;
-                dadosFormulario.objetivo = this.dataset.objetivo;
-            });
-        });
-
-        // ─── SUBMIT ───────────────────────────────────────────────────────────
-        document.getElementById('treinoForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Faça login para gerar seu treino!');
-                return;
-            }
-
-            const meses = parseInt(document.getElementById('experiencia').value) || 0;
-            dadosFormulario.biotipo     = document.getElementById('biotipo').value;
-            dadosFormulario.objetivo    = document.getElementById('objetivo').value;
-            dadosFormulario.experiencia = meses;
-
-            const resultado = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo, meses);
-            treinoAtual = resultado;
-            renderizarTreino(resultado);
-        });
-        // ─── INIT TRADUÇÃO ────────────────────────────────────────────────────
-        function initLang() {
-            applyTranslations();
-        }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => setTimeout(initLang, 100));
-        } else { setTimeout(initLang, 100); }
-
-        // Reagir a mudança de idioma do botão global
-        const _origSL = window.setLanguage;
-        window.setLanguage = function(l) {
-            if (_origSL) _origSL(l);
-            applyTranslations();
-            // Se já tem treino gerado, regenera na nova língua
-            if (treinoAtual && dadosFormulario.biotipo) {
-                const resultado = gerarTreino(dadosFormulario.biotipo, dadosFormulario.objetivo, dadosFormulario.experiencia || 0);
-                treinoAtual = resultado;
-                renderizarTreino(resultado);
-            }
-        };
-    </script>
-    <script src="/translations.js"></script>
+// Init
+setTimeout(()=>{
+  const l=localStorage.getItem('language')||'pt';
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
+  applyTranslations();
+},150);
+</script>
+<script src="/translations.js"></script>
+<script>
+(function(){
+  const _o=window.setLanguage;
+  window.setLanguage=function(lang){_o(lang);document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));if(typeof window.__treinoOnLang==='function')window.__treinoOnLang();};
+})();
+</script>
 </body>
 </html>

@@ -1,473 +1,800 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Dieta - VidaSaudável</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        :root { --primary:#10b981; --primary-dark:#059669; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%); color:white; min-height:100vh; padding:20px; }
-        .container { max-width:1200px; margin:0 auto; }
-        .header { text-align:center; margin-bottom:40px; padding-top:30px; }
-        .header h1 { font-size:3.5rem; font-weight:800; background:linear-gradient(135deg,var(--primary) 0%,#34d399 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:10px; }
-        .header p { color:rgba(255,255,255,0.6); }
-        .form-wrapper { background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:30px; padding:50px; margin-bottom:40px; }
-        .section-title { font-size:1.5rem; font-weight:700; color:var(--primary); margin-bottom:25px; margin-top:35px; }
-        .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-bottom:20px; }
-        .form-group { display:flex; flex-direction:column; gap:8px; }
-        label { font-weight:600; color:rgba(255,255,255,0.9); }
-        input,select { width:100%; padding:15px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:white; font-size:1rem; font-family:'Poppins',sans-serif; }
-        input:focus,select:focus { outline:none; border-color:var(--primary); }
-        select option { background:#1e293b; }
-        .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:15px; margin-bottom:20px; }
-        .card { background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.1); border-radius:15px; padding:20px; text-align:center; cursor:pointer; transition:all 0.3s; }
-        .card:hover { transform:translateY(-4px); border-color:var(--primary); }
-        .card.selected { background:linear-gradient(135deg,rgba(16,185,129,0.25),rgba(5,150,105,0.2)); border-color:var(--primary); box-shadow:0 0 20px rgba(16,185,129,0.3); }
-        .card-icon { font-size:2.2rem; margin-bottom:8px; }
-        .card-title { font-weight:700; font-size:1rem; }
-        .submit-btn { width:100%; padding:20px; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border:none; border-radius:50px; color:white; font-weight:800; font-size:1.2rem; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all 0.3s; box-shadow:0 10px 30px rgba(16,185,129,0.4); margin-top:30px; font-family:'Poppins',sans-serif; }
-        .submit-btn:hover { transform:translateY(-3px); }
-        .results { background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:30px; padding:50px; margin-top:40px; }
-        .meal-container { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:20px; padding:28px; margin-bottom:24px; }
-        .meal-header { border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:14px; margin-bottom:18px; }
-        .meal-header h2 { font-size:1.4rem; color:var(--primary); font-weight:700; }
-        /* FOOD ITEM - desktop */
-        .food-item { background:rgba(255,255,255,0.05); padding:14px 16px; margin-bottom:10px; border-radius:12px; border-left:3px solid var(--primary); display:flex; align-items:center; gap:12px; justify-content:space-between; }
-        .food-item:last-child { margin-bottom:0; }
-        .food-name { font-weight:700; color:white; flex:1; font-size:1rem; }
-        .food-amount { color:var(--primary); font-weight:700; font-size:0.95rem; white-space:nowrap; }
-        .food-macros { color:rgba(255,255,255,0.55); font-size:0.82rem; white-space:nowrap; }
-        .btn-trocar { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); border-radius:8px; padding:6px 12px; font-size:0.78rem; cursor:pointer; font-family:'Poppins',sans-serif; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
-        .btn-trocar:hover { background:rgba(16,185,129,0.2); border-color:var(--primary); color:var(--primary); }
-        .button-group { text-align:center; margin-top:40px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
-        .btn-gerar,.btn-pdf,.btn-back { padding:16px 32px; border:none; border-radius:50px; color:white; font-weight:700; font-size:0.95rem; cursor:pointer; transition:all 0.3s; font-family:'Poppins',sans-serif; }
-        .btn-gerar { background:linear-gradient(135deg,#10b981,#059669); box-shadow:0 8px 25px rgba(16,185,129,0.4); }
-        .btn-pdf { background:linear-gradient(135deg,#f59e0b,#d97706); box-shadow:0 8px 25px rgba(245,158,11,0.4); }
-        .btn-back { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); }
-        .btn-gerar:hover,.btn-pdf:hover,.btn-back:hover { transform:translateY(-3px); }
-        .back-link { display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); padding:12px 24px; border-radius:50px; text-decoration:none; color:white; font-weight:600; margin-bottom:30px; transition:all 0.3s; }
-        .back-link:hover { background:rgba(255,255,255,0.15); }
-
-        /* ── MOBILE ONLY ─────────────────────────────── */
-        @media(max-width:600px){
-            body { padding:12px; }
-            .header h1 { font-size:2rem; }
-            .header p { font-size:0.88rem; }
-            .form-wrapper { padding:20px 16px; border-radius:20px; }
-            .section-title { font-size:1.2rem; margin-top:22px; margin-bottom:16px; }
-            .card-grid { grid-template-columns:1fr 1fr 1fr; gap:8px; }
-            .card { padding:12px 6px; border-radius:12px; }
-            .card-icon { font-size:1.6rem; margin-bottom:4px; }
-            .card-title { font-size:0.78rem; }
-            .card small { font-size:0.65rem; }
-            .submit-btn { font-size:1rem; padding:16px; }
-            .results { padding:20px 14px; border-radius:20px; }
-            .meal-container { padding:16px 12px; border-radius:14px; }
-            .meal-header h2 { font-size:1.05rem; }
-            /* food item mobile: stack em coluna */
-            .food-item { flex-direction:column; align-items:flex-start; gap:6px; padding:12px; }
-            .food-name { font-size:0.92rem; }
-            .food-amount { font-size:0.85rem; }
-            .food-macros { font-size:0.75rem; }
-            .food-row-bottom { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-            .btn-trocar { font-size:0.72rem; padding:4px 10px; }
-            .button-group { flex-direction:column; align-items:center; gap:10px; }
-            .btn-gerar,.btn-pdf,.btn-back { width:100%; justify-content:center; padding:14px; font-size:0.9rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Dieta - VidaSaudável</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--primary:#10b981;--primary-dark:#059669;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:white;min-height:100vh;padding:20px;}
+.container{max-width:1200px;margin:0 auto;}
+.header{text-align:center;margin-bottom:40px;padding-top:30px;}
+.header h1{font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,var(--primary) 0%,#34d399 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.header p{color:rgba(255,255,255,0.6);}
+.form-wrapper{background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:30px;padding:50px;margin-bottom:40px;}
+.section-title{font-size:1.4rem;font-weight:700;color:var(--primary);margin-bottom:20px;margin-top:30px;}
+.section-title:first-child{margin-top:0;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:10px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+label{font-weight:600;color:rgba(255,255,255,0.9);font-size:0.95rem;}
+input,select{width:100%;padding:15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:white;font-size:1rem;font-family:'Poppins',sans-serif;}
+input:focus,select:focus{outline:none;border-color:var(--primary);}
+select option{background:#1e293b;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:10px;}
+.card{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:15px;padding:20px;text-align:center;cursor:pointer;transition:all 0.3s;}
+.card:hover{transform:translateY(-4px);border-color:var(--primary);}
+.card.selected{background:linear-gradient(135deg,rgba(16,185,129,0.25),rgba(5,150,105,0.2));border-color:var(--primary);box-shadow:0 0 20px rgba(16,185,129,0.3);}
+.card-icon{font-size:2.2rem;margin-bottom:8px;}
+.card-title{font-weight:700;font-size:0.95rem;}
+.card small{color:rgba(255,255,255,0.5);font-size:0.75rem;}
+.submit-btn{width:100%;padding:20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:50px;color:white;font-weight:800;font-size:1.1rem;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.3s;box-shadow:0 10px 30px rgba(16,185,129,0.4);margin-top:30px;font-family:'Poppins',sans-serif;}
+.submit-btn:hover{transform:translateY(-3px);}
+.results{background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:30px;padding:50px;margin-top:40px;}
+.meal-container{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:24px;margin-bottom:20px;}
+.meal-header{border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;margin-bottom:16px;}
+.meal-header h2{font-size:1.2rem;color:var(--primary);font-weight:700;}
+.food-item{background:rgba(255,255,255,0.04);padding:12px 16px;margin-bottom:8px;border-radius:10px;border-left:3px solid var(--primary);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.food-item:last-child{margin-bottom:0;}
+.food-name{font-weight:700;color:white;flex:1;min-width:100px;font-size:0.95rem;}
+.food-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.food-amount{color:var(--primary);font-weight:700;font-size:0.85rem;white-space:nowrap;}
+.food-macros{color:rgba(255,255,255,0.5);font-size:0.75rem;white-space:nowrap;}
+.btn-trocar{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border-radius:8px;padding:5px 12px;font-size:0.75rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;white-space:nowrap;}
+.btn-trocar:hover{background:rgba(16,185,129,0.2);border-color:var(--primary);color:var(--primary);}
+.button-group{text-align:center;margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-gerar,.btn-pdf,.btn-back{padding:16px 32px;border:none;border-radius:50px;color:white;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.3s;font-family:'Poppins',sans-serif;text-decoration:none;display:inline-block;}
+.btn-gerar{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 8px 25px rgba(16,185,129,0.4);}
+.btn-pdf{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 8px 25px rgba(245,158,11,0.4);}
+.btn-back{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);}
+.btn-gerar:hover,.btn-pdf:hover,.btn-back:hover{transform:translateY(-3px);}
+.back-link{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);padding:12px 24px;border-radius:50px;text-decoration:none;color:white;font-weight:600;margin-bottom:30px;transition:all 0.3s;}
+.lang-switcher{position:fixed;top:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(255,255,255,0.1);padding:6px;border-radius:25px;backdrop-filter:blur(10px);}
+.lang-btn{padding:8px 16px;background:transparent;border:none;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:20px;font-weight:600;transition:all 0.3s;font-family:'Poppins',sans-serif;font-size:0.85rem;}
+.lang-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:white;}
+@media(max-width:600px){
+  body{padding:10px;}
+  .header h1{font-size:1.9rem;}
+  .form-wrapper{padding:18px 14px;border-radius:18px;}
+  .section-title{font-size:1.05rem;margin-top:20px;margin-bottom:14px;}
+  .card-grid{grid-template-columns:repeat(3,1fr);gap:7px;}
+  .card{padding:10px 5px;border-radius:10px;}
+  .card-icon{font-size:1.4rem;margin-bottom:3px;}
+  .card-title{font-size:0.68rem;}
+  .card small{font-size:0.58rem;}
+  .submit-btn{font-size:0.9rem;padding:15px;}
+  .results{padding:16px 12px;border-radius:18px;}
+  .meal-container{padding:12px 10px;}
+  .meal-header h2{font-size:0.95rem;}
+  .food-item{padding:9px 10px;gap:6px;}
+  .food-name{font-size:0.82rem;}
+  .food-amount{font-size:0.75rem;}
+  .food-macros{font-size:0.67rem;}
+  .btn-trocar{font-size:0.67rem;padding:3px 7px;}
+  .button-group{flex-direction:column;align-items:center;gap:10px;}
+  .btn-gerar,.btn-pdf,.btn-back{width:100%;text-align:center;padding:13px;}
+  .lang-switcher{top:10px;right:10px;}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back-link">
-            <span style="font-size:1.3rem;">←</span>
-            <span data-i18n="btn-voltar">Voltar para Início</span>
-        </a>
-
-        <div class="header">
-            <h1 data-i18n="diet-title">🥗 GERADOR DE DIETA</h1>
-            <p data-i18n="diet-subtitle">Crie seu plano alimentar personalizado</p>
+<div class="lang-switcher">
+  <button class="lang-btn" data-lang="pt" onclick="setLanguage('pt')">🇧🇷 PT</button>
+  <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+</div>
+<div class="container">
+  <a href="index.html" class="back-link"><span style="font-size:1.3rem;">←</span><span data-i18n="btn-voltar">Voltar para Início</span></a>
+  <div class="header">
+    <h1 data-i18n="dieta-title">GERADOR DE DIETA</h1>
+    <p data-i18n="dieta-subtitle">Crie seu plano alimentar personalizado</p>
+  </div>
+  <div class="form-wrapper">
+    <form id="dietaForm">
+      <div class="section-title" data-i18n="form-dados">📋 Seus Dados</div>
+      <div class="form-grid">
+        <div class="form-group"><label data-i18n="label-nome">Nome</label><input type="text" id="nome" required placeholder="Seu nome"></div>
+        <div class="form-group"><label data-i18n="label-peso">Peso (kg)</label><input type="number" id="peso" required placeholder="70" min="30" max="300"></div>
+        <div class="form-group"><label data-i18n="label-altura">Altura (cm)</label><input type="number" id="altura" required placeholder="170" min="100" max="250"></div>
+        <div class="form-group">
+          <label data-i18n="label-sexo">Sexo</label>
+          <select id="sexo" required>
+            <option value="" data-i18n="placeholder-sexo">Selecione</option>
+            <option value="masculino" data-i18n="sexo-masculino">Masculino</option>
+            <option value="feminino" data-i18n="sexo-feminino">Feminino</option>
+          </select>
         </div>
-
-        <div class="form-wrapper">
-            <form id="dietaForm">
-                <div class="section-title" data-i18n="diet-dados">👤 Seus Dados</div>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label data-i18n="diet-nome">Nome</label>
-                        <input type="text" id="nome" required placeholder="Seu nome">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="diet-peso">Peso (kg)</label>
-                        <input type="number" id="peso" required placeholder="70" min="30" max="300">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="diet-altura">Altura (cm)</label>
-                        <input type="number" id="altura" required placeholder="170" min="100" max="250">
-                    </div>
-                </div>
-
-                <div class="section-title" data-i18n="diet-biotipo-title">💪 Seu Biotipo</div>
-                <div class="card-grid">
-                    <div class="card" data-biotipo="ectomorfo">
-                        <div class="card-icon">🏃</div>
-                        <div class="card-title" data-i18n="bio-ecto">Ectomorfo</div>
-                        <small data-i18n="bio-ecto-desc">Magro, metabolismo rápido</small>
-                    </div>
-                    <div class="card" data-biotipo="mesomorfo">
-                        <div class="card-icon">💪</div>
-                        <div class="card-title" data-i18n="bio-meso">Mesomorfo</div>
-                        <small data-i18n="bio-meso-desc">Atlético, ganha fácil</small>
-                    </div>
-                    <div class="card" data-biotipo="endomorfo">
-                        <div class="card-icon">🏋️</div>
-                        <div class="card-title" data-i18n="bio-endo">Endomorfo</div>
-                        <small data-i18n="bio-endo-desc">Robusto, metabolismo lento</small>
-                    </div>
-                </div>
-                <input type="hidden" id="biotipo" required>
-
-                <div class="section-title" data-i18n="diet-obj-title">🎯 Seu Objetivo</div>
-                <div class="card-grid">
-                    <div class="card" data-objetivo="ganho_massa">
-                        <div class="card-icon">📈</div>
-                        <div class="card-title" data-i18n="obj-massa">Ganho de Massa</div>
-                    </div>
-                    <div class="card" data-objetivo="definicao">
-                        <div class="card-icon">⚡</div>
-                        <div class="card-title" data-i18n="obj-defin">Definição</div>
-                    </div>
-                    <div class="card" data-objetivo="perda_gordura">
-                        <div class="card-icon">🔥</div>
-                        <div class="card-title" data-i18n="obj-gordura">Perda de Gordura</div>
-                    </div>
-                </div>
-                <input type="hidden" id="objetivo" required>
-
-                <button type="submit" class="submit-btn" data-i18n="diet-btn-gerar">🥗 Gerar Minha Dieta</button>
-            </form>
-        </div>
-
-        <div class="results" id="results" style="display:none;">
-            <div style="text-align:center;margin-bottom:32px;">
-                <h2 style="font-size:2rem;color:var(--primary);margin-bottom:8px;" data-i18n="diet-result-title">✅ Sua Dieta Personalizada</h2>
-                <p id="resultSubtitle" style="color:rgba(255,255,255,0.5);font-size:0.9rem;"></p>
-            </div>
-            <div id="dietaList"></div>
-            <div class="button-group">
-                <button class="btn-gerar" onclick="gerarNovaDieta()" data-i18n="diet-btn-nova">🔄 Gerar Nova Dieta</button>
-                <button class="btn-pdf" onclick="salvarDietaPDF()" data-i18n="diet-btn-pdf">📄 Salvar PDF</button>
-                <a href="index.html" class="btn-back" data-i18n="btn-voltar">🏠 Início</a>
-            </div>
-        </div>
+      </div>
+      <div class="section-title" data-i18n="form-biotipo-dieta">💪 Seu Biotipo</div>
+      <div class="card-grid">
+        <div class="card" data-biotipo="ectomorfo"><div class="card-icon">🏃</div><div class="card-title" data-i18n="biotipo-ectomorfo">Ectomorfo</div><small data-i18n="biotipo-ectomorfo-desc-dieta">Corpo magro, metabolismo rápido</small></div>
+        <div class="card" data-biotipo="mesomorfo"><div class="card-icon">💪</div><div class="card-title" data-i18n="biotipo-mesomorfo">Mesomorfo</div><small data-i18n="biotipo-mesomorfo-desc-dieta">Corpo atlético</small></div>
+        <div class="card" data-biotipo="endomorfo"><div class="card-icon">🏋️</div><div class="card-title" data-i18n="biotipo-endomorfo">Endomorfo</div><small data-i18n="biotipo-endomorfo-desc-dieta">Corpo robusto, metabolismo lento</small></div>
+      </div>
+      <input type="hidden" id="biotipo" required>
+      <div class="section-title" data-i18n="form-objetivo-dieta">🎯 Seu Objetivo</div>
+      <div class="card-grid">
+        <div class="card" data-objetivo="ganho_massa"><div class="card-icon">📈</div><div class="card-title" data-i18n="objetivo-hipertrofia">Ganho de Massa</div></div>
+        <div class="card" data-objetivo="definicao"><div class="card-icon">⚡</div><div class="card-title" data-i18n="objetivo-definicao">Definição</div></div>
+        <div class="card" data-objetivo="perda_gordura"><div class="card-icon">🔥</div><div class="card-title" data-i18n="objetivo-emagrecimento">Perda de Gordura</div></div>
+      </div>
+      <input type="hidden" id="objetivo" required>
+      <div class="section-title" data-i18n="form-orcamento">💰 Perfil Alimentar</div>
+      <div class="card-grid">
+        <div class="card" data-orcamento="economico"><div class="card-icon">💵</div><div class="card-title" data-i18n="orcamento-economico">Econômico</div><small data-i18n="orcamento-economico-desc">Alimentos básicos e acessíveis</small></div>
+        <div class="card" data-orcamento="medio"><div class="card-icon">💳</div><div class="card-title" data-i18n="orcamento-medio">Médio</div><small data-i18n="orcamento-medio-desc">Variedade e qualidade equilibradas</small></div>
+        <div class="card" data-orcamento="premium"><div class="card-icon">💎</div><div class="card-title" data-i18n="orcamento-premium">Premium</div><small data-i18n="orcamento-premium-desc">Alimentos premium e suplementos</small></div>
+      </div>
+      <input type="hidden" id="orcamento" required>
+      <button type="submit" class="submit-btn" data-i18n="btn-gerar-dieta">🥗 Gerar Minha Dieta</button>
+    </form>
+  </div>
+  <div class="results" id="results" style="display:none;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <h2 style="font-size:1.8rem;color:var(--primary);margin-bottom:6px;" data-i18n="dieta-result-title">✅ Sua Dieta Personalizada</h2>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;" data-i18n="dieta-result-subtitle">Clique em 🔄 para trocar qualquer alimento</p>
     </div>
+    <div id="dietaList"></div>
+    <div class="button-group">
+      <button class="btn-gerar" onclick="gerarNovaDieta()" data-i18n="btn-outra-dieta">🔄 Gerar Outra Dieta</button>
+      <button class="btn-pdf" onclick="salvarDietaPDF()">📄 PDF</button>
+      <a href="index.html" class="btn-back" data-i18n="btn-voltar">Voltar</a>
+    </div>
+  </div>
+</div>
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import{getAuth}from'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+const app=initializeApp({apiKey:"AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",authDomain:"vidasaudavel-490d6.firebaseapp.com",projectId:"vidasaudavel-490d6"});
+const auth=getAuth(app);
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-
-        const app = initializeApp({
-            apiKey: "AIzaSyCG7wlPmWepa8MVfuX4XZnxGnkxAEAbtDo",
-            authDomain: "vidasaudavel-490d6.firebaseapp.com",
-            projectId: "vidasaudavel-490d6"
-        });
-        const auth = getAuth(app);
-
-        // ── TRADUÇÕES INTERNAS ──────────────────────────────────────────────
-        const T = {
-            pt: {
-                'btn-voltar':'Voltar para Início',
-                'diet-title':'🥗 GERADOR DE DIETA',
-                'diet-subtitle':'Crie seu plano alimentar personalizado',
-                'diet-dados':'👤 Seus Dados',
-                'diet-nome':'Nome','diet-peso':'Peso (kg)','diet-altura':'Altura (cm)',
-                'diet-biotipo-title':'💪 Seu Biotipo',
-                'bio-ecto':'Ectomorfo','bio-ecto-desc':'Magro, metabolismo rápido',
-                'bio-meso':'Mesomorfo','bio-meso-desc':'Atlético, ganha fácil',
-                'bio-endo':'Endomorfo','bio-endo-desc':'Robusto, metabolismo lento',
-                'diet-obj-title':'🎯 Seu Objetivo',
-                'obj-massa':'Ganho de Massa','obj-defin':'Definição','obj-gordura':'Perda de Gordura',
-                'diet-btn-gerar':'🥗 Gerar Minha Dieta',
-                'diet-result-title':'✅ Sua Dieta Personalizada',
-                'diet-btn-nova':'🔄 Gerar Nova Dieta','diet-btn-pdf':'📄 Salvar PDF',
-                'lbl-trocar':'🔄 Trocar',
-                'meals':['☀️ Café da manhã (7h)','🍎 Lanche (10h)','🍽️ Almoço (13h)','🥤 Lanche (16h)','🌙 Jantar (20h)','🥛 Ceia (22h)'],
-                'tipos':{'proteina':'Proteína','carboidrato':'Carboidrato','vegetal':'Vegetal','gordura':'Gordura','fruta':'Fruta'},
-                'obj-labels':{'ganho_massa':'Ganho de Massa','definicao':'Definição','perda_gordura':'Perda de Gordura'},
-                'bio-labels':{'ectomorfo':'Ectomorfo','mesomorfo':'Mesomorfo','endomorfo':'Endomorfo'},
-                'alimentos':{
-                    cafe_manha:{
-                        proteina:['Ovo mexido','Ovo cozido','Iogurte grego','Queijo cottage','Whey protein'],
-                        carboidrato:['Pão integral','Aveia','Tapioca','Granola','Banana'],
-                        gordura:['Amendoim','Amêndoas','Pasta de amendoim','Abacate'],
-                        fruta:['Banana','Maçã','Morango','Laranja','Mamão']
-                    },
-                    almoco:{
-                        proteina:['Frango grelhado','Peito de frango','Tilápia','Carne moída','Filé mignon','Peito de peru'],
-                        carboidrato:['Arroz branco','Arroz integral','Batata doce','Batata inglesa','Macarrão integral','Quinoa'],
-                        vegetal:['Brócolis','Couve','Alface','Tomate','Feijão','Cenoura'],
-                        gordura:['Azeite','Abacate','Castanha','Óleo de coco']
-                    },
-                    lanche:{
-                        proteina:['Whey protein','Ovo cozido','Iogurte grego','Queijo cottage'],
-                        carboidrato:['Banana','Maçã','Pão integral','Tapioca','Aveia'],
-                        gordura:['Castanha','Amendoim','Pasta de amendoim','Amêndoas']
-                    },
-                    jantar:{
-                        proteina:['Frango grelhado','Peito de frango','Tilápia','Salmão','Atum','Ovo mexido'],
-                        carboidrato:['Arroz integral','Batata doce','Macarrão integral','Batata inglesa'],
-                        vegetal:['Brócolis','Alface','Cenoura','Couve','Tomate','Abobrinha']
-                    }
-                }
-            },
-            en: {
-                'btn-voltar':'Back to Home',
-                'diet-title':'🥗 DIET GENERATOR',
-                'diet-subtitle':'Create your personalized meal plan',
-                'diet-dados':'👤 Your Info',
-                'diet-nome':'Name','diet-peso':'Weight (kg)','diet-altura':'Height (cm)',
-                'diet-biotipo-title':'💪 Your Body Type',
-                'bio-ecto':'Ectomorph','bio-ecto-desc':'Lean, fast metabolism',
-                'bio-meso':'Mesomorph','bio-meso-desc':'Athletic, gains easily',
-                'bio-endo':'Endomorph','bio-endo-desc':'Stocky, slow metabolism',
-                'diet-obj-title':'🎯 Your Goal',
-                'obj-massa':'Muscle Gain','obj-defin':'Definition','obj-gordura':'Fat Loss',
-                'diet-btn-gerar':'🥗 Generate My Diet',
-                'diet-result-title':'✅ Your Personalized Diet',
-                'diet-btn-nova':'🔄 Generate New Diet','diet-btn-pdf':'📄 Save PDF',
-                'lbl-trocar':'🔄 Swap',
-                'meals':['☀️ Breakfast (7am)','🍎 Snack (10am)','🍽️ Lunch (1pm)','🥤 Snack (4pm)','🌙 Dinner (8pm)','🥛 Late snack (10pm)'],
-                'tipos':{'proteina':'Protein','carboidrato':'Carb','vegetal':'Vegetable','gordura':'Fat','fruta':'Fruit'},
-                'obj-labels':{'ganho_massa':'Muscle Gain','definicao':'Definition','perda_gordura':'Fat Loss'},
-                'bio-labels':{'ectomorfo':'Ectomorph','mesomorfo':'Mesomorph','endomorfo':'Endomorph'},
-                'alimentos':{
-                    cafe_manha:{
-                        proteina:['Scrambled Eggs','Boiled Eggs','Greek Yogurt','Cottage Cheese','Whey Protein'],
-                        carboidrato:['Whole Wheat Bread','Oatmeal','Tapioca','Granola','Banana'],
-                        gordura:['Peanut Butter','Almonds','Peanut Butter','Avocado'],
-                        fruta:['Banana','Apple','Strawberry','Orange','Papaya']
-                    },
-                    almoco:{
-                        proteina:['Grilled Chicken','Chicken Breast','Tilapia','Ground Beef','Filet Mignon','Turkey Breast'],
-                        carboidrato:['White Rice','Brown Rice','Sweet Potato','Potato','Whole Wheat Pasta','Quinoa'],
-                        vegetal:['Broccoli','Kale','Lettuce','Tomato','Black Beans','Carrot'],
-                        gordura:['Olive Oil','Avocado','Brazil Nuts','Coconut Oil']
-                    },
-                    lanche:{
-                        proteina:['Whey Protein','Boiled Eggs','Greek Yogurt','Cottage Cheese'],
-                        carboidrato:['Banana','Apple','Whole Wheat Bread','Tapioca','Oatmeal'],
-                        gordura:['Brazil Nuts','Peanut','Peanut Butter','Almonds']
-                    },
-                    jantar:{
-                        proteina:['Grilled Chicken','Chicken Breast','Tilapia','Salmon','Tuna','Scrambled Eggs'],
-                        carboidrato:['Brown Rice','Sweet Potato','Whole Wheat Pasta','Potato'],
-                        vegetal:['Broccoli','Lettuce','Carrot','Kale','Tomato','Zucchini']
-                    }
-                }
-            }
-        };
-
-        function lang() { return localStorage.getItem('language') || 'pt'; }
-        function t(k) { return (T[lang()] && T[lang()][k]) ? T[lang()][k] : (T['pt'][k] || k); }
-
-        // Aplicar traduções estáticas
-        function applyTranslations() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const k = el.getAttribute('data-i18n');
-                const v = t(k);
-                if (v) el.textContent = v;
-            });
+// ── BANCO COMPLETO PT ──────────────────────────────────────────────────
+const DB = {
+  pt: {
+    masculino: {
+      ectomorfo: {
+        ganho_massa: {
+          refeicoes: 6,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:180,t:'proteina'},{n:'Pão francês',q:100,t:'carboidrato'},{n:'Banana',q:120,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:120,t:'proteina'},{n:'Banana',q:120,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:200,t:'proteina'},{n:'Arroz branco',q:200,t:'carboidrato'},{n:'Feijão',q:150,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:120,t:'proteina'},{n:'Aveia',q:80,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:200,t:'proteina'},{n:'Arroz integral',q:180,t:'carboidrato'},{n:'Couve',q:100,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Ovo cozido',q:120,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:180,t:'proteina'},{n:'Pão integral',q:100,t:'carboidrato'},{n:'Abacate',q:80,t:'gordura'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:150,t:'proteina'},{n:'Granola',q:60,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:220,t:'proteina'},{n:'Arroz integral',q:200,t:'carboidrato'},{n:'Brócolis',q:120,t:'vegetal'},{n:'Azeite',q:15,t:'gordura'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:150,t:'proteina'},{n:'Batata doce',q:150,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:200,t:'proteina'},{n:'Batata doce',q:150,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:150,t:'proteina'},{n:'Amendoim',q:40,t:'gordura'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Aveia',q:80,t:'carboidrato'},{n:'Abacate',q:80,t:'gordura'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:200,t:'proteina'},{n:'Granola',q:60,t:'carboidrato'},{n:'Amêndoas',q:30,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:220,t:'proteina'},{n:'Quinoa',q:180,t:'carboidrato'},{n:'Aspargos',q:120,t:'vegetal'},{n:'Azeite',q:15,t:'gordura'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Banana',q:120,t:'carboidrato'},{n:'Pasta de amendoim',q:30,t:'gordura'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Filé mignon',q:220,t:'proteina'},{n:'Batata doce',q:180,t:'carboidrato'},{n:'Brócolis',q:150,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Castanha',q:30,t:'gordura'}]}
+          ]
+        },
+        definicao: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:150,t:'proteina'},{n:'Aveia',q:60,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:180,t:'proteina'},{n:'Arroz integral',q:150,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Banana',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:180,t:'proteina'},{n:'Batata inglesa',q:150,t:'carboidrato'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:150,t:'proteina'},{n:'Tapioca',q:60,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:180,t:'proteina'},{n:'Arroz integral',q:150,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:120,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:180,t:'proteina'},{n:'Batata doce',q:120,t:'carboidrato'},{n:'Couve',q:80,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:35,t:'proteina'},{n:'Aveia',q:60,t:'carboidrato'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:150,t:'proteina'},{n:'Amêndoas',q:25,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:200,t:'proteina'},{n:'Batata doce',q:150,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:35,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:200,t:'proteina'},{n:'Quinoa',q:130,t:'carboidrato'},{n:'Brócolis',q:120,t:'vegetal'}]}
+          ]
+        },
+        perda_gordura: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:120,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:120,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Arroz integral',q:120,t:'carboidrato'},{n:'Alface',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Cenoura',q:100,t:'vegetal'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:120,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Arroz integral',q:120,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:100,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:160,t:'proteina'},{n:'Abobrinha',q:100,t:'vegetal'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'},{n:'Morango',q:80,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:130,t:'proteina'},{n:'Amêndoas',q:20,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:180,t:'proteina'},{n:'Batata doce',q:100,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:30,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Brócolis',q:120,t:'vegetal'},{n:'Abobrinha',q:80,t:'vegetal'}]}
+          ]
         }
-
-        // ── DADOS ───────────────────────────────────────────────────────────
-        const estruturaDieta = {
-            ectomorfo: {
-                ganho_massa: {refeicoes:5, desc:'Alto volume para ganho'},
-                definicao:   {refeicoes:4, desc:'Moderado para definição'},
-                perda_gordura:{refeicoes:5, desc:'Distribuído para queimar'}
-            },
-            mesomorfo: {
-                ganho_massa: {refeicoes:5, desc:'Alto volume balanceado'},
-                definicao:   {refeicoes:5, desc:'Equilíbrio e definição'},
-                perda_gordura:{refeicoes:5, desc:'Déficit moderado'}
-            },
-            endomorfo: {
-                ganho_massa: {refeicoes:4, desc:'Concentrado'},
-                definicao:   {refeicoes:6, desc:'Alta frequência'},
-                perda_gordura:{refeicoes:6, desc:'Máximo volume, menos calorias'}
-            }
-        };
-
-        let dietaAtual = null;
-        let dadosFormulario = {};
-
-        function shuffle(arr) {
-            const a=[...arr];
-            for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-            return a;
+      },
+      mesomorfo: {
+        ganho_massa: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:200,t:'proteina'},{n:'Arroz branco',q:180,t:'carboidrato'},{n:'Banana',q:120,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:140,t:'proteina'},{n:'Aveia',q:80,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:220,t:'proteina'},{n:'Arroz branco',q:220,t:'carboidrato'},{n:'Feijão',q:160,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:140,t:'proteina'},{n:'Batata inglesa',q:150,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Carne moída',q:200,t:'proteina'},{n:'Arroz integral',q:180,t:'carboidrato'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:180,t:'proteina'},{n:'Pão integral',q:100,t:'carboidrato'},{n:'Abacate',q:80,t:'gordura'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Queijo cottage',q:150,t:'proteina'},{n:'Banana',q:120,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:230,t:'proteina'},{n:'Arroz integral',q:220,t:'carboidrato'},{n:'Brócolis',q:130,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Iogurte grego',q:150,t:'proteina'},{n:'Batata doce',q:150,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:220,t:'proteina'},{n:'Batata doce',q:180,t:'carboidrato'},{n:'Couve',q:100,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Aveia',q:90,t:'carboidrato'},{n:'Abacate',q:80,t:'gordura'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:200,t:'proteina'},{n:'Granola',q:70,t:'carboidrato'},{n:'Amêndoas',q:30,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:240,t:'proteina'},{n:'Quinoa',q:200,t:'carboidrato'},{n:'Aspargos',q:130,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Batata doce',q:180,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Filé mignon',q:230,t:'proteina'},{n:'Arroz integral',q:180,t:'carboidrato'},{n:'Brócolis',q:130,t:'vegetal'}]}
+          ]
+        },
+        definicao: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:150,t:'proteina'},{n:'Aveia',q:60,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:190,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Sardinha',q:180,t:'proteina'},{n:'Batata inglesa',q:140,t:'carboidrato'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:150,t:'proteina'},{n:'Pão integral',q:70,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:130,t:'proteina'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:190,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Brócolis',q:110,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:120,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:190,t:'proteina'},{n:'Batata doce',q:130,t:'carboidrato'},{n:'Couve',q:80,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:35,t:'proteina'},{n:'Aveia',q:65,t:'carboidrato'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:150,t:'proteina'},{n:'Amêndoas',q:25,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:200,t:'proteina'},{n:'Quinoa',q:150,t:'carboidrato'},{n:'Aspargos',q:110,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:35,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:200,t:'proteina'},{n:'Batata doce',q:130,t:'carboidrato'},{n:'Brócolis',q:120,t:'vegetal'}]}
+          ]
+        },
+        perda_gordura: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:120,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:120,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:170,t:'proteina'},{n:'Arroz integral',q:130,t:'carboidrato'},{n:'Alface',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Cenoura',q:100,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:120,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:170,t:'proteina'},{n:'Arroz integral',q:130,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:160,t:'proteina'},{n:'Abobrinha',q:100,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'},{n:'Amêndoas',q:20,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:180,t:'proteina'},{n:'Batata doce',q:110,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:30,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:170,t:'proteina'},{n:'Brócolis',q:120,t:'vegetal'}]}
+          ]
         }
-        function random(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-
-        function gerarDieta(biotipo, objetivo) {
-            const estrutura = estruturaDieta[biotipo][objetivo];
-            const l = lang();
-            const alims = T[l].alimentos;
-            const horarios = T[l].meals;
-            const refeicoes = [];
-
-            for(let i=0;i<estrutura.refeicoes;i++){
-                const tipo = i===0?'cafe_manha': i===2?'almoco': i===4?'jantar':'lanche';
-                const alim = alims[tipo];
-                const escolhidos = [];
-
-                ['proteina','carboidrato'].forEach(cat => {
-                    if(alim[cat]){
-                        const lista = shuffle(alim[cat]);
-                        escolhidos.push({ nome:lista[0], quantidade:random(100,150), tipo:cat, tipoKey:cat, lista:alim[cat] });
-                    }
-                });
-                if(alim.vegetal && i!==1 && i!==3){
-                    const lista=shuffle(alim.vegetal);
-                    escolhidos.push({ nome:lista[0], quantidade:random(80,130), tipo:'vegetal', tipoKey:'vegetal', lista:alim.vegetal });
-                }
-
-                refeicoes.push({ horario:horarios[i], alimentos:escolhidos });
-            }
-            return refeicoes;
+      },
+      endomorfo: {
+        ganho_massa: {
+          refeicoes: 4,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:180,t:'proteina'},{n:'Aveia',q:70,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:220,t:'proteina'},{n:'Arroz integral',q:180,t:'carboidrato'},{n:'Feijão',q:130,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:140,t:'proteina'},{n:'Batata inglesa',q:140,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Carne moída',q:200,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:180,t:'proteina'},{n:'Pão integral',q:80,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:230,t:'proteina'},{n:'Arroz integral',q:180,t:'carboidrato'},{n:'Brócolis',q:120,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:150,t:'proteina'},{n:'Batata doce',q:140,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:220,t:'proteina'},{n:'Batata doce',q:160,t:'carboidrato'},{n:'Couve',q:100,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Aveia',q:80,t:'carboidrato'},{n:'Amêndoas',q:25,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:240,t:'proteina'},{n:'Quinoa',q:180,t:'carboidrato'},{n:'Brócolis',q:130,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:40,t:'proteina'},{n:'Batata doce',q:160,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Filé mignon',q:230,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Aspargos',q:120,t:'vegetal'}]}
+          ]
+        },
+        definicao: {
+          refeicoes: 6,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:130,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:180,t:'proteina'},{n:'Arroz integral',q:130,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Sardinha',q:160,t:'proteina'},{n:'Batata inglesa',q:120,t:'carboidrato'},{n:'Tomate',q:80,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:130,t:'proteina'},{n:'Tapioca',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:180,t:'proteina'},{n:'Arroz integral',q:130,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:110,t:'proteina'},{n:'Morango',q:80,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:170,t:'proteina'},{n:'Batata doce',q:110,t:'carboidrato'},{n:'Couve',q:80,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'},{n:'Amêndoas',q:20,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:190,t:'proteina'},{n:'Quinoa',q:130,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Morango',q:80,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:180,t:'proteina'},{n:'Batata doce',q:110,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Whey protein',q:25,t:'proteina'}]}
+          ]
+        },
+        perda_gordura: {
+          refeicoes: 6,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Arroz integral',q:110,t:'carboidrato'},{n:'Alface',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:150,t:'proteina'},{n:'Cenoura',q:100,t:'vegetal'},{n:'Tomate',q:80,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:110,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Arroz integral',q:110,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:150,t:'proteina'},{n:'Abobrinha',q:100,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:28,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:170,t:'proteina'},{n:'Batata doce',q:100,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:28,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Brócolis',q:120,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]}
+          ]
         }
-
-        function trocarAlimento(mealIdx, aliIdx) {
-            const l = lang();
-            const alims = T[l].alimentos;
-            const refeicao = dietaAtual[mealIdx];
-            const ali = refeicao.alimentos[aliIdx];
-            const tipo = i===0?'cafe_manha': i===2?'almoco': i===4?'jantar':'lanche';
-
-            // Determina qual tipo de refeição (pelo índice no dietaAtual)
-            // Precisamos saber o tipo original — guardamos no objeto
-            const lista = ali.lista || [];
-            if(lista.length < 2){ return; }
-            let opcoes = lista.filter(n => n !== ali.nome);
-            ali.nome = opcoes[Math.floor(Math.random()*opcoes.length)];
-            renderizarDieta(dietaAtual);
+      }
+    },
+    feminino: {
+      ectomorfo: {
+        ganho_massa: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:140,t:'proteina'},{n:'Pão francês',q:80,t:'carboidrato'},{n:'Banana',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:60,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:170,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Feijão',q:120,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Banana',q:100,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Batata inglesa',q:140,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:130,t:'proteina'},{n:'Pão integral',q:80,t:'carboidrato'},{n:'Abacate',q:60,t:'gordura'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:130,t:'proteina'},{n:'Granola',q:50,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:170,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:120,t:'proteina'},{n:'Batata doce',q:120,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:160,t:'proteina'},{n:'Batata doce',q:130,t:'carboidrato'},{n:'Couve',q:80,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Aveia',q:70,t:'carboidrato'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:150,t:'proteina'},{n:'Amêndoas',q:25,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:180,t:'proteina'},{n:'Quinoa',q:160,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Batata doce',q:130,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:170,t:'proteina'},{n:'Arroz integral',q:140,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]}
+          ]
+        },
+        definicao: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:110,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Arroz integral',q:130,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:150,t:'proteina'},{n:'Cenoura',q:80,t:'vegetal'},{n:'Tomate',q:70,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:110,t:'proteina'},{n:'Tapioca',q:50,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'},{n:'Morango',q:80,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Arroz integral',q:130,t:'carboidrato'},{n:'Brócolis',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:150,t:'proteina'},{n:'Abobrinha',q:90,t:'vegetal'},{n:'Tomate',q:70,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:25,t:'proteina'},{n:'Aveia',q:50,t:'carboidrato'},{n:'Morango',q:80,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'},{n:'Amêndoas',q:20,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:170,t:'proteina'},{n:'Batata doce',q:120,t:'carboidrato'},{n:'Aspargos',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:25,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Brócolis',q:100,t:'vegetal'}]}
+          ]
+        },
+        perda_gordura: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:40,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:150,t:'proteina'},{n:'Arroz integral',q:100,t:'carboidrato'},{n:'Alface',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:90,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:140,t:'proteina'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:40,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:150,t:'proteina'},{n:'Arroz integral',q:100,t:'carboidrato'},{n:'Brócolis',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:90,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:140,t:'proteina'},{n:'Abobrinha',q:90,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:25,t:'proteina'},{n:'Aveia',q:40,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:160,t:'proteina'},{n:'Batata doce',q:90,t:'carboidrato'},{n:'Aspargos',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:25,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:150,t:'proteina'},{n:'Brócolis',q:100,t:'vegetal'}]}
+          ]
         }
-        window.trocarAlimento = trocarAlimento;
-
-        function renderizarDieta(refeicoes) {
-            const l = lang();
-            const tipos = T[l].tipos;
-            dietaAtual = refeicoes;
-            const dietaList = document.getElementById('dietaList');
-            dietaList.innerHTML = '';
-
-            refeicoes.forEach((refeicao, mIdx) => {
-                const div = document.createElement('div');
-                div.className = 'meal-container';
-
-                const alHtml = refeicao.alimentos.map((ali, aIdx) => {
-                    const tipoLabel = tipos[ali.tipoKey] || ali.tipoKey;
-                    return `
-                    <div class="food-item">
-                        <div class="food-name">${ali.nome}</div>
-                        <div class="food-row-bottom" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-                            <span class="food-amount">⚖️ ${ali.quantidade}g</span>
-                            <span class="food-macros">${tipoLabel}</span>
-                            <button class="btn-trocar" onclick="trocarAlimento(${mIdx},${aIdx})">${t('lbl-trocar')}</button>
-                        </div>
-                    </div>`;
-                }).join('');
-
-                div.innerHTML = `
-                    <div class="meal-header"><h2>${refeicao.horario}</h2></div>
-                    ${alHtml}`;
-                dietaList.appendChild(div);
-            });
-
-            document.getElementById('results').style.display='block';
-            document.getElementById('results').scrollIntoView({behavior:'smooth'});
+      },
+      mesomorfo: {
+        ganho_massa: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:150,t:'proteina'},{n:'Aveia',q:70,t:'carboidrato'},{n:'Banana',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Aveia',q:60,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:180,t:'proteina'},{n:'Arroz integral',q:170,t:'carboidrato'},{n:'Feijão',q:130,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Batata inglesa',q:130,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Carne moída',q:170,t:'proteina'},{n:'Arroz integral',q:150,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:150,t:'proteina'},{n:'Pão integral',q:80,t:'carboidrato'},{n:'Abacate',q:60,t:'gordura'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:140,t:'proteina'},{n:'Granola',q:55,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:190,t:'proteina'},{n:'Arroz integral',q:170,t:'carboidrato'},{n:'Brócolis',q:110,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:130,t:'proteina'},{n:'Batata doce',q:130,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:180,t:'proteina'},{n:'Batata doce',q:150,t:'carboidrato'},{n:'Couve',q:90,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Aveia',q:75,t:'carboidrato'},{n:'Morango',q:100,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:160,t:'proteina'},{n:'Amêndoas',q:25,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:200,t:'proteina'},{n:'Quinoa',q:160,t:'carboidrato'},{n:'Aspargos',q:110,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Batata doce',q:150,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:190,t:'proteina'},{n:'Arroz integral',q:150,t:'carboidrato'},{n:'Brócolis',q:110,t:'vegetal'}]}
+          ]
+        },
+        definicao: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:120,t:'proteina'},{n:'Aveia',q:55,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:110,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:170,t:'proteina'},{n:'Arroz integral',q:140,t:'carboidrato'},{n:'Alface',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Sardinha',q:160,t:'proteina'},{n:'Batata inglesa',q:120,t:'carboidrato'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:120,t:'proteina'},{n:'Tapioca',q:55,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:120,t:'proteina'},{n:'Morango',q:90,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:170,t:'proteina'},{n:'Arroz integral',q:140,t:'carboidrato'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:110,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:160,t:'proteina'},{n:'Batata doce',q:110,t:'carboidrato'},{n:'Couve',q:80,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:28,t:'proteina'},{n:'Aveia',q:55,t:'carboidrato'},{n:'Morango',q:90,t:'fruta'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:130,t:'proteina'},{n:'Amêndoas',q:20,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:180,t:'proteina'},{n:'Batata doce',q:130,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:28,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:170,t:'proteina'},{n:'Brócolis',q:110,t:'vegetal'}]}
+          ]
+        },
+        perda_gordura: {
+          refeicoes: 5,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:100,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Arroz integral',q:110,t:'carboidrato'},{n:'Alface',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:90,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:150,t:'proteina'},{n:'Tomate',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Arroz integral',q:110,t:'carboidrato'},{n:'Brócolis',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:90,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:150,t:'proteina'},{n:'Abobrinha',q:90,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:25,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:160,t:'proteina'},{n:'Batata doce',q:95,t:'carboidrato'},{n:'Aspargos',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:25,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:150,t:'proteina'},{n:'Brócolis',q:100,t:'vegetal'}]}
+          ]
         }
-
-        window.gerarNovaDieta = function() {
-            if(!dadosFormulario.biotipo||!dadosFormulario.objetivo){ alert(lang()==='en'?'Please fill the form again':'Por favor, preencha o formulário novamente'); return; }
-            dietaAtual = gerarDieta(dadosFormulario.biotipo, dadosFormulario.objetivo);
-            renderizarDieta(dietaAtual);
-        };
-
-        window.salvarDietaPDF = function() {
-            try {
-                const {jsPDF} = window.jspdf;
-                const doc = new jsPDF();
-                const nome = document.getElementById('nome').value;
-                let y=20;
-                doc.setFontSize(20); doc.setFont(undefined,'bold');
-                doc.text(lang()==='en'?'PERSONALIZED DIET':'DIETA PERSONALIZADA',105,y,{align:'center'});
-                y+=10; doc.setFontSize(12); doc.setFont(undefined,'normal');
-                doc.text(nome,105,y,{align:'center'}); y+=15;
-                doc.setDrawColor(16,185,129); doc.setLineWidth(0.5); doc.line(20,y,190,y); y+=10;
-                dietaAtual.forEach(r=>{
-                    if(y>265){doc.addPage();y=20;}
-                    doc.setFontSize(13); doc.setFont(undefined,'bold');
-                    doc.setTextColor(10,150,100); doc.text(r.horario,20,y);
-                    doc.setTextColor(0,0,0); y+=8;
-                    doc.setFont(undefined,'normal'); doc.setFontSize(10);
-                    r.alimentos.forEach(a=>{
-                        if(y>265){doc.addPage();y=20;}
-                        doc.text(`  • ${a.nome} — ${a.quantidade}g`,20,y); y+=6;
-                    });
-                    y+=4;
-                });
-                doc.save(`Dieta_${nome}.pdf`);
-                alert('✅ PDF baixado com sucesso!');
-            } catch(e){ alert('Erro ao gerar PDF'); }
-        };
-
-        // Cards
-        document.querySelectorAll('[data-biotipo]').forEach(card=>{
-            card.addEventListener('click',function(){
-                document.querySelectorAll('[data-biotipo]').forEach(c=>c.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('biotipo').value=this.dataset.biotipo;
-                dadosFormulario.biotipo=this.dataset.biotipo;
-            });
-        });
-        document.querySelectorAll('[data-objetivo]').forEach(card=>{
-            card.addEventListener('click',function(){
-                document.querySelectorAll('[data-objetivo]').forEach(c=>c.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('objetivo').value=this.dataset.objetivo;
-                dadosFormulario.objetivo=this.dataset.objetivo;
-            });
-        });
-
-        // Submit
-        document.getElementById('dietaForm').addEventListener('submit',async function(e){
-            e.preventDefault();
-            const user = auth.currentUser;
-            if(!user){ alert(lang()==='en'?'Please log in to generate your diet!':'Faça login para gerar sua dieta!'); return; }
-            dadosFormulario.biotipo=document.getElementById('biotipo').value;
-            dadosFormulario.objetivo=document.getElementById('objetivo').value;
-            dietaAtual=gerarDieta(dadosFormulario.biotipo,dadosFormulario.objetivo);
-            renderizarDieta(dietaAtual);
-        });
-
-        // Init tradução
-        function initLang(){
-            const l=localStorage.getItem('language')||'pt';
-            applyTranslations();
+      },
+      endomorfo: {
+        ganho_massa: {
+          refeicoes: 4,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:140,t:'proteina'},{n:'Aveia',q:60,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:180,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Feijão',q:120,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Batata inglesa',q:120,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Carne moída',q:170,t:'proteina'},{n:'Arroz integral',q:140,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo mexido',q:140,t:'proteina'},{n:'Pão integral',q:70,t:'carboidrato'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:190,t:'proteina'},{n:'Arroz integral',q:160,t:'carboidrato'},{n:'Brócolis',q:110,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:120,t:'proteina'},{n:'Batata doce',q:120,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:180,t:'proteina'},{n:'Batata doce',q:140,t:'carboidrato'},{n:'Couve',q:90,t:'vegetal'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Aveia',q:65,t:'carboidrato'},{n:'Amêndoas',q:22,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:200,t:'proteina'},{n:'Quinoa',q:160,t:'carboidrato'},{n:'Brócolis',q:110,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:30,t:'proteina'},{n:'Batata doce',q:140,t:'carboidrato'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:190,t:'proteina'},{n:'Arroz integral',q:140,t:'carboidrato'},{n:'Aspargos',q:100,t:'vegetal'}]}
+          ]
+        },
+        definicao: {
+          refeicoes: 6,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:90,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:160,t:'proteina'},{n:'Arroz integral',q:120,t:'carboidrato'},{n:'Alface',q:80,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:90,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Sardinha',q:150,t:'proteina'},{n:'Batata inglesa',q:100,t:'carboidrato'},{n:'Tomate',q:70,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Ovo cozido',q:90,t:'proteina'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:110,t:'proteina'},{n:'Tapioca',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Arroz integral',q:120,t:'carboidrato'},{n:'Brócolis',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:100,t:'proteina'},{n:'Morango',q:70,t:'fruta'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:150,t:'proteina'},{n:'Batata doce',q:100,t:'carboidrato'},{n:'Couve',q:80,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:90,t:'proteina'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:25,t:'proteina'},{n:'Aveia',q:45,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:110,t:'proteina'},{n:'Amêndoas',q:18,t:'gordura'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:170,t:'proteina'},{n:'Batata doce',q:110,t:'carboidrato'},{n:'Aspargos',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:25,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:160,t:'proteina'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:90,t:'proteina'}]}
+          ]
+        },
+        perda_gordura: {
+          refeicoes: 6,
+          economico: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:40,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Maçã',q:90,t:'fruta'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Frango grelhado',q:150,t:'proteina'},{n:'Arroz integral',q:100,t:'carboidrato'},{n:'Alface',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Ovo cozido',q:90,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Frango grelhado',q:140,t:'proteina'},{n:'Tomate',q:80,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Ovo cozido',q:80,t:'proteina'}]}
+          ],
+          medio: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Ovo cozido',q:100,t:'proteina'},{n:'Aveia',q:40,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Peito de frango',q:150,t:'proteina'},{n:'Arroz integral',q:100,t:'carboidrato'},{n:'Brócolis',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Queijo cottage',q:85,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Tilápia grelhada',q:140,t:'proteina'},{n:'Abobrinha',q:90,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:85,t:'proteina'}]}
+          ],
+          premium: [
+            {hora:'☀️ Café da manhã (7h)', itens:[{n:'Whey protein',q:22,t:'proteina'},{n:'Aveia',q:40,t:'carboidrato'}]},
+            {hora:'🍎 Lanche (10h)', itens:[{n:'Iogurte grego',q:100,t:'proteina'}]},
+            {hora:'🍽️ Almoço (13h)', itens:[{n:'Salmão',q:155,t:'proteina'},{n:'Batata doce',q:85,t:'carboidrato'},{n:'Aspargos',q:90,t:'vegetal'}]},
+            {hora:'🥤 Lanche (16h)', itens:[{n:'Whey protein',q:22,t:'proteina'}]},
+            {hora:'🌙 Jantar (20h)', itens:[{n:'Peito de frango',q:145,t:'proteina'},{n:'Brócolis',q:100,t:'vegetal'}]},
+            {hora:'🥛 Ceia (22h)', itens:[{n:'Iogurte grego',q:85,t:'proteina'}]}
+          ]
         }
-        if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',()=>setTimeout(initLang,100)); }
-        else { setTimeout(initLang,100); }
+      }
+    }
+  }
+};
 
-        // Reagir a mudança de idioma (do translations.js global)
-        const _origSL=window.setLanguage;
-        window.setLanguage=function(l){
-            if(_origSL) _origSL(l);
-            applyTranslations();
-            if(dietaAtual){ dietaAtual=gerarDieta(dadosFormulario.biotipo,dadosFormulario.objetivo); renderizarDieta(dietaAtual); }
-        };
-    </script>
-    <script src="/translations.js"></script>
+// Variantes de alimentos por categoria para o botão trocar
+const SWAP = {
+  proteina: ['Frango grelhado','Peito de frango','Tilápia grelhada','Salmão','Atum','Ovo mexido','Ovo cozido','Carne moída','Iogurte grego','Queijo cottage','Whey protein','Sardinha','Filé mignon','Peito de peru'],
+  carboidrato: ['Arroz branco','Arroz integral','Batata doce','Batata inglesa','Macarrão integral','Pão integral','Aveia','Tapioca','Quinoa','Granola','Pão francês'],
+  vegetal: ['Brócolis','Alface','Tomate','Cenoura','Couve','Abobrinha','Aspargos','Feijão'],
+  gordura: ['Azeite','Abacate','Castanha','Amêndoas','Amendoim','Pasta de amendoim'],
+  fruta: ['Banana','Maçã','Morango','Laranja','Mamão','Abacaxi']
+};
+
+let dietaAtual=null, dadosFormulario={};
+function getLang(){return localStorage.getItem('language')||'pt';}
+function isEN(){return getLang()==='en';}
+
+// Mapeamento PT→EN dos nomes de alimentos
+const ptToEN={
+  'Frango grelhado':'Grilled Chicken','Peito de frango':'Chicken Breast','Tilápia grelhada':'Grilled Tilapia',
+  'Salmão':'Salmon','Atum':'Tuna','Ovo mexido':'Scrambled Egg','Ovo cozido':'Boiled Egg',
+  'Carne moída':'Ground Beef','Iogurte grego':'Greek Yogurt','Iogurte natural':'Natural Yogurt',
+  'Queijo cottage':'Cottage Cheese','Whey protein':'Whey Protein','Sardinha':'Sardine',
+  'Filé mignon':'Filet Mignon','Peito de peru':'Turkey Breast',
+  'Arroz branco':'White Rice','Arroz integral':'Brown Rice','Batata doce':'Sweet Potato',
+  'Batata inglesa':'Potato','Macarrão integral':'Whole Wheat Pasta','Pão integral':'Whole Wheat Bread',
+  'Aveia':'Oatmeal','Tapioca':'Tapioca','Quinoa':'Quinoa','Granola':'Granola','Pão francês':'French Bread',
+  'Brócolis':'Broccoli','Alface':'Lettuce','Tomate':'Tomato','Cenoura':'Carrot','Couve':'Kale',
+  'Abobrinha':'Zucchini','Aspargos':'Asparagus','Feijão':'Black Beans',
+  'Azeite':'Olive Oil','Abacate':'Avocado','Castanha':'Brazil Nut','Amêndoas':'Almonds',
+  'Amendoim':'Peanut','Pasta de amendoim':'Peanut Butter',
+  'Banana':'Banana','Maçã':'Apple','Morango':'Strawberry','Laranja':'Orange','Mamão':'Papaya','Abacaxi':'Pineapple'
+};
+const enToPT = Object.fromEntries(Object.entries(ptToEN).map(([k,v])=>[v,k]));
+const tiposPT={proteina:'Proteína',carboidrato:'Carboidrato',vegetal:'Vegetal',gordura:'Gordura',fruta:'Fruta'};
+const tiposEN={proteina:'Protein',carboidrato:'Carb',vegetal:'Vegetable',gordura:'Fat',fruta:'Fruit'};
+const horaTranslate={
+  '☀️ Café da manhã (7h)':'☀️ Breakfast (7am)',
+  '🍎 Lanche (10h)':'🍎 Snack (10am)',
+  '🍽️ Almoço (13h)':'🍽️ Lunch (1pm)',
+  '🥤 Lanche (16h)':'🥤 Snack (4pm)',
+  '🌙 Jantar (20h)':'🌙 Dinner (8pm)',
+  '🥛 Ceia (22h)':'🥛 Late snack (10pm)'
+};
+
+function traduzirNome(nome){
+  if(isEN()) return ptToEN[nome]||nome;
+  return nome;
+}
+function traduzirHora(hora){
+  if(isEN()) return horaTranslate[hora]||hora;
+  return hora;
+}
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function random(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+function gerarDieta(sexo,biotipo,objetivo,orcamento){
+  const plano = DB.pt[sexo]?.[biotipo]?.[objetivo]?.[orcamento];
+  if(!plano) return DB.pt['masculino']['mesomorfo']['definicao']['medio'];
+  // Adiciona variação aleatória nas quantidades
+  return plano.map(ref=>({
+    hora: ref.hora,
+    alimentos: ref.itens.map(a=>({
+      nome: a.n,
+      quantidade: a.q + random(-15,15),
+      tipoKey: a.t
+    }))
+  }));
+}
+
+function trocarAlimento(mealIdx, aliIdx){
+  if(!dietaAtual) return;
+  const ali = dietaAtual[mealIdx].alimentos[aliIdx];
+  // usa nome PT para buscar no SWAP
+  const nomePT = isEN() ? (enToPT[ali.nome]||ali.nome) : ali.nome;
+  const lista = SWAP[ali.tipoKey] || SWAP['proteina'];
+  const opcoes = lista.filter(n=>n!==nomePT);
+  if(opcoes.length===0) return;
+  const novoNomePT = opcoes[Math.floor(Math.random()*opcoes.length)];
+  ali.nome = isEN() ? (ptToEN[novoNomePT]||novoNomePT) : novoNomePT;
+  renderizarDieta(dietaAtual);
+}
+window.trocarAlimento = trocarAlimento;
+
+function renderizarDieta(refs){
+  dietaAtual = refs;
+  const tipos = isEN() ? tiposEN : tiposPT;
+  const trocarLabel = isEN()?'🔄 Swap':'🔄 Trocar';
+  const el = document.getElementById('dietaList');
+  el.innerHTML='';
+  refs.forEach((ref,mIdx)=>{
+    const div=document.createElement('div');
+    div.className='meal-container';
+    div.innerHTML=`<div class="meal-header"><h2>${traduzirHora(ref.hora)}</h2></div>`
+      +ref.alimentos.map((ali,aIdx)=>`
+        <div class="food-item">
+          <div class="food-name">${traduzirNome(ali.nome)}</div>
+          <div class="food-meta">
+            <span class="food-amount">⚖️ ${ali.quantidade}g</span>
+            <span class="food-macros">${tipos[ali.tipoKey]||ali.tipoKey}</span>
+            <button class="btn-trocar" onclick="trocarAlimento(${mIdx},${aIdx})">${trocarLabel}</button>
+          </div>
+        </div>`).join('');
+    el.appendChild(div);
+  });
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+window.gerarNovaDieta=function(){
+  if(!dadosFormulario.biotipo||!dadosFormulario.objetivo||!dadosFormulario.orcamento||!dadosFormulario.sexo){
+    alert(isEN()?'Please fill all fields':'Por favor, preencha todos os campos');return;
+  }
+  const refs=gerarDieta(dadosFormulario.sexo,dadosFormulario.biotipo,dadosFormulario.objetivo,dadosFormulario.orcamento);
+  renderizarDieta(refs);
+};
+
+window.salvarDietaPDF=function(){
+  try{
+    const{jsPDF}=window.jspdf;const doc=new jsPDF();
+    const nome=document.getElementById('nome').value;
+    let y=20;
+    doc.setFontSize(20);doc.setFont(undefined,'bold');
+    doc.text(isEN()?'PERSONALIZED DIET':'DIETA PERSONALIZADA',105,y,{align:'center'});
+    y+=10;doc.setFontSize(12);doc.setFont(undefined,'normal');
+    doc.text(nome,105,y,{align:'center'});y+=15;
+    doc.setDrawColor(16,185,129);doc.setLineWidth(0.5);doc.line(20,y,190,y);y+=10;
+    dietaAtual.forEach(r=>{
+      if(y>265){doc.addPage();y=20;}
+      doc.setFontSize(13);doc.setFont(undefined,'bold');
+      doc.setTextColor(10,150,100);doc.text(traduzirHora(r.hora),20,y);
+      doc.setTextColor(0,0,0);y+=8;
+      doc.setFont(undefined,'normal');doc.setFontSize(10);
+      r.alimentos.forEach(a=>{
+        if(y>265){doc.addPage();y=20;}
+        doc.text(`  • ${traduzirNome(a.nome)} — ${a.quantidade}g`,20,y);y+=6;
+      });y+=4;
+    });
+    doc.save(`Dieta_${nome}.pdf`);
+    alert('✅ PDF baixado com sucesso!');
+  }catch(e){alert('Erro ao gerar PDF');}
+};
+
+// Cards
+['data-biotipo','data-objetivo','data-orcamento'].forEach(attr=>{
+  document.querySelectorAll(`[${attr}]`).forEach(card=>{
+    card.addEventListener('click',function(){
+      document.querySelectorAll(`[${attr}]`).forEach(c=>c.classList.remove('selected'));
+      this.classList.add('selected');
+      const field=attr.replace('data-','');
+      document.getElementById(field).value=this.dataset[field.replace('-','')];
+      dadosFormulario[field.replace('-','')]=this.dataset[field.replace('-','')];
+    });
+  });
+});
+
+document.getElementById('dietaForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const user=auth.currentUser;
+  if(!user){alert(isEN()?'Please log in!':'Faça login para gerar sua dieta!');return;}
+  dadosFormulario.sexo=document.getElementById('sexo').value;
+  dadosFormulario.biotipo=document.getElementById('biotipo').value;
+  dadosFormulario.objetivo=document.getElementById('objetivo').value;
+  dadosFormulario.orcamento=document.getElementById('orcamento').value;
+  if(!dadosFormulario.sexo){alert(isEN()?'Select your gender!':'Selecione seu sexo!');return;}
+  if(!dadosFormulario.orcamento){alert(isEN()?'Select a food profile!':'Selecione um perfil alimentar!');return;}
+  const refs=gerarDieta(dadosFormulario.sexo,dadosFormulario.biotipo,dadosFormulario.objetivo,dadosFormulario.orcamento);
+  renderizarDieta(refs);
+});
+
+window.__onLangChange=function(){
+  if(dietaAtual&&dadosFormulario.biotipo){
+    const refs=gerarDieta(dadosFormulario.sexo,dadosFormulario.biotipo,dadosFormulario.objetivo,dadosFormulario.orcamento);
+    renderizarDieta(refs);
+  }
+};
+</script>
+<script src="/translations.js"></script>
+<script>
+(function(){
+  const _orig=window.setLanguage;
+  window.setLanguage=function(lang){_orig(lang);if(typeof window.__onLangChange==='function')window.__onLangChange();};
+  const saved=localStorage.getItem('language')||'pt';
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===saved));
+  if(typeof translatePage==='function')translatePage();
+})();
+</script>
 </body>
 </html>
